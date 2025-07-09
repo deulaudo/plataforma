@@ -1,5 +1,6 @@
 "use client";
 
+import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 
@@ -9,16 +10,25 @@ const AppThemeToggler = () => {
 
   useEffect(() => setMounted(true), []);
 
+  const toggleTheme = () => {
+    setTheme(theme === "dark" ? "light" : "dark");
+  };
+
   if (!mounted) {
     // Prevents hydration mismatch by not rendering the component until mounted
     return null;
   }
 
   return (
-    <div className="flex flex-col">
-      The current theme is: {theme}
-      <button onClick={() => setTheme("light")}>Light Mode</button>
-      <button onClick={() => setTheme("dark")}>Dark Mode</button>
+    <div
+      onClick={toggleTheme}
+      className="flex items-center justify-center w-[48px] h-[48px] rounded-[20px] dark:bg-[#192031] bg-[#0000000D] border border-[#0000000D] p-[3px] cursor-pointer"
+    >
+      {theme === "light" ? (
+        <Moon className="text-[#767779] dark:text-[#E1E2F3]" size={16} />
+      ) : (
+        <Sun className="text-[#767779] dark:text-[#E1E2F3]" size={16} />
+      )}
     </div>
   );
 };

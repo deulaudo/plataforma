@@ -14,7 +14,7 @@ const AuthCard = ({ children, title, subtitle }: AuthCardProps) => {
   const { theme } = useTheme();
 
   return (
-    <div className="flex flex-col items-center justify-center w-full max-w-[575px] p-[80px] rounded-[80px] bg-[#141926] border border-[#FFFFFF0D]">
+    <div className="flex flex-col items-center justify-center w-full max-w-[575px] p-[80px] rounded-[80px] bg-[#EDEEEF] dark:bg-[#141926] border border-[#0000000D] dark:border-[#FFFFFF0D]">
       <div className="flex flex-col gap-[80px] justify-center items-center mb-[80px]">
         <Image
           src={
