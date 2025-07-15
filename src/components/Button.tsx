@@ -1,12 +1,14 @@
+import { Loader } from "lucide-react";
 import React from "react";
 import { twMerge } from "tailwind-merge";
 
 type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   children: React.ReactNode;
   theme?: "green" | "blue" | "secondary";
+  loading?: boolean;
 };
 
-const Button: React.FC<ButtonProps> = ({ children, ...props }) => {
+const Button: React.FC<ButtonProps> = ({ children, loading, ...props }) => {
   const getButtonTheme = () => {
     switch (props.theme) {
       case "green":
@@ -36,12 +38,13 @@ const Button: React.FC<ButtonProps> = ({ children, ...props }) => {
   return (
     <button
       className={twMerge(
-        "flex items-center justify-center min-w-[336px] h-[47px] rounded-[200px] py-[16px] px-[24px]",
+        "flex items-center justify-center md:min-w-[336px] h-[47px] rounded-[200px] py-[16px] px-[24px]",
         "cursor-pointer font-bold text-xs transition-all duration-200",
         getButtonTheme(),
       )}
       {...props}
     >
+      {loading && <Loader className="animate-spin mr-2" size={16} />}
       {children}
     </button>
   );

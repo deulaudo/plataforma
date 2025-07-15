@@ -2,13 +2,21 @@
 
 import { Eye, EyeOff } from "lucide-react";
 import React, { InputHTMLAttributes, useId, useState } from "react";
+import { twMerge } from "tailwind-merge";
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;
   icon?: React.ReactNode;
+  error?: string;
 }
 
-const Input: React.FC<InputProps> = ({ label, icon, type, ...props }) => {
+const Input: React.FC<InputProps> = ({
+  label,
+  icon,
+  type,
+  error,
+  ...props
+}) => {
   const randomId = useId();
   const [showPassword, setShowPassword] = useState(false);
 
@@ -20,12 +28,20 @@ const Input: React.FC<InputProps> = ({ label, icon, type, ...props }) => {
       {label && (
         <label
           htmlFor={randomId}
-          className="font-bold text-xs text-black dark:text-white"
+          className={twMerge(
+            "font-bold text-xs text-black dark:text-white",
+            error ? "text-red-500" : "",
+          )}
         >
           {label}
         </label>
       )}
-      <div className="flex items-center text-xs relative w-full border border-[#FFFFFF0D] rounded-[20px] bg-white dark:bg-transparent p-[16px] h-[48px] placeholder:text-[#FFFFFF40]">
+      <div
+        className={twMerge(
+          "flex items-center text-xs relative w-full border border-[#FFFFFF0D] rounded-[20px] bg-white dark:bg-transparent p-[16px] h-[48px] placeholder:text-[#FFFFFF40]",
+          error ? "border-red-500" : "",
+        )}
+      >
         {icon && (
           <div className="text-[#FFFFFF40] absolute left-[16px]">{icon}</div>
         )}
@@ -48,6 +64,8 @@ const Input: React.FC<InputProps> = ({ label, icon, type, ...props }) => {
           </button>
         )}
       </div>
+
+      {error && <span className="text-red-500 text-xs mt-1">{error}</span>}
     </div>
   );
 };
