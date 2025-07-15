@@ -1,4 +1,8 @@
+"use client";
+
 import { PropsWithChildren } from "react";
+
+import withNoAuth from "@/hocs/withNoAuth";
 
 export const AuthLayout = ({ children }: PropsWithChildren) => {
   return (
@@ -8,4 +12,4 @@ export const AuthLayout = ({ children }: PropsWithChildren) => {
   );
 };
 
-export default AuthLayout;
+export default withNoAuth(AuthLayout);
