@@ -18,7 +18,7 @@ const PagesLayout = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <QueryClientProvider client={queryClient}>
-      {children}
+      <div className="flex h-screen w-full">{children}</div>
       <ToastContainer position="bottom-right" />
     </QueryClientProvider>
   );
