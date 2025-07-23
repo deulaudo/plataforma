@@ -58,12 +58,14 @@ api.interceptors.response.use(
           setUser(null);
           authService.signOut();
 
-          console.log("Erro ao atualizar o token:", refreshError);
           localStorage.removeItem("deulaudo_access_token");
           localStorage.removeItem("deulaudo_refresh_token");
 
           return Promise.reject(refreshError);
         }
+      } else {
+        localStorage.removeItem("deulaudo_access_token");
+        localStorage.removeItem("deulaudo_refresh_token");
       }
     }
 

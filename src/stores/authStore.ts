@@ -24,8 +24,15 @@ export const useAuthStore = create<AuthStoreType>((set) => ({
   setLoadingUser: (loadingUser) => set({ loadingUser }),
 
   loadUser: async () => {
+    console.log(authService.isUserWithAuthenticationToken());
+    if (!authService.isUserWithAuthenticationToken()) {
+      set({ user: null, loadingUser: false });
+      return;
+    }
+
     set({ loadingUser: true });
     try {
+      console.log("dasdsad");
       const user = await authService.getAuthenticatedUser();
       set({ user, loadingUser: false });
     } catch (error) {

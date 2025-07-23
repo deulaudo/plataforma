@@ -129,6 +129,10 @@ function signOut() {
   localStorage.removeItem("deulaudo_refresh_token");
 }
 
+function isUserWithAuthenticationToken(): boolean {
+  return !!localStorage.getItem("deulaudo_access_token");
+}
+
 async function getAuthenticatedUser(): Promise<GetAuthenticatedUserResponse> {
   const { id, products } = (await api.get<MeResponse>("/auth/me/")).data;
   const userData = (await api.get<GetAuthenticatedUserResponse>(`/user/${id}`))
@@ -172,6 +176,7 @@ async function refreshToken(
 }
 
 export const authService = {
+  isUserWithAuthenticationToken,
   signIn,
   signUp,
   signOut,

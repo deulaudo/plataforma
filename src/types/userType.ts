@@ -3,7 +3,7 @@ export interface UserType {
   name: string;
   email: string;
   phone: string;
-  role: string;
+  role: "ADMIN" | "USER";
   active: boolean;
   confirmationCode: string | null;
   subscription: Subscription;

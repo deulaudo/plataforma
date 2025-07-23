@@ -9,10 +9,12 @@ import { toast } from "react-toastify";
 import { z } from "zod";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 import Button from "@/components/Button";
 import Input from "@/components/Input";
 import AuthCard from "@/features/auth/components/AuthCard";
+import withNoAuth from "@/hocs/withNoAuth";
 import { authService } from "@/services/authService";
 
 const LoginFormSchema = z.object({
@@ -27,6 +29,7 @@ const LoginFormSchema = z.object({
 type LoginFormData = z.infer<typeof LoginFormSchema>;
 
 const LoginPage = () => {
+  const router = useRouter();
   const { control, handleSubmit } = useForm<LoginFormData>({
     resolver: zodResolver(LoginFormSchema),
     defaultValues: {
@@ -122,10 +125,12 @@ const LoginPage = () => {
           Entrar
         </Button>
 
-        <Button theme="secondary">Criar uma conta</Button>
+        <Button onClick={() => router.push("/auth/signup")} theme="secondary">
+          Criar uma conta
+        </Button>
       </div>
     </AuthCard>
   );
 };
 
-export default LoginPage;
+export default withNoAuth(LoginPage);

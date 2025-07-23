@@ -12,4 +12,4 @@ export const AuthLayout = ({ children }: PropsWithChildren) => {
   );
 };
 
-export default withNoAuth(AuthLayout);
+export default AuthLayout;
