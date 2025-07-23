@@ -13,7 +13,7 @@ const PageLayout = ({ children, headerTitle, headerType }: PageLayoutProps) => (
     <Sidebar />
     <div className="flex flex-col gap-[48px] flex-1 p-6">
       <Header headerTitle={headerTitle} headerType={headerType} />
-      {children}
+      <div className="overflow-y-auto flex-1">{children}</div>
     </div>
   </div>
 );

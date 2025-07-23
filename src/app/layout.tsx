@@ -33,6 +33,7 @@ export default function RootLayout({
         className={twMerge(
           `${plusJakartaSans.className} antialiased`,
           "bg-white dark:bg-[#0F1420]",
+          "overflow-y-hidden",
         )}
       >
         <ThemeProvider

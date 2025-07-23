@@ -1,7 +1,7 @@
 "use client";
 
 import PageLayout from "@/components/PageLayout";
-import Sidebar from "@/components/Sidebar";
+import withAuth from "@/hocs/withAuth";
 
 const HomePage = () => {
   return (
@@ -11,4 +11,4 @@ const HomePage = () => {
   );
 };
 
-export default HomePage;
+export default withAuth(HomePage);

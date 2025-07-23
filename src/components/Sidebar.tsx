@@ -62,8 +62,8 @@ const Sidebar = () => {
     {
       name: "Modo Estudo",
       icon: <NotebookPen />,
-      href: "/study",
-      active: () => pathname.startsWith("/study"),
+      href: "/study-mode",
+      active: () => pathname.startsWith("/study-mode"),
     },
     {
       name: "Modo Prova",
