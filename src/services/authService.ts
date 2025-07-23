@@ -15,7 +15,7 @@ export type MeResponse = {
   id: string;
   name: string;
   email: string;
-  role: string;
+  role: "ADMIN" | "USER";
   products: {
     id: string;
     name: string;

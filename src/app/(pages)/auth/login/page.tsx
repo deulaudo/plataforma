@@ -16,6 +16,7 @@ import Input from "@/components/Input";
 import AuthCard from "@/features/auth/components/AuthCard";
 import withNoAuth from "@/hocs/withNoAuth";
 import { authService } from "@/services/authService";
+import { useAuthStore } from "@/stores/authStore";
 
 const LoginFormSchema = z.object({
   email: z
@@ -29,6 +30,7 @@ const LoginFormSchema = z.object({
 type LoginFormData = z.infer<typeof LoginFormSchema>;
 
 const LoginPage = () => {
+  const { loadUser } = useAuthStore();
   const router = useRouter();
   const { control, handleSubmit } = useForm<LoginFormData>({
     resolver: zodResolver(LoginFormSchema),
@@ -55,6 +57,10 @@ const LoginPage = () => {
         }
       }
     },
+    onSuccess: () => {
+      loadUser();
+      router.push("/");
+    },
   });
 
   const onSubmit = (data: LoginFormData) => {
@@ -66,69 +72,72 @@ const LoginPage = () => {
       title="Bem-vindo de volta :)"
       subtitle="Preencha seus dados para entrar na plataforma"
     >
-      <div className="flex flex-col gap-[16px] w-full mb-[48px]">
-        <Controller
-          control={control}
-          name="email"
-          render={({ field, fieldState }) => (
-            <Input
-              onChange={field.onChange}
-              value={field.value}
-              icon={
-                <Mail
-                  className="text-[#808080] dark:text-[#4b4e56]"
-                  size={16}
-                />
-              }
-              placeholder="Digite aqui o seu email"
-              label="E-mail"
-              error={fieldState.error?.message}
-            />
-          )}
-        />
+      <form onSubmit={handleSubmit(onSubmit)} className="w-full">
+        <div className="flex flex-col gap-[16px] w-full mb-[48px]">
+          <Controller
+            control={control}
+            name="email"
+            render={({ field, fieldState }) => (
+              <Input
+                onChange={field.onChange}
+                value={field.value}
+                icon={
+                  <Mail
+                    className="text-[#808080] dark:text-[#4b4e56]"
+                    size={16}
+                  />
+                }
+                placeholder="Digite aqui o seu email"
+                label="E-mail"
+                error={fieldState.error?.message}
+              />
+            )}
+          />
 
-        <Controller
-          control={control}
-          name="password"
-          render={({ field, fieldState }) => (
-            <Input
-              onChange={field.onChange}
-              value={field.value}
-              type="password"
-              icon={
-                <Lock
-                  className="text-[#808080] dark:text-[#4b4e56]"
-                  size={16}
-                />
-              }
-              placeholder="Digite aqui a sua senha"
-              label="Senha"
-              error={fieldState.error?.message}
-            />
-          )}
-        />
+          <Controller
+            control={control}
+            name="password"
+            render={({ field, fieldState }) => (
+              <Input
+                onChange={field.onChange}
+                value={field.value}
+                type="password"
+                icon={
+                  <Lock
+                    className="text-[#808080] dark:text-[#4b4e56]"
+                    size={16}
+                  />
+                }
+                placeholder="Digite aqui a sua senha"
+                label="Senha"
+                error={fieldState.error?.message}
+              />
+            )}
+          />
 
-        <Link href={"/auth/forgot-password"} className="w-fit">
-          <span className="w-fit font-medium text-xs text-[#000] dark:text-[#fff]">
-            Esqueceu a sua senha?
-          </span>
-        </Link>
-      </div>
+          <Link href={"/auth/forgot-password"} className="w-fit">
+            <span className="w-fit font-medium text-xs text-[#000] dark:text-[#fff]">
+              Esqueceu a sua senha?
+            </span>
+          </Link>
+        </div>
 
-      <div className="flex flex-col gap-[24px] w-full">
-        <Button
-          loading={performingLogin}
-          disabled={performingLogin}
-          onClick={handleSubmit(onSubmit)}
-          theme="blue"
-        >
-          Entrar
-        </Button>
+        <div className="flex flex-col gap-[24px] w-full">
+          <Button
+            type="submit"
+            loading={performingLogin}
+            disabled={performingLogin}
+            onClick={handleSubmit(onSubmit)}
+            theme="blue"
+          >
+            Entrar
+          </Button>
 
-        <Button onClick={() => router.push("/auth/signup")} theme="secondary">
-          Criar uma conta
-        </Button>
-      </div>
+          <Button onClick={() => router.push("/auth/signup")} theme="secondary">
+            Criar uma conta
+          </Button>
+        </div>
+      </form>
     </AuthCard>
   );
 };

@@ -18,7 +18,7 @@ function withAuth<T extends {}>(
     // Perform navigation as a side effect after render
     useEffect(() => {
       if (!loadingUser && !user) {
-        router.replace("/login");
+        router.replace("/auth/login");
       } else if (
         !loadingUser &&
         user &&

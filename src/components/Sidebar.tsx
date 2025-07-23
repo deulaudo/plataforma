@@ -8,6 +8,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 import Logo from "./Logo";
+import UserAccountMenu from "./UserAccountMenu";
 
 type LinkProps = {
   name: string;
@@ -80,19 +81,25 @@ const Sidebar = () => {
   ];
 
   return (
-    <aside className="w-[260px] h-full dark:bg-[#141926] bg-[#EDEEEF] p-6">
-      <Logo />
+    <aside className="flex flex-col w-[260px] h-full dark:bg-[#141926] bg-[#EDEEEF]">
+      <div className="p-6 flex-1">
+        <Logo />
 
-      <div className="flex flex-col gap-[16px] mt-[32px]">
-        {links.map((link) => (
-          <SidebarLink
-            key={link.name}
-            name={link.name}
-            icon={link.icon}
-            href={link.href}
-            active={link.active()}
-          />
-        ))}
+        <div className="flex flex-col gap-[16px] mt-[32px] flex-1">
+          {links.map((link) => (
+            <SidebarLink
+              key={link.name}
+              name={link.name}
+              icon={link.icon}
+              href={link.href}
+              active={link.active()}
+            />
+          ))}
+        </div>
+      </div>
+
+      <div className="p-[16px] border-t border-t-[#202531]">
+        <UserAccountMenu />
       </div>
     </aside>
   );
