@@ -134,8 +134,9 @@ const StudyModeSubcategory = ({
             <div className="flex gap-[24px] flex-wrap">
               {subcategory?.exams.map((exam, index) => (
                 <StudyQuestionCard
-                  key={exam.id}
                   id={exam.id}
+                  subcategoryId={id}
+                  key={exam.id}
                   order={index + 1}
                   question={exam.question}
                   examAnswer={exam.examAnswer}

@@ -1,9 +1,14 @@
+"use client";
+
 import { CircleCheck, CircleX } from "lucide-react";
 import { useMemo } from "react";
 import { twMerge } from "tailwind-merge";
 
+import { useRouter } from "next/navigation";
+
 type StudyQuestionCardProps = {
   id: string;
+  subcategoryId: string;
   order: number;
   question: string;
   examAnswer: {
@@ -14,10 +19,13 @@ type StudyQuestionCardProps = {
 
 const StudyQuestionCard = ({
   id,
+  subcategoryId,
   order,
   question,
   examAnswer,
 }: StudyQuestionCardProps) => {
+  const router = useRouter();
+
   const questionIcon = useMemo(() => {
     if (examAnswer === null) {
       return <CircleCheck size={16} className="text-[#4c515e]" />;
@@ -32,6 +40,9 @@ const StudyQuestionCard = ({
 
   return (
     <div
+      onClick={() => {
+        router.push(`/study-mode/${subcategoryId}?questionId=${id}`);
+      }}
       className={twMerge(
         "cursor-pointer",
         "hover:bg-[#F5F5F5] dark:hover:bg-[#FFFFFF0D]",
