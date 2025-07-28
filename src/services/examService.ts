@@ -1,4 +1,4 @@
-import { ExamCategory, ExamSubcategory } from "@/types/examType";
+import { ExamCategory, ExamMode, ExamSubcategory } from "@/types/examType";
 
 import api from "./api";
 
@@ -13,7 +13,7 @@ type ListExamCategoriesResponse = {
 }[];
 
 async function listExamCategories(params?: {
-  module: "TEST" | "STUDY" | "FLASHCARDS";
+  module: ExamMode;
   product_id?: string;
 }): Promise<ListExamCategoriesResponse> {
   const response = await api.get<ListExamCategoriesResponse>("/exam/category", {

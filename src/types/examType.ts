@@ -2,6 +2,8 @@
  * Types related to endpoints for "Modo Exame"
  */
 
+export type ExamMode = "STUDY" | "EXAM" | "FLASHCARDS";
+
 export type ExamCategory = {
   id: string;
   name: string;

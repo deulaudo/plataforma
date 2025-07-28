@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { use } from "react";
 
 import PageLayout from "@/components/PageLayout";
+import QuestionsCarousel from "@/features/study-mode/components/QuestionsCarousel";
 import withAuth from "@/hocs/withAuth";
 import { examService } from "@/services/examService";
 
@@ -24,7 +25,7 @@ const StudyModeExecutionPage = ({
       headerType="back"
       headerTitle={subcategory?.name || "Modo Estudo"}
     >
-      hello world
+      {subcategory && <QuestionsCarousel subcategory={subcategory} />}
     </PageLayout>
   );
 };
