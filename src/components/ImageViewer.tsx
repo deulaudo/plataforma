@@ -2,7 +2,10 @@
 
 import { Maximize, X } from "lucide-react";
 import { useState } from "react";
-import Viewer from "react-viewer";
+
+import dynamic from "next/dynamic";
+
+const Viewer = dynamic(() => import("react-viewer"), { ssr: false });
 
 /* eslint-disable @next/next/no-img-element */
 type ImageViewerProps = {

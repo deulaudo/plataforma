@@ -13,12 +13,14 @@ import QuestionText from "./QuestionText";
 
 type SubcategoryAnswerPageProps = {
   subcategory: ExamSubcategory;
+  onQuestionAnswered: () => void;
   mode?: ExamMode;
 };
 
 const SubcategoryAnswerPage = ({
   subcategory,
   mode,
+  onQuestionAnswered,
 }: SubcategoryAnswerPageProps) => {
   const searchParams = useSearchParams();
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(0);
@@ -56,6 +58,7 @@ const SubcategoryAnswerPage = ({
         <QuestionAlternatives
           question={subcategory.exams[currentQuestionIndex]}
           mode={mode}
+          onQuestionAnswered={onQuestionAnswered}
         />
       </div>
     </div>

@@ -15,7 +15,11 @@ const StudyModeAnswerPage = ({
 }) => {
   const { subcategoryId } = use(params);
 
-  const { data: subcategory, isPending } = useQuery({
+  const {
+    data: subcategory,
+    isPending,
+    refetch,
+  } = useQuery({
     queryKey: ["studyMode", { subcategoryId }],
     queryFn: async () => examService.getExamSubcategoryById(subcategoryId),
   });
@@ -40,7 +44,13 @@ const StudyModeAnswerPage = ({
 
   return (
     <PageLayout headerType="back" headerTitle={subcategory.name}>
-      <SubcategoryAnswerPage subcategory={subcategory} mode="STUDY" />
+      <SubcategoryAnswerPage
+        subcategory={subcategory}
+        mode="STUDY"
+        onQuestionAnswered={() => {
+          refetch();
+        }}
+      />
     </PageLayout>
   );
 };

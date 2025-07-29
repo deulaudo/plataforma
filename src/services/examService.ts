@@ -32,8 +32,24 @@ async function getExamSubcategoryById(id: string): Promise<ExamSubcategory> {
   return response.data;
 }
 
+async function answerQuestion(data: {
+  questionId: string;
+  alternativeId: string;
+  mode: "STUDY" | "TEST";
+}): Promise<void> {
+  await api.post(`/exam/${data.mode.toLowerCase()}-answer`, {
+    examAnswer: [
+      {
+        questionId: data.questionId,
+        alternativeId: data.alternativeId,
+      },
+    ],
+  });
+}
+
 export const examService = {
   listExamCategories,
   getExamCategoryById,
   getExamSubcategoryById,
+  answerQuestion,
 };
