@@ -22,6 +22,7 @@ const Category = ({
   name,
   subcategoriesCount,
   subcategoriesDone,
+  mode,
 }: CategoryProps) => {
   const { theme } = useTheme();
   const [isCategoryExpanded, setIsCategoryExpanded] = useState<boolean>(false);
@@ -74,8 +75,9 @@ const Category = ({
               className="not-last:border-b dark:border-[#1c212d] border-[#EDEEEF] pt-2"
             >
               <SubcategoryCard
-                key={subcategory.id}
                 id={subcategory.id}
+                key={subcategory.id}
+                mode={mode}
                 name={subcategory.name}
                 questionsCount={subcategory.questionsCount}
                 questionsAnswered={subcategory.questionsAnswered}

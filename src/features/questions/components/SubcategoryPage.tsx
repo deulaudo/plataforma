@@ -1,0 +1,122 @@
+import { CircleCheck, ListChecks, XCircle } from "lucide-react";
+import { useTheme } from "next-themes";
+
+import { useRouter } from "next/navigation";
+
+import ProgressBar from "@/components/ProgressBar";
+import { ExamMode, ExamSubcategory } from "@/types/examType";
+
+import QuestionCard from "./QuestionCard";
+
+type SubcategoryPageProps = {
+  subcategory: ExamSubcategory;
+  mode?: ExamMode;
+};
+
+const SubcategoryPage = ({
+  subcategory,
+  mode = "STUDY",
+}: SubcategoryPageProps) => {
+  const router = useRouter();
+  const { theme } = useTheme();
+
+  const correctQuestionsPercentage = Math.round(
+    (subcategory.correctQuestions / subcategory.questionsCount) * 100,
+  );
+
+  const wrongQuestionsPercentage = Math.round(
+    (subcategory.wrongQuestions / subcategory.questionsCount) * 100,
+  );
+
+  return (
+    <div className="flex flex-col gap-4 dark:bg-[#151b2b] bg-[#e5e8ef] p-[24px] rounded-[36px] border dark:border-[#FFFFFF0D] border-[#E9EAEC]">
+      <div className="flex gap-[24px] items-center">
+        <h1 className="font-extrabold text-[24px] dark:text-white text-black">
+          {subcategory.name}
+        </h1>
+        <div className="flex flex-col gap-2">
+          <div className="flex gap-4">
+            {/** Total de questões */}
+            <div className="flex gap-2 items-center">
+              <ListChecks
+                className="dark:text-[#4c515e] text-[#808080]"
+                size={16}
+              />
+              <span className="text-xs dark:text-white text-black">
+                Total de questões: <b>{subcategory.questionsCount}</b>
+              </span>
+            </div>
+
+            {/** Questões pendentes */}
+            <div className="flex gap-2 items-center">
+              <CircleCheck
+                className="dark:text-[#4c515e] text-[#808080]"
+                size={16}
+              />
+              <span className="text-xs dark:text-white text-black">
+                Questões pendentes:{" "}
+                <b>
+                  {subcategory.questionsCount - subcategory.questionsAnswered}
+                </b>
+              </span>
+            </div>
+
+            {/** Questões certas */}
+            <div className="flex gap-2 items-center">
+              <CircleCheck className="text-[#1cce7c]" size={16} />
+              <span className="text-xs dark:text-white text-black">
+                Questões corretas: <b>{subcategory.correctQuestions}</b>
+              </span>
+            </div>
+
+            {/** Questões erradas */}
+            <div className="flex gap-2 items-center">
+              <XCircle className="text-[#de4a48]" size={16} />
+              <span className="text-xs dark:text-white text-black">
+                Questões erradas: <b>{subcategory.wrongQuestions}</b>
+              </span>
+            </div>
+          </div>
+          <ProgressBar
+            segments={[
+              {
+                color: "#e14a45",
+                value: wrongQuestionsPercentage,
+              },
+              {
+                color: "#46d07a",
+                value: correctQuestionsPercentage,
+              },
+              {
+                color: theme === "dark" ? "#2a334a" : "#c5cbd5",
+                value: 100,
+              },
+            ]}
+          />
+        </div>
+      </div>
+
+      <div className="flex gap-4 flex-wrap">
+        {subcategory.exams.map((question, index) => (
+          <QuestionCard
+            key={question.id}
+            subcategoryId={subcategory.id}
+            order={index + 1}
+            question={question.question}
+            id={question.id}
+            examAnswer={question.examAnswer}
+            onClick={() => {
+              if (mode === "STUDY") {
+                router.push(
+                  `/study-mode/${subcategory.id}/answer?questionId=${question.id}`,
+                );
+              }
+            }}
+          />
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default SubcategoryPage;

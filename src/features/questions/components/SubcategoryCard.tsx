@@ -1,13 +1,17 @@
 import { ChevronRight, ListChecks } from "lucide-react";
 import { useTheme } from "next-themes";
 
+import { useRouter } from "next/navigation";
+
 import ProgressBar from "@/components/ProgressBar";
+import { ExamMode } from "@/types/examType";
 
 type SubcategoryCardProps = {
   id: string;
   name: string;
   questionsCount: number;
   questionsAnswered: number;
+  mode?: ExamMode;
 };
 
 const SubcategoryCard = ({
@@ -15,7 +19,9 @@ const SubcategoryCard = ({
   name,
   questionsCount,
   questionsAnswered,
+  mode = "STUDY",
 }: SubcategoryCardProps) => {
+  const router = useRouter();
   const { theme } = useTheme();
 
   return (
@@ -60,6 +66,9 @@ const SubcategoryCard = ({
       <ChevronRight
         size={24}
         className="text-[#808080] dark:text-[#4c515e] cursor-pointer"
+        onClick={() => {
+          router.push(`/${mode === "STUDY" ? "study" : "test"}-mode/${id}`);
+        }}
       />
     </div>
   );

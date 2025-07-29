@@ -69,8 +69,8 @@ const Sidebar = () => {
     {
       name: "Modo Prova",
       icon: <ListCheck />,
-      href: "/exams",
-      active: () => pathname.startsWith("/exams"),
+      href: "/test-mode",
+      active: () => pathname.startsWith("/test-mode"),
     },
     {
       name: "Flashcards",
