@@ -18,7 +18,14 @@ const QuestionFeedback = ({ correct }: QuestionFeedbackProps) => {
         />
       </div>
 
-      <div className="flex flex-col gap-[8px] w-full max-w-[468px] border dark:border-[#FFFFFF0D] bg-[#d7dae3] dark:bg-[#192031] border-[#E9EAEC] rounded-[36px] p-[24px]">
+      <div
+        className={twMerge(
+          "flex flex-col gap-[8px] w-full max-w-[468px] border dark:border-[#FFFFFF0D] bg-[#d7dae3] dark:bg-[#192031] border-[#E9EAEC] rounded-[36px] p-[24px]",
+          correct
+            ? "bg-[#cee0d8] dark:bg-[#192031]"
+            : "bg-[#e1d5d5] dark:bg-[#192031]",
+        )}
+      >
         <span className="text-[16px] dark:text-white">A resposta está:</span>
         <span
           className={twMerge(
