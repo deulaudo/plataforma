@@ -82,7 +82,7 @@ const QuestionAlternatives = ({
   );
 
   return (
-    <div className="flex flex-col gap-[36px] w-full 2xl:min-w-[516px] md:max-w-[516px] p-[24px] mx-auto dark:bg-[#192031] bg-[#e0e1e3] border dark:border-[#FFFFFF0D] border-[#E9EAEC] rounded-[48px]">
+    <div className="flex flex-col gap-[36px] w-full 2xl:min-w-[516px] md:max-w-[516px] p-[24px] dark:bg-[#192031] bg-[#e0e1e3] border dark:border-[#FFFFFF0D] border-[#E9EAEC] rounded-[48px]">
       <div className="flex flex-col gap-4">
         {question.alternatives.map((alternative, index) => (
           <div

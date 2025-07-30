@@ -106,7 +106,9 @@ const SubcategoryAnswerPage = ({
           questionNumber={currentQuestionIndex + 1}
         />
       </div>
-      <div className={`flex gap-4 flex-col xl:flex-row w-full`}>
+      <div
+        className={`flex gap-4 flex-col xl:flex-row w-full ${subcategory.exams[currentQuestionIndex].imageUrl ? "lg:justify-between items-center" : "items-center md:justify-end"}`}
+      >
         {subcategory.exams[currentQuestionIndex].imageUrl && (
           <div className="flex-1">
             <ImageViewer

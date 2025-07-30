@@ -56,8 +56,8 @@ const QuestionCard = ({
         "max-h-[186px] overflow-hidden",
         "w-[228px] py-[24px] px-[16px] rounded-[36px] border border-[#FFFFFF0D]",
         examAnswer === null && "dark:bg-[#0F1420] bg-[#FFFFFF]",
-        examAnswer?.correct && "dark:bg-[#102328]",
-        examAnswer?.correct === false && "dark:bg-[#201925]",
+        examAnswer?.correct && "dark:bg-[#102328] bg-[#ecfbf5]",
+        examAnswer?.correct === false && "dark:bg-[#201925] bg-[#faeef1]",
       )}
     >
       <div className="flex items-center gap-[8px] flex-shrink-0">
