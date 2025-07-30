@@ -22,15 +22,23 @@ const QuestionAlternatives = ({
   mode,
   onQuestionAnswered,
 }: QuestionAlternativesProps) => {
-  const [selectedAlternative, setSelectedAlternative] = useState<string>();
-  const [answerSubmitted, setAnswerSubmitted] = useState<boolean>(false);
+  const [selectedAlternative, setSelectedAlternative] = useState<string>(
+    question.examAnswer?.alternativeId || "",
+  );
+  const [answerSubmitted, setAnswerSubmitted] = useState<boolean>(
+    question.examAnswer !== null,
+  );
 
   useEffect(() => {
-    setAnswerSubmitted(false);
-  }, [selectedAlternative]);
+    setSelectedAlternative(question.examAnswer?.alternativeId || "");
+    setAnswerSubmitted(question.examAnswer !== null);
+  }, [question.examAnswer]);
 
   const showAnswer = useMemo(() => {
-    return mode === "STUDY" && answerSubmitted && selectedAlternative;
+    if (mode === "STUDY") {
+      return answerSubmitted && selectedAlternative;
+    }
+    return false;
   }, [mode, answerSubmitted, selectedAlternative]);
 
   const answerQuestionMutation = useMutation({
@@ -85,7 +93,10 @@ const QuestionAlternatives = ({
                 "border-2 border-[#2056F2]",
               getAlternativeStyle(alternative.id),
             )}
-            onClick={() => setSelectedAlternative(alternative.id)}
+            onClick={() => {
+              setSelectedAlternative(alternative.id);
+              setAnswerSubmitted(false);
+            }}
           >
             {alternative.text}
           </div>

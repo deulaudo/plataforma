@@ -27,8 +27,16 @@ async function getExamCategoryById(id: string): Promise<ExamCategory> {
   return response.data;
 }
 
-async function getExamSubcategoryById(id: string): Promise<ExamSubcategory> {
-  const response = await api.get<ExamSubcategory>(`/exam/subcategory/${id}`);
+async function getExamSubcategoryById(data: {
+  id: string;
+  mode?: "STUDY" | "TEST";
+}): Promise<ExamSubcategory> {
+  const { id, mode } = data;
+  const response = await api.get<ExamSubcategory>(`/exam/subcategory/${id}`, {
+    params: {
+      module: mode,
+    },
+  });
   return response.data;
 }
 

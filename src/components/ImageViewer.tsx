@@ -18,7 +18,8 @@ const ImageViewer = ({ imageUrl, altText, className }: ImageViewerProps) => {
   const [isImageMaximized, setIsImageMaximized] = useState<boolean>(false);
 
   return (
-    <div className="relative">
+    <div className="relative w-fit">
+      <img className={className} src={imageUrl} alt={altText} />
       <div className="absolute top-0 right-0 p-2">
         <div
           onClick={() => setIsImageMaximized(true)}
@@ -27,7 +28,6 @@ const ImageViewer = ({ imageUrl, altText, className }: ImageViewerProps) => {
           <Maximize className="text-white" size={16} />
         </div>
       </div>
-      <img className={className} src={imageUrl} alt={altText} />
 
       <Viewer
         visible={isImageMaximized}

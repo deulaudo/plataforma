@@ -21,7 +21,11 @@ const StudyModeAnswerPage = ({
     refetch,
   } = useQuery({
     queryKey: ["studyMode", { subcategoryId }],
-    queryFn: async () => examService.getExamSubcategoryById(subcategoryId),
+    queryFn: async () =>
+      examService.getExamSubcategoryById({
+        id: subcategoryId,
+        mode: "STUDY",
+      }),
   });
 
   if (isPending) {
