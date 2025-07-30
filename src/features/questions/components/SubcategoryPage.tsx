@@ -1,24 +1,32 @@
+import { useMutation } from "@tanstack/react-query";
 import { CircleCheck, ListChecks, XCircle } from "lucide-react";
 import { useTheme } from "next-themes";
+import { useState } from "react";
 
 import { useRouter } from "next/navigation";
 
+import Button from "@/components/Button";
 import ProgressBar from "@/components/ProgressBar";
+import { examService } from "@/services/examService";
 import { ExamMode, ExamSubcategory } from "@/types/examType";
 
+import ConfirmSubcategoryReset from "./ConfirmSubcategoryReset";
 import QuestionCard from "./QuestionCard";
 
 type SubcategoryPageProps = {
   subcategory: ExamSubcategory;
   mode?: ExamMode;
+  onReset?: () => void;
 };
 
 const SubcategoryPage = ({
   subcategory,
   mode = "STUDY",
+  onReset,
 }: SubcategoryPageProps) => {
   const router = useRouter();
   const { theme } = useTheme();
+  const [isResetModalOpen, setIsResetModalOpen] = useState<boolean>(false);
 
   const correctQuestionsPercentage = Math.round(
     (subcategory.correctQuestions / subcategory.questionsCount) * 100,
@@ -27,6 +35,17 @@ const SubcategoryPage = ({
   const wrongQuestionsPercentage = Math.round(
     (subcategory.wrongQuestions / subcategory.questionsCount) * 100,
   );
+
+  const resetSubcategoryMutation = useMutation({
+    mutationFn: async () => {
+      return await examService.resetExamSubcategory(subcategory.id, mode);
+    },
+    onSuccess: () => {
+      if (onReset) {
+        onReset();
+      }
+    },
+  });
 
   return (
     <div className="flex flex-col gap-4 dark:bg-[#151b2b] bg-[#e5e8ef] p-[24px] rounded-[36px] border dark:border-[#FFFFFF0D] border-[#E9EAEC]">
@@ -94,6 +113,27 @@ const SubcategoryPage = ({
             ]}
           />
         </div>
+
+        <Button
+          loading={resetSubcategoryMutation.isPending}
+          onClick={() => {
+            setIsResetModalOpen(true);
+          }}
+          theme="blue"
+        >
+          Reiniciar prova
+        </Button>
+
+        <ConfirmSubcategoryReset
+          isOpen={isResetModalOpen}
+          onClose={() => {
+            setIsResetModalOpen(false);
+          }}
+          onConfirm={() => {
+            resetSubcategoryMutation.mutate();
+            setIsResetModalOpen(false);
+          }}
+        />
       </div>
 
       <div className="flex gap-4 flex-wrap">

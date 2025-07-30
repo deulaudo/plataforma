@@ -55,9 +55,18 @@ async function answerQuestion(data: {
   });
 }
 
+async function resetExamSubcategory(id: string, mode: ExamMode): Promise<void> {
+  await api.delete(`/exam/subcategory/${id}/reset-exam-progress`, {
+    params: {
+      module: mode,
+    },
+  });
+}
+
 export const examService = {
   listExamCategories,
   getExamCategoryById,
   getExamSubcategoryById,
   answerQuestion,
+  resetExamSubcategory,
 };

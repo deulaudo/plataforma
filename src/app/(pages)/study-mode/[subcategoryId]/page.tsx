@@ -17,7 +17,11 @@ const StudyModeExecutionPage = ({
 }) => {
   const { subcategoryId } = use(params);
 
-  const { data: subcategory, isPending } = useQuery({
+  const {
+    data: subcategory,
+    isPending,
+    refetch,
+  } = useQuery({
     queryKey: ["studyMode", { subcategoryId }],
     queryFn: async () =>
       examService.getExamSubcategoryById({
@@ -35,7 +39,13 @@ const StudyModeExecutionPage = ({
         <Loader className="animate-spin" />
       ) : (
         subcategory && (
-          <SubcategoryPage mode="STUDY" subcategory={subcategory} />
+          <SubcategoryPage
+            mode="STUDY"
+            subcategory={subcategory}
+            onReset={() => {
+              refetch();
+            }}
+          />
         )
       )}
     </PageLayout>
