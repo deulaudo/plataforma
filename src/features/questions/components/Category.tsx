@@ -35,7 +35,7 @@ const Category = ({
   });
 
   return (
-    <div className="flex w-[487px] h-fit flex-shrink-0 flex-col py-[24px] px-[16px] dark:bg-[#0F1420] bg-[#F5F5F5] rounded-[36px] border border-[#FFFFFF0D] self-start">
+    <div className="flex w-full xl:w-[487px] h-fit flex-shrink-0 flex-col py-[24px] px-[16px] dark:bg-[#0F1420] bg-[#F5F5F5] rounded-[36px] border border-[#FFFFFF0D] self-start">
       <div className="flex gap-3 items-center">
         <SegmentedProgressCircle
           segments={subcategoriesCount}

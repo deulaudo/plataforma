@@ -92,7 +92,7 @@ const SubcategoryAnswerPage = ({
         questions={subcategory.exams.map((e, index) => ({
           id: e.id,
           order: index + 1,
-          correct: e.examAnswer?.correct ?? null,
+          correct: e.examAnswer ? e.examAnswer.correct : null,
           currentIndex: index,
           isCurrent: e.id === subcategory.exams[currentQuestionIndex].id,
           onClick: () => {
@@ -106,9 +106,7 @@ const SubcategoryAnswerPage = ({
           questionNumber={currentQuestionIndex + 1}
         />
       </div>
-      <div
-        className={`flex gap-4 ${subcategory.exams[currentQuestionIndex].imageUrl ? "justify-between" : "self-end"}`}
-      >
+      <div className={`flex gap-4 flex-col xl:flex-row w-full`}>
         {subcategory.exams[currentQuestionIndex].imageUrl && (
           <div className="flex-1">
             <ImageViewer

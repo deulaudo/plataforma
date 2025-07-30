@@ -49,7 +49,7 @@ const SubcategoryPage = ({
 
   return (
     <div className="flex flex-col gap-4 dark:bg-[#151b2b] bg-[#e5e8ef] p-[24px] rounded-[36px] border dark:border-[#FFFFFF0D] border-[#E9EAEC]">
-      <div className="flex gap-[24px] items-center">
+      <div className="flex flex-col xl:flex-row gap-[24px] xl:items-center">
         <h1 className="font-extrabold text-[24px] dark:text-white text-black">
           {subcategory.name}
         </h1>
