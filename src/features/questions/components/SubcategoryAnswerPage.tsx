@@ -13,6 +13,7 @@ import QuestionExplanation from "./QuestionExplanation";
 import QuestionFeedback from "./QuestionFeedback";
 import QuestionText from "./QuestionText";
 import QuestionVideo from "./QuestionVideo";
+import QuestionsCarousel from "./QuestionsCarousel";
 
 type SubcategoryAnswerPageProps = {
   subcategory: ExamSubcategory;
@@ -27,6 +28,8 @@ const SubcategoryAnswerPage = ({
 }: SubcategoryAnswerPageProps) => {
   const searchParams = useSearchParams();
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(0);
+  const [loadedQuestionFromURL, setLoadedQuestionFromURL] =
+    useState<boolean>(false);
   const [currentQuestionStatus, setCurrentQuestionStatus] = useState<
     "correct" | "incorrect" | null
   >(null);
@@ -36,6 +39,7 @@ const SubcategoryAnswerPage = ({
    * na página de questões.
    */
   useEffect(() => {
+    if (loadedQuestionFromURL) return;
     const questionId = searchParams.get("questionId");
     if (questionId) {
       const index = subcategory.exams.findIndex(
@@ -43,16 +47,16 @@ const SubcategoryAnswerPage = ({
       );
       if (index !== -1) {
         setCurrentQuestionIndex(index);
+        setLoadedQuestionFromURL(true);
       }
     }
-  }, [searchParams, subcategory.exams]);
+  }, [loadedQuestionFromURL, searchParams, subcategory.exams]);
 
   /** Define estado da questão atual */
   useEffect(() => {
     const question = subcategory.exams[currentQuestionIndex];
     if (question) {
       const answer = question.examAnswer?.correct;
-      console.log(answer);
       if (answer !== undefined) {
         setCurrentQuestionStatus(answer ? "correct" : "incorrect");
       } else {
@@ -73,6 +77,29 @@ const SubcategoryAnswerPage = ({
 
   return (
     <div className="flex flex-col gap-[48px] w-full max-w-[1280px] p-[24px] mx-auto dark:bg-[#141926] bg-[#edeeef] border dark:border-[#FFFFFF0D] border-[#E9EAEC] rounded-[80px]">
+      <QuestionsCarousel
+        currentIndex={currentQuestionIndex}
+        handleNext={() => {
+          if (currentQuestionIndex < subcategory.exams.length - 1) {
+            setCurrentQuestionIndex((prev) => prev + 1);
+          }
+        }}
+        handlePrevious={() => {
+          if (currentQuestionIndex > 0) {
+            setCurrentQuestionIndex((prev) => prev - 1);
+          }
+        }}
+        questions={subcategory.exams.map((e, index) => ({
+          id: e.id,
+          order: index + 1,
+          correct: e.examAnswer?.correct ?? null,
+          currentIndex: index,
+          isCurrent: e.id === subcategory.exams[currentQuestionIndex].id,
+          onClick: () => {
+            setCurrentQuestionIndex(index);
+          },
+        }))}
+      />
       <div className="flex self-start">
         <QuestionText
           question={subcategory.exams[currentQuestionIndex]}
