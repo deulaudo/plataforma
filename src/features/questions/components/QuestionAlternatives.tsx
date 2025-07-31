@@ -15,13 +15,17 @@ type QuestionAlternativesProps = {
     alternativeId: string;
     correct: boolean;
   }) => void;
+  subcategoryId: string;
 };
 
 const QuestionAlternatives = ({
   question,
   mode,
   onQuestionAnswered,
+  subcategoryId,
 }: QuestionAlternativesProps) => {
+  const isTestFinished =
+    localStorage.getItem(`test:${subcategoryId}`) === "true";
   const [selectedAlternative, setSelectedAlternative] = useState<string>(
     question.examAnswer?.alternativeId || "",
   );
@@ -37,9 +41,10 @@ const QuestionAlternatives = ({
   const showAnswer = useMemo(() => {
     if (mode === "STUDY") {
       return answerSubmitted && selectedAlternative;
+    } else {
+      return isTestFinished;
     }
-    return false;
-  }, [mode, answerSubmitted, selectedAlternative]);
+  }, [mode, answerSubmitted, selectedAlternative, isTestFinished]);
 
   const answerQuestionMutation = useMutation({
     mutationFn: async () => {
@@ -65,20 +70,18 @@ const QuestionAlternatives = ({
   const getAlternativeStyle = useCallback(
     (alternativeId: string) => {
       if (showAnswer) {
-        if (mode === "STUDY") {
-          if (selectedAlternative === alternativeId) {
-            if (
-              question.alternatives.find((alt) => alt.correct)?.id ===
-              alternativeId
-            ) {
-              return "border-2 border-[#1CD475] text-[#1CD475]";
-            }
-            return "border-2 border-[#E8493F] text-[#E8493F]";
+        if (selectedAlternative === alternativeId) {
+          if (
+            question.alternatives.find((alt) => alt.correct)?.id ===
+            alternativeId
+          ) {
+            return "border-2 border-[#1CD475] text-[#1CD475]";
           }
+          return "border-2 border-[#E8493F] text-[#E8493F]";
         }
       }
     },
-    [showAnswer, mode, selectedAlternative, question.alternatives],
+    [showAnswer, selectedAlternative, question.alternatives],
   );
 
   return (
@@ -94,6 +97,7 @@ const QuestionAlternatives = ({
               getAlternativeStyle(alternative.id),
             )}
             onClick={() => {
+              if (mode === "TEST" && isTestFinished) return;
               setSelectedAlternative(alternative.id);
               setAnswerSubmitted(false);
             }}
@@ -105,8 +109,12 @@ const QuestionAlternatives = ({
 
       <Button
         loading={answerQuestionMutation.isPending}
-        onClick={() => answerQuestionMutation.mutate()}
+        onClick={() => {
+          if (isTestFinished && mode === "TEST") return;
+          answerQuestionMutation.mutate();
+        }}
         theme="blue"
+        disabled={mode === "TEST" && isTestFinished}
       >
         Confirmar
       </Button>

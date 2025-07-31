@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { CircleCheck, ListChecks, XCircle } from "lucide-react";
 import { useTheme } from "next-themes";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 import { useRouter } from "next/navigation";
 
@@ -10,6 +10,7 @@ import ProgressBar from "@/components/ProgressBar";
 import { examService } from "@/services/examService";
 import { ExamMode, ExamSubcategory } from "@/types/examType";
 
+import ConfirmFinishTest from "./ConfirmFinishTest";
 import ConfirmSubcategoryReset from "./ConfirmSubcategoryReset";
 import QuestionCard from "./QuestionCard";
 
@@ -27,14 +28,52 @@ const SubcategoryPage = ({
   const router = useRouter();
   const { theme } = useTheme();
   const [isResetModalOpen, setIsResetModalOpen] = useState<boolean>(false);
+  const [isFinishTestModalOpen, setIsFinishTestModalOpen] =
+    useState<boolean>(false);
+  const isTestFinished =
+    localStorage.getItem(`test:${subcategory.id}`) === "true";
 
-  const correctQuestionsPercentage = Math.round(
-    (subcategory.correctQuestions / subcategory.questionsCount) * 100,
-  );
+  const correctQuestionsPercentage = useMemo(() => {
+    if (mode === "TEST" && !isTestFinished) {
+      return 0;
+    }
+    return Math.round(
+      (subcategory.correctQuestions / subcategory.questionsCount) * 100,
+    );
+  }, [
+    isTestFinished,
+    mode,
+    subcategory.questionsCount,
+    subcategory.correctQuestions,
+  ]);
 
-  const wrongQuestionsPercentage = Math.round(
-    (subcategory.wrongQuestions / subcategory.questionsCount) * 100,
-  );
+  const wrongQuestionsPercentage = useMemo(() => {
+    if (mode === "TEST" && !isTestFinished) {
+      return 0;
+    }
+    return Math.round(
+      (subcategory.wrongQuestions / subcategory.questionsCount) * 100,
+    );
+  }, [
+    isTestFinished,
+    mode,
+    subcategory.questionsCount,
+    subcategory.wrongQuestions,
+  ]);
+
+  const correctQuestionsCount = useMemo(() => {
+    if (mode === "TEST" && !isTestFinished) {
+      return 0;
+    }
+    return subcategory.correctQuestions;
+  }, [isTestFinished, mode, subcategory.correctQuestions]);
+
+  const wrongQuestionsCount = useMemo(() => {
+    if (mode === "TEST" && !isTestFinished) {
+      return 0;
+    }
+    return subcategory.wrongQuestions;
+  }, [isTestFinished, mode, subcategory.wrongQuestions]);
 
   const resetSubcategoryMutation = useMutation({
     mutationFn: async () => {
@@ -84,7 +123,7 @@ const SubcategoryPage = ({
             <div className="flex gap-2 items-center">
               <CircleCheck className="text-[#1cce7c]" size={16} />
               <span className="text-xs dark:text-white text-black">
-                Questões corretas: <b>{subcategory.correctQuestions}</b>
+                Questões corretas: <b>{correctQuestionsCount}</b>
               </span>
             </div>
 
@@ -92,7 +131,7 @@ const SubcategoryPage = ({
             <div className="flex gap-2 items-center">
               <XCircle className="text-[#de4a48]" size={16} />
               <span className="text-xs dark:text-white text-black">
-                Questões erradas: <b>{subcategory.wrongQuestions}</b>
+                Questões erradas: <b>{wrongQuestionsCount}</b>
               </span>
             </div>
           </div>
@@ -112,17 +151,30 @@ const SubcategoryPage = ({
               },
             ]}
           />
-        </div>
 
-        <Button
-          loading={resetSubcategoryMutation.isPending}
-          onClick={() => {
-            setIsResetModalOpen(true);
-          }}
-          theme="blue"
-        >
-          Reiniciar prova
-        </Button>
+          <div className="flex gap-2 items-center mt-2">
+            <Button
+              loading={resetSubcategoryMutation.isPending}
+              onClick={() => {
+                setIsResetModalOpen(true);
+              }}
+              theme="blue"
+            >
+              Reiniciar prova
+            </Button>
+
+            {mode === "TEST" && (
+              <Button
+                loading={resetSubcategoryMutation.isPending}
+                onClick={() => {
+                  setIsFinishTestModalOpen(true);
+                }}
+              >
+                Finalizar prova
+              </Button>
+            )}
+          </div>
+        </div>
 
         <ConfirmSubcategoryReset
           isOpen={isResetModalOpen}
@@ -132,13 +184,29 @@ const SubcategoryPage = ({
           onConfirm={() => {
             resetSubcategoryMutation.mutate();
             setIsResetModalOpen(false);
+
+            if (mode === "TEST") {
+              localStorage.removeItem(`test:${subcategory.id}`);
+            }
+          }}
+        />
+
+        <ConfirmFinishTest
+          isOpen={isFinishTestModalOpen}
+          onClose={() => {
+            setIsFinishTestModalOpen(false);
+          }}
+          onConfirm={() => {
+            localStorage.setItem(`test:${subcategory.id}`, "true");
+            setIsFinishTestModalOpen(false);
           }}
         />
       </div>
 
-      <div className="flex gap-4 flex-wrap">
+      <div className="flex gap-4 flex-wrap justify-center sm:justify-start">
         {subcategory.exams.map((question, index) => (
           <QuestionCard
+            mode={mode as "STUDY" | "TEST"}
             key={question.id}
             subcategoryId={subcategory.id}
             order={index + 1}
@@ -149,6 +217,10 @@ const SubcategoryPage = ({
               if (mode === "STUDY") {
                 router.push(
                   `/study-mode/${subcategory.id}/answer?questionId=${question.id}`,
+                );
+              } else {
+                router.push(
+                  `/test-mode/${subcategory.id}/answer?questionId=${question.id}`,
                 );
               }
             }}

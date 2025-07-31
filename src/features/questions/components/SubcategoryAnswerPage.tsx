@@ -18,7 +18,7 @@ import QuestionsCarousel from "./QuestionsCarousel";
 type SubcategoryAnswerPageProps = {
   subcategory: ExamSubcategory;
   onQuestionAnswered: () => void;
-  mode?: ExamMode;
+  mode: ExamMode;
 };
 
 const SubcategoryAnswerPage = ({
@@ -33,6 +33,8 @@ const SubcategoryAnswerPage = ({
   const [currentQuestionStatus, setCurrentQuestionStatus] = useState<
     "correct" | "incorrect" | null
   >(null);
+  const isTestFinished =
+    localStorage.getItem(`test:${subcategory.id}`) === "true";
 
   /**
    * Use effect para setar a questão escolhida via URL
@@ -70,14 +72,16 @@ const SubcategoryAnswerPage = ({
   const showAnswer = useMemo(() => {
     if (mode === "STUDY") {
       return currentQuestionStatus !== null;
+    } else {
+      return isTestFinished && currentQuestionStatus !== null;
     }
-
-    return false;
-  }, [mode, currentQuestionStatus]);
+  }, [mode, currentQuestionStatus, isTestFinished]);
 
   return (
     <div className="flex flex-col gap-[48px] w-full max-w-[1280px] p-[24px] mx-auto dark:bg-[#141926] bg-[#edeeef] border dark:border-[#FFFFFF0D] border-[#E9EAEC] rounded-[80px]">
       <QuestionsCarousel
+        subcategoryId={subcategory.id}
+        mode={mode as "STUDY" | "TEST"}
         currentIndex={currentQuestionIndex}
         handleNext={() => {
           if (currentQuestionIndex < subcategory.exams.length - 1) {
@@ -119,11 +123,22 @@ const SubcategoryAnswerPage = ({
           </div>
         )}
         <QuestionAlternatives
+          subcategoryId={subcategory.id}
           question={subcategory.exams[currentQuestionIndex]}
           mode={mode}
           onQuestionAnswered={({ correct }) => {
             onQuestionAnswered();
-            setCurrentQuestionStatus(correct ? "correct" : "incorrect");
+
+            if (mode === "STUDY") {
+              setCurrentQuestionStatus(correct ? "correct" : "incorrect");
+            } else {
+              setCurrentQuestionIndex((prev) => {
+                if (prev < subcategory.exams.length - 1) {
+                  return prev + 1;
+                }
+                return prev; // No more questions to advance to
+              });
+            }
           }}
         />
       </div>
