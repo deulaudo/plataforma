@@ -42,7 +42,7 @@ const Category = ({
           progress={subcategoriesDone}
           activeColor="#346fff"
           inactiveColor={theme === "dark" ? "#2a2a2a" : "#dcdee5"}
-          textColor={theme === "dark" ? "#ffffff" : "#000000"}
+          textColor={theme !== "dark" ? "#000000" : "#ffffff"}
           size={64}
           strokeWidth={5}
         />
