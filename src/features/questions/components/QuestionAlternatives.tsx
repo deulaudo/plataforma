@@ -88,7 +88,7 @@ const QuestionAlternatives = ({
           <div
             key={index}
             className={twMerge(
-              "cursor-pointer flex justify-center p-[12px] rounded-[36px] dark:bg-[#141926] bg-[#edeeef] font-semibold text-[12px]",
+              "cursor-pointer flex justify-center p-[12px] rounded-[36px] dark:bg-[#141926] bg-[#edeeef] font-semibold text-[14px]",
               selectedAlternative === alternative.id &&
                 "border-2 border-[#2056F2]",
               getAlternativeStyle(alternative.id),

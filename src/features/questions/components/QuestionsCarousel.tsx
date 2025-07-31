@@ -26,7 +26,7 @@ const QuestionsCarousel = ({
   handlePrevious,
 }: QuestionsCarouselProps) => {
   return (
-    <div className="relative w-full justify-between md:justify-center md:w-[500px] lg:w-[650px] self-center xl:w-[1200px] 2xl:w-full flex items-center gap-4 px-4">
+    <div className="relative w-full sm:max-w-[800px] justify-between md:justify-center md:w-[500px] lg:w-[650px] self-center xl:w-[1200px] 2xl:w-full flex items-center gap-4 px-4">
       <IconButton icon={<ChevronLeft size={20} />} onClick={handlePrevious} />
 
       <div className="hidden md:flex relative items-center overflow-hidden">
@@ -64,7 +64,7 @@ const QuestionsCarousel = ({
               ) : (
                 <XCircle size={16} className="text-[#e74a41]" />
               )}
-              <span className="text-[16px] font-bold dark:text-white">
+              <span className="text-[14px] font-bold dark:text-white">
                 Questão {question.order}
               </span>
             </div>

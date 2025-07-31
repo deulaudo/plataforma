@@ -39,7 +39,7 @@ const Button: React.FC<ButtonProps> = ({ children, loading, ...props }) => {
     <button
       className={twMerge(
         "flex items-center justify-center md:min-w-[336px] h-[47px] rounded-[200px] py-[16px] px-[24px]",
-        "cursor-pointer font-bold text-xs transition-all duration-200",
+        "cursor-pointer font-bold text-[14px] transition-all duration-200",
         getButtonTheme(),
       )}
       {...props}
