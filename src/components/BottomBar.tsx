@@ -1,3 +1,5 @@
+"use client";
+
 import { CardSim, Home, ListCheck, NotebookPen, Tv } from "lucide-react";
 import { twMerge } from "tailwind-merge";
 
