@@ -137,9 +137,9 @@ const FlashcardLevelButton = ({
   onClick: () => void;
 }) => {
   const colors = {
-    easy: "bg-[#182031]",
-    medium: "bg-[#182031]",
-    hard: "bg-[#182031]",
+    easy: "dark:bg-[#182031] bg-[white]",
+    medium: "dark:bg-[#182031] bg-[white]",
+    hard: "dark:bg-[#182031] bg-[white]",
     suspend: "dark:bg-[#3a1f27] bg-[#f8c8c5]",
   };
 
