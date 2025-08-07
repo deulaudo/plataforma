@@ -6,9 +6,15 @@ type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   children: React.ReactNode;
   theme?: "green" | "blue" | "secondary";
   loading?: boolean;
+  fullWidth?: boolean;
 };
 
-const Button: React.FC<ButtonProps> = ({ children, loading, ...props }) => {
+const Button: React.FC<ButtonProps> = ({
+  children,
+  loading,
+  fullWidth,
+  ...props
+}) => {
   const getButtonTheme = () => {
     switch (props.theme) {
       case "green":
@@ -41,6 +47,7 @@ const Button: React.FC<ButtonProps> = ({ children, loading, ...props }) => {
         "flex items-center justify-center md:min-w-[336px] h-[47px] rounded-[200px] py-[16px] px-[24px]",
         "cursor-pointer font-bold text-[14px] transition-all duration-200",
         getButtonTheme(),
+        fullWidth && "w-full",
       )}
       {...props}
     >

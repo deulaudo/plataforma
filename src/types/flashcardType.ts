@@ -20,3 +20,38 @@ export type FlashcardCategoryType = {
   subcategoriesCount: number;
   subcategoryDone: number;
 };
+
+export type FlashcardQuestionType = {
+  id: string;
+  question: string;
+  imageUrl: string | null;
+  reference: string | null;
+  flashcardsDiscarted: string[];
+  active: boolean;
+  answer: {
+    id: string;
+    answer: string;
+    imageUrl: string | null;
+  };
+  subcategory: {
+    id: string;
+    name: string;
+    category: {
+      id: string;
+      name: string;
+    };
+  };
+};
+
+export type FlashcardDeckType = {
+  id: string;
+  name: string;
+  active: boolean;
+  subcategoryId: string;
+  questions: FlashcardQuestionType[];
+  totalQuestions: number;
+  totalEasy: number;
+  totalMedium: number;
+  totalHard: number;
+  hasReview: true;
+};

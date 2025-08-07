@@ -1,4 +1,7 @@
-import { FlashcardCategoryType } from "@/types/flashcardType";
+import {
+  FlashcardCategoryType,
+  FlashcardDeckType,
+} from "@/types/flashcardType";
 
 import api from "./api";
 
@@ -25,7 +28,15 @@ async function getFlashcardCategoryById(
   return response.data;
 }
 
+async function getFlashcardDeckById(id: string): Promise<FlashcardDeckType> {
+  const response = await api.get<FlashcardDeckType>(
+    `category/subcategory/${id}`,
+  );
+  return response.data;
+}
+
 export const flashcardService = {
   listFlashcardCategories,
   getFlashcardCategoryById,
+  getFlashcardDeckById,
 };
