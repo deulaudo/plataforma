@@ -35,8 +35,26 @@ async function getFlashcardDeckById(id: string): Promise<FlashcardDeckType> {
   return response.data;
 }
 
+async function changeDiscardedStatus(
+  flashcardId: string,
+  discarded: boolean,
+): Promise<void> {
+  await api.post(`question/${flashcardId}/discard-retrieve`, {
+    discarted: discarded,
+  });
+}
+
+async function evaluateFlashcard(
+  flashcardId: string,
+  feedback: "EASY" | "MEDIUM" | "HARD",
+): Promise<void> {
+  await api.post(`question/${flashcardId}/feedback`, { feedback });
+}
+
 export const flashcardService = {
   listFlashcardCategories,
   getFlashcardCategoryById,
   getFlashcardDeckById,
+  evaluateFlashcard,
+  changeDiscardedStatus,
 };

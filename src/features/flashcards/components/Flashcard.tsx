@@ -1,20 +1,42 @@
 "use client";
 
 /* eslint-disable @next/next/no-img-element */
-import { Frown, Meh, Smile, X } from "lucide-react";
-import { useState } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { Frown, Loader, Meh, Smile, X } from "lucide-react";
+import { useEffect, useState } from "react";
 import { twMerge } from "tailwind-merge";
 
 import Button from "@/components/Button";
 import ImageViewer from "@/components/ImageViewer";
+import { flashcardService } from "@/services/flashcardService";
 import { FlashcardQuestionType } from "@/types/flashcardType";
 
 type FlashcardProps = {
   flashcard: FlashcardQuestionType;
+  onFeedback: () => void;
 };
 
-const Flashcard = ({ flashcard }: FlashcardProps) => {
+const Flashcard = ({ flashcard, onFeedback }: FlashcardProps) => {
   const [showAnswer, setShowAnswer] = useState<boolean>(false);
+
+  const evaluateFlashcadMutation = useMutation<
+    void,
+    unknown,
+    { feedback: "EASY" | "MEDIUM" | "HARD" | "SUSPEND" }
+  >({
+    mutationFn: async ({ feedback }) => {
+      if (feedback === "SUSPEND") {
+        await flashcardService.changeDiscardedStatus(flashcard.id, true);
+      } else {
+        await flashcardService.evaluateFlashcard(flashcard.id, feedback);
+      }
+    },
+    onSuccess: onFeedback,
+  });
+
+  useEffect(() => {
+    setShowAnswer(false);
+  }, [flashcard]);
 
   return (
     <div
@@ -30,6 +52,7 @@ const Flashcard = ({ flashcard }: FlashcardProps) => {
           "w-full h-full rounded-[24px] p-[24px] bg-[#eff3ff] dark:bg-[#101930] border dark:border-[#FFFFFF0D]",
           "flex flex-col gap-4",
           "min-h-[616px]",
+          "relative",
         )}
         style={{
           transformStyle: "preserve-3d",
@@ -55,9 +78,9 @@ const Flashcard = ({ flashcard }: FlashcardProps) => {
 
           {flashcard.imageUrl && (
             <div className="flex justify-center">
-              <img
-                src={flashcard.imageUrl}
-                alt="Flashcard Image"
+              <ImageViewer
+                imageUrl={flashcard.imageUrl}
+                altText="Flashcard Image"
                 className="max-h-[330px] max-w-[320px] object-contain"
               />
             </div>
@@ -107,23 +130,37 @@ const Flashcard = ({ flashcard }: FlashcardProps) => {
             <div className="flex gap-4">
               <FlashcardLevelButton
                 level="easy"
-                onClick={() => console.log("Easy clicked")}
+                onClick={() =>
+                  evaluateFlashcadMutation.mutate({ feedback: "EASY" })
+                }
               />
               <FlashcardLevelButton
                 level="medium"
-                onClick={() => console.log("Medium clicked")}
+                onClick={() =>
+                  evaluateFlashcadMutation.mutate({ feedback: "MEDIUM" })
+                }
               />
               <FlashcardLevelButton
                 level="hard"
-                onClick={() => console.log("Hard clicked")}
+                onClick={() =>
+                  evaluateFlashcadMutation.mutate({ feedback: "HARD" })
+                }
               />
               <FlashcardLevelButton
                 level="suspend"
-                onClick={() => console.log("Suspend clicked")}
+                onClick={() =>
+                  evaluateFlashcadMutation.mutate({ feedback: "SUSPEND" })
+                }
               />
             </div>
           </div>
         </div>
+
+        {evaluateFlashcadMutation.isPending && (
+          <div className="absolute inset-0 flex items-center justify-center bg-black/60 bg-opacity-50 rounded-[24px]">
+            <Loader className="animate-spin text-white" />
+          </div>
+        )}
       </div>
     </div>
   );

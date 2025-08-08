@@ -15,12 +15,28 @@ const FlashcardDeckPage = ({ params }: { params: Promise<{ id: string }> }) => {
   const { setDeck } = useFlashcardStore();
   const [currentFlashcardIndex, setCurrentFlashcardIndex] = useState<number>(0);
 
-  const { data: deck, isPending: isLoadingDeck } = useQuery({
+  const {
+    data: deck,
+    isPending: isLoadingDeck,
+    refetch,
+  } = useQuery({
     queryKey: ["flashcardDeck", { id }],
     queryFn: async () => {
       return await flashcardService.getFlashcardDeckById(id);
     },
   });
+
+  const onFlashcardFeedback = async () => {
+    await refetch();
+    setCurrentFlashcardIndex((prevIndex) => {
+      const nextIndex = prevIndex + 1;
+      if (nextIndex < deck!.questions.length) {
+        return nextIndex;
+      }
+      // Reset to the first flashcard if at the end
+      return 0;
+    });
+  };
 
   useEffect(() => {
     setDeck(deck || null);
@@ -39,7 +55,10 @@ const FlashcardDeckPage = ({ params }: { params: Promise<{ id: string }> }) => {
       <div className="flex flex-col gap-4 w-full max-w-[496px] mx-auto">
         <FlashcardDeckProgress deck={deck!} />
 
-        <Flashcard flashcard={deck!.questions[currentFlashcardIndex]} />
+        <Flashcard
+          flashcard={deck!.questions[currentFlashcardIndex]}
+          onFeedback={onFlashcardFeedback}
+        />
       </div>
     </PageLayout>
   );
