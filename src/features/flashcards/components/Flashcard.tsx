@@ -72,7 +72,7 @@ const Flashcard = ({ flashcard, onFeedback }: FlashcardProps) => {
           <span
             className="text-[16px] dark:text-white text-black font-medium"
             dangerouslySetInnerHTML={{
-              __html: flashcard.question.replace(/\n/g, "<br />"),
+              __html: flashcard?.question.replace(/\n/g, "<br />"),
             }}
           />
 

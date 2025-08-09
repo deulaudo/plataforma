@@ -26,10 +26,12 @@ const ProgressBar = ({
   }, [segments]);
 
   const normalizedSegments = useMemo(() => {
+    if (totalValue === 0)
+      return segments.map((seg) => ({ ...seg, normalizedValue: 0 }));
+
     return segments.map((segment) => ({
       ...segment,
-      normalizedValue:
-        totalValue > 100 ? (segment.value / totalValue) * 100 : segment.value,
+      normalizedValue: (segment.value / Math.max(totalValue, 100)) * 100,
     }));
   }, [segments, totalValue]);
 
@@ -49,7 +51,11 @@ const ProgressBar = ({
           return (
             <div
               key={index}
-              className="absolute top-0 h-full transition-all duration-300 ease-in-out"
+              className={`absolute top-0 h-full transition-all duration-300 ease-in-out ${
+                segment.color.startsWith("#") || segment.color.startsWith("rgb")
+                  ? ""
+                  : segment.color
+              }`}
               style={{
                 left: `${leftOffset}%`,
                 width: `${segment.normalizedValue}%`,
@@ -59,10 +65,6 @@ const ProgressBar = ({
                     ? segment.color
                     : undefined,
               }}
-              {...(!segment.color.startsWith("#") &&
-                !segment.color.startsWith("rgb") && {
-                  className: `absolute top-0 h-full transition-all duration-300 ease-in-out ${segment.color}`,
-                })}
               aria-label={
                 segment.label ||
                 `Progress segment ${index + 1}: ${segment.value}%`

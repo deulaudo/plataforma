@@ -11,6 +11,18 @@ type FlashcardDeckProgressProps = {
 const FlashcardDeckProgress = ({ deck }: FlashcardDeckProgressProps) => {
   const { theme } = useTheme();
 
+  const easyPercentage = Math.round(
+    (deck.totalEasy / deck.totalQuestions) * 100,
+  );
+  const mediumPercentage = Math.round(
+    (deck.totalMedium / deck.totalQuestions) * 100,
+  );
+  const hardPercentage = Math.round(
+    (deck.totalHard / deck.totalQuestions) * 100,
+  );
+  const pendingQuestionsCount =
+    deck.totalQuestions - deck.totalEasy - deck.totalMedium - deck.totalHard;
+
   return (
     <div className="flex flex-col gap-2">
       <div className="flex gap-2">
@@ -24,7 +36,7 @@ const FlashcardDeckProgress = ({ deck }: FlashcardDeckProgressProps) => {
         <div className="flex gap-1 items-center">
           <Meh size={16} className="text-[#4b4f58]" />
           <span className="text-[12px] text-bold dark:text-white text-black">
-            {deck.totalQuestions}
+            {pendingQuestionsCount}
           </span>
         </div>
 
@@ -53,19 +65,15 @@ const FlashcardDeckProgress = ({ deck }: FlashcardDeckProgressProps) => {
         segments={[
           {
             color: "#E8493F",
-            value: deck.totalHard,
+            value: hardPercentage,
           },
           {
             color: "#E7BD15",
-            value: deck.totalMedium,
+            value: mediumPercentage,
           },
           {
             color: "#1CD475",
-            value: deck.totalEasy,
-          },
-          {
-            color: theme === "dark" ? "#2a334a" : "#ccd0d4",
-            value: 100,
+            value: easyPercentage,
           },
         ]}
       />

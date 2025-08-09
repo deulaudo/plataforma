@@ -4,6 +4,7 @@ import {
   ChevronDown,
   ChevronRight,
   ChevronUp,
+  CircleCheck,
   CreditCard,
   Frown,
   Meh,
@@ -35,7 +36,15 @@ const FlashcardSubcategoryCard = ({
       <div className="flex items-center">
         <div className="flex flex-1 gap-4 flex-col p-[16px]">
           <h3 className="font-extrabold text-[16px] dark:text-white text-black">
-            {subcategory.name}
+            {subcategory.name}{" "}
+            {subcategory.questionsCount > 0 &&
+              subcategory.questionsCount === subcategory.questionsDone && (
+                <CircleCheck
+                  strokeWidth={3}
+                  className="text-[#1ed475] inline-block ml-1"
+                  size={16}
+                />
+              )}
           </h3>
           <div className="flex justify-between items-center">
             <div className="flex gap-2">

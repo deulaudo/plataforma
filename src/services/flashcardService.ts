@@ -51,10 +51,15 @@ async function evaluateFlashcard(
   await api.post(`question/${flashcardId}/feedback`, { feedback });
 }
 
+async function restartDeck(deckId: string): Promise<void> {
+  await api.post(`category/subcategory/${deckId}/reset-history`);
+}
+
 export const flashcardService = {
   listFlashcardCategories,
   getFlashcardCategoryById,
   getFlashcardDeckById,
   evaluateFlashcard,
   changeDiscardedStatus,
+  restartDeck,
 };
