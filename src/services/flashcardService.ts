@@ -1,6 +1,7 @@
 import {
   FlashcardCategoryType,
   FlashcardDeckType,
+  FlashcardQuestionType,
 } from "@/types/flashcardType";
 
 import api from "./api";
@@ -55,6 +56,25 @@ async function restartDeck(deckId: string): Promise<void> {
   await api.post(`category/subcategory/${deckId}/reset-history`);
 }
 
+async function searchFlashcards(
+  query: string,
+  discarted: boolean = false,
+): Promise<FlashcardQuestionType[]> {
+  let params = {};
+  if (discarted) {
+    params = { discarted: "true" };
+  }
+
+  const response = await api.get<{ questions: FlashcardQuestionType[] }>(
+    `question?search=${encodeURIComponent(query)}`,
+    {
+      params,
+    },
+  );
+
+  return response.data.questions;
+}
+
 export const flashcardService = {
   listFlashcardCategories,
   getFlashcardCategoryById,
@@ -62,4 +82,5 @@ export const flashcardService = {
   evaluateFlashcard,
   changeDiscardedStatus,
   restartDeck,
+  searchFlashcards,
 };

@@ -5,6 +5,8 @@ import { useState } from "react";
 import PageLayout from "@/components/PageLayout";
 import Tabs from "@/components/Tabs";
 import FlashcardCategoryList from "@/features/flashcards/components/FlashcardCategoryList";
+import FlashcardDiscartedList from "@/features/flashcards/components/FlashcardDiscartedList";
+import FlashcardSearch from "@/features/flashcards/components/FlashcardSearch";
 
 const tabs = [
   {
@@ -15,12 +17,12 @@ const tabs = [
   {
     id: "terms",
     label: "Busca por termo",
-    content: <div>Criar Flashcard Content</div>,
+    content: <FlashcardSearch />,
   },
   {
     id: "suspended",
     label: "Suspensos",
-    content: <div>Criar Flashcard Content</div>,
+    content: <FlashcardDiscartedList />,
   },
 ];
 

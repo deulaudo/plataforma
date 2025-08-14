@@ -9,7 +9,6 @@ import DeckFinishedModal from "@/features/flashcards/components/DeckFinishedModa
 import Flashcard from "@/features/flashcards/components/Flashcard";
 import FlashcardDeckProgress from "@/features/flashcards/components/FlashcardDeckProgress";
 import { flashcardService } from "@/services/flashcardService";
-import { FlashcardQuestionType } from "@/types/flashcardType";
 
 const FlashcardDeckPage = ({ params }: { params: Promise<{ id: string }> }) => {
   const { id } = use(params);
