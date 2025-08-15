@@ -8,9 +8,10 @@ import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/stores/authStore";
 
 import AppThemeToggler from "./AppThemeToggler";
+import React from "react";
 
 type HeaderProps = {
-  headerTitle?: string;
+  headerTitle?: string | React.ReactElement;
   headerType?: "welcome" | "back";
 };
 
@@ -36,7 +37,7 @@ const Header = ({ headerTitle, headerType }: HeaderProps) => {
         ) : headerType === "back" ? (
           <div className="flex gap-4 items-center">
             <ArrowLeft className="cursor-pointer" onClick={back} />
-            <h1 className="text-2xl font-bold">{headerTitle}</h1>
+            <h1 className="text-2xl font-bold w-full">{headerTitle}</h1>
           </div>
         ) : null}
       </div>

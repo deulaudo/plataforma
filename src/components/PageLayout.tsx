@@ -1,4 +1,4 @@
-import { PropsWithChildren } from "react";
+import React, { PropsWithChildren } from "react";
 
 import BottomBar from "./BottomBar";
 import Header from "./Header";
@@ -6,7 +6,7 @@ import MobileNavbar from "./MobileNavbar";
 import Sidebar from "./Sidebar";
 
 type PageLayoutProps = PropsWithChildren & {
-  headerTitle?: string;
+  headerTitle?: string | React.ReactElement;
   headerType?: "welcome" | "back";
 };
 
