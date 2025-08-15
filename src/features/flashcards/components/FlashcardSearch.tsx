@@ -18,11 +18,13 @@ const FlashcardSearch = () => {
   const { data: flashcards, isPending } = useQuery<FlashcardQuestionType[]>({
     queryKey: ["flashcards-search", debouncedSearchQuery],
     queryFn: async () => {
+      if (debouncedSearchQuery.length < 3) {
+        return [];
+      }
       const response =
         await flashcardService.searchFlashcards(debouncedSearchQuery);
       return response;
     },
-    enabled: debouncedSearchQuery.length > 2,
   });
 
   const content = useMemo(() => {
@@ -41,8 +43,6 @@ const FlashcardSearch = () => {
         </div>
       );
     }
-
-    console.log(flashcards);
 
     if (!flashcards || flashcards.length === 0) {
       return (

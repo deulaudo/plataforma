@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { ChevronDown, ChevronUp } from "lucide-react";
+import { ChevronDown, ChevronUp, Loader } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useState } from "react";
 
@@ -27,12 +27,13 @@ const FlashcardCategory = ({
   const { theme } = useTheme();
   const [isCategoryExpanded, setIsCategoryExpanded] = useState<boolean>(false);
 
-  const { data: subcategories } = useQuery({
+  const { data: subcategories, isPending } = useQuery({
     queryKey: ["flashcard-subcategories", { categoryId: id }],
     queryFn: async () => {
       return (await flashcardService.getFlashcardCategoryById(id))
         .subcategories;
     },
+    enabled: isCategoryExpanded,
   });
 
   return (
@@ -68,18 +69,23 @@ const FlashcardCategory = ({
         )}
       </div>
 
-      {isCategoryExpanded && (
-        <div className="flex flex-col mt-[16px]">
-          {subcategories?.map((subcategory) => (
-            <div
-              key={subcategory.id}
-              className="not-last:border-b dark:border-[#1c212d] border-[#EDEEEF] pt-2"
-            >
-              <FlashcardSubcategoryCard subcategory={subcategory} />
-            </div>
-          ))}
-        </div>
-      )}
+      {isCategoryExpanded &&
+        (isPending ? (
+          <div className="flex items-center justify-center h-[200px]">
+            <Loader className="animate-spin" size={32} />
+          </div>
+        ) : (
+          <div className="flex flex-col mt-[16px]">
+            {subcategories?.map((subcategory) => (
+              <div
+                key={subcategory.id}
+                className="not-last:border-b dark:border-[#1c212d] border-[#EDEEEF] pt-2"
+              >
+                <FlashcardSubcategoryCard subcategory={subcategory} />
+              </div>
+            ))}
+          </div>
+        ))}
     </div>
   );
 };

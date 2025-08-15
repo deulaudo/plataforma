@@ -4,15 +4,17 @@ import { useQuery } from "@tanstack/react-query";
 import { Loader } from "lucide-react";
 import { useMemo, useState } from "react";
 
-import SearchInput from "@/components/SearchInput";
-import { useDebounce } from "@/hooks/useDebounce";
 import { flashcardService } from "@/services/flashcardService";
 import { FlashcardQuestionType } from "@/types/flashcardType";
 
 import FlashcardSearchItem from "./FlashcardSearchItem";
 
 const FlashcardDiscartedList = () => {
-  const { data: flashcards, isPending } = useQuery<FlashcardQuestionType[]>({
+  const {
+    data: flashcards,
+    isPending,
+    refetch,
+  } = useQuery<FlashcardQuestionType[]>({
     queryKey: ["flashcards-search", { discarted: true }],
     queryFn: async () => {
       return await flashcardService.searchFlashcards("", true);
@@ -43,11 +45,12 @@ const FlashcardDiscartedList = () => {
             key={flashcard.id}
             flashcard={flashcard}
             discarted
+            onRemoveDiscartedStatus={refetch}
           />
         ))}
       </div>
     );
-  }, [isPending, flashcards]);
+  }, [isPending, flashcards, refetch]);
 
   return (
     <div className="flex flex-col gap-4">

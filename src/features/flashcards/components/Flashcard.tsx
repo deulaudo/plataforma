@@ -1,7 +1,7 @@
 "use client";
 
 /* eslint-disable @next/next/no-img-element */
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Frown, Loader, Meh, Smile, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { twMerge } from "tailwind-merge";
@@ -18,6 +18,7 @@ type FlashcardProps = {
 
 const Flashcard = ({ flashcard, onFeedback }: FlashcardProps) => {
   const [showAnswer, setShowAnswer] = useState<boolean>(false);
+  const queryClient = useQueryClient();
 
   const evaluateFlashcadMutation = useMutation<
     void,
@@ -27,6 +28,9 @@ const Flashcard = ({ flashcard, onFeedback }: FlashcardProps) => {
     mutationFn: async ({ feedback }) => {
       if (feedback === "SUSPEND") {
         await flashcardService.changeDiscardedStatus(flashcard.id, true);
+        queryClient.invalidateQueries({
+          queryKey: ["flashcards-search", { discarted: true }],
+        });
       } else {
         await flashcardService.evaluateFlashcard(flashcard.id, feedback);
       }

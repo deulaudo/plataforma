@@ -36,6 +36,11 @@ async function getFlashcardDeckById(id: string): Promise<FlashcardDeckType> {
   return response.data;
 }
 
+async function getFlashcardById(id: string): Promise<FlashcardQuestionType> {
+  const response = await api.get<FlashcardQuestionType>(`question/${id}`);
+  return response.data;
+}
+
 async function changeDiscardedStatus(
   flashcardId: string,
   discarded: boolean,
@@ -79,6 +84,7 @@ export const flashcardService = {
   listFlashcardCategories,
   getFlashcardCategoryById,
   getFlashcardDeckById,
+  getFlashcardById,
   evaluateFlashcard,
   changeDiscardedStatus,
   restartDeck,

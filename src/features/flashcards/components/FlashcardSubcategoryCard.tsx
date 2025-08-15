@@ -116,7 +116,7 @@ const FlashcardSubcategoryCard = ({
           size={24}
           className="text-[#808080] dark:text-[#4c515e] cursor-pointer"
           onClick={() => {
-            router.push(`/flashcards/${subcategory.id}`);
+            router.push(`/flashcards/decks/${subcategory.id}`);
           }}
         />
       </div>
