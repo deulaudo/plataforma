@@ -30,7 +30,7 @@ const FlashcardCategoryList = () => {
     <div className="flex flex-col gap-4">
       <SearchInput placeholder="Pesquise por categorias" />
 
-      <div className="flex gap-[24px] flex-wrap">
+      <div className="flex justify-between gap-[24px] flex-wrap">
         {categories.map((category) => (
           <FlashcardCategory
             id={category.id}
