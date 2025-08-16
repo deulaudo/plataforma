@@ -49,7 +49,8 @@ const DeckReviewFinishedModal = ({
 
         <div className="flex flex-col gap-4 items-center">
           <p className="text-center text-sm">
-            Parabéns! <br /> Este tema está fácil para você. Todas as questões foam marcadas como fácil.
+            Parabéns! <br /> Este tema está fácil para você. Todas as questões
+            foam marcadas como fácil.
           </p>
 
           <Button

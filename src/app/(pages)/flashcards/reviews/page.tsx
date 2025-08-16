@@ -1,20 +1,24 @@
 "use client";
 
+import { useQuery } from "@tanstack/react-query";
+import { Clipboard, Loader } from "lucide-react";
+import { useMemo, useState } from "react";
+
+import { useRouter } from "next/navigation";
+
 import Calendar from "@/components/Calendar";
 import PageLayout from "@/components/PageLayout";
 import FlashcardReviewCard from "@/features/flashcards/components/FlashcardReviewCard";
 import LateFlashcardReviewModal from "@/features/flashcards/components/LateFlashcardReviewModal";
 import { flashcardService } from "@/services/flashcardService";
 import { FlashcardReviewType } from "@/types/flashcardType";
-import { useQuery } from "@tanstack/react-query";
-import { Clipboard, Loader } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { useMemo, useState } from "react";
 
 const FlashcardReviewsPage = () => {
   const router = useRouter();
-  const [showLateReviewModal, setShowLateReviewModal] = useState<boolean>(false);
-  const [selectedReview, setSelectedReview] = useState<FlashcardReviewType | null>(null);
+  const [showLateReviewModal, setShowLateReviewModal] =
+    useState<boolean>(false);
+  const [selectedReview, setSelectedReview] =
+    useState<FlashcardReviewType | null>(null);
   const [selectedDate, setSelectedDate] = useState<Date | null>(() => {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
@@ -48,7 +52,9 @@ const FlashcardReviewsPage = () => {
         };
       }
 
-      const allReviewsDone = reviewsArray.every((review) => review.done === true);
+      const allReviewsDone = reviewsArray.every(
+        (review) => review.done === true,
+      );
       if (allReviewsDone) {
         return {
           date: reviewDate,
@@ -70,7 +76,7 @@ const FlashcardReviewsPage = () => {
     } else {
       router.push(`/flashcards/decks/${review.subcategory.id}/review`);
     }
-  }
+  };
 
   const content = useMemo(() => {
     if (isPending) {
@@ -91,7 +97,9 @@ const FlashcardReviewsPage = () => {
       return (
         <div className="flex flex-col gap-2 items-center justify-center">
           <Clipboard className="w-8 h-8 text-gray-500" />
-          <span className="text-sm max-w-[250px] text-center">Até o momento, não há nada para revisitar neste dia!</span>
+          <span className="text-sm max-w-[250px] text-center">
+            Até o momento, não há nada para revisitar neste dia!
+          </span>
         </div>
       );
     }
@@ -106,7 +114,8 @@ const FlashcardReviewsPage = () => {
           />
         ))}
       </div>
-    )
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isPending, selectedDate, reviews]);
 
   return (
@@ -117,9 +126,7 @@ const FlashcardReviewsPage = () => {
           onDateClick={handleDateClick}
         />
 
-        <div className="flex justify-center w-full">
-         {content}
-        </div>
+        <div className="flex justify-center w-full">{content}</div>
 
         {showLateReviewModal && selectedReview && (
           <LateFlashcardReviewModal

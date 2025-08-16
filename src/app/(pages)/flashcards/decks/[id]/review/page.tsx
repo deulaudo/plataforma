@@ -5,12 +5,16 @@ import { Loader } from "lucide-react";
 import { use, useEffect, useMemo, useState } from "react";
 
 import PageLayout from "@/components/PageLayout";
+import DeckReviewFinishedModal from "@/features/flashcards/components/DeckReviewFinishedModal";
 import Flashcard from "@/features/flashcards/components/Flashcard";
 import FlashcardDeckProgress from "@/features/flashcards/components/FlashcardDeckProgress";
 import { flashcardService } from "@/services/flashcardService";
-import DeckReviewFinishedModal from "@/features/flashcards/components/DeckReviewFinishedModal";
 
-const FlashcardReviewDeckPage = ({ params }: { params: Promise<{ id: string }> }) => {
+const FlashcardReviewDeckPage = ({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) => {
   const { id } = use(params);
   const [showDeckCompletedModal, setShowDeckCompletedModal] =
     useState<boolean>(false);

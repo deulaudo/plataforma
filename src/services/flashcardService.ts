@@ -87,8 +87,10 @@ async function searchFlashcards(
   return response.data.questions;
 }
 
-async function getFlashcardReviews(): Promise<{[data: string]: FlashcardReviewType[]}> {
-  const response = await api.get<{[data: string]: FlashcardReviewType[]}>(
+async function getFlashcardReviews(): Promise<{
+  [data: string]: FlashcardReviewType[];
+}> {
+  const response = await api.get<{ [data: string]: FlashcardReviewType[] }>(
     `schedule-reviews`,
   );
 

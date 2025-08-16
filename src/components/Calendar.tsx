@@ -1,8 +1,8 @@
 "use client";
 
 import { DayPicker } from "react-day-picker";
-import { ptBR } from "react-day-picker/locale";
 import "react-day-picker/dist/style.css";
+import { ptBR } from "react-day-picker/locale";
 
 type HighlightedDate = {
   date: Date;
@@ -16,22 +16,25 @@ type CalendarProps = {
 };
 
 const Calendar = ({
-  highlightedDates, 
-  onDateClick, 
-  className = ""
+  highlightedDates,
+  onDateClick,
+  className = "",
 }: CalendarProps) => {
   const handleDayClick = (date: Date) => {
     onDateClick(date);
   };
 
   // Agrupa as datas por cor para criar modificadores específicos
-  const modifiersByColor = highlightedDates.reduce((acc, item) => {
-    if (!acc[item.color]) {
-      acc[item.color] = [];
-    }
-    acc[item.color].push(item.date);
-    return acc;
-  }, {} as Record<string, Date[]>);
+  const modifiersByColor = highlightedDates.reduce(
+    (acc, item) => {
+      if (!acc[item.color]) {
+        acc[item.color] = [];
+      }
+      acc[item.color].push(item.date);
+      return acc;
+    },
+    {} as Record<string, Date[]>,
+  );
 
   const colorVariants = {
     blue: {
@@ -66,17 +69,22 @@ const Calendar = ({
         mode="single"
         onDayClick={handleDayClick}
         modifiers={modifiersByColor}
-        modifiersClassNames={Object.keys(modifiersByColor).reduce((acc, color) => {
-          acc[color] = `highlighted-date-${color}`;
-          return acc;
-        }, {} as Record<string, string>)}
+        modifiersClassNames={Object.keys(modifiersByColor).reduce(
+          (acc, color) => {
+            acc[color] = `highlighted-date-${color}`;
+            return acc;
+          },
+          {} as Record<string, string>,
+        )}
         className="rdp-custom"
         locale={ptBR}
       />
-      
+
       <style jsx global>{`
         /* Estilos para cada cor */
-        ${Object.entries(colorVariants).map(([color, variant]) => `
+        ${Object.entries(colorVariants)
+          .map(
+            ([color, variant]) => `
           .rdp-custom .highlighted-date-${color} {
             background-color: ${variant.bg} !important;
             color: white !important;
@@ -89,31 +97,33 @@ const Calendar = ({
             background-color: ${variant.bgHover} !important;
             transform: scale(1.05);
           }
-        `).join('')}
-        
+        `,
+          )
+          .join("")}
+
         .rdp-custom .rdp-day:not(.highlighted-date):hover {
           background-color: var(--bg-hover, #f3f4f6);
           color: var(--text-primary);
         }
-        
+
         .rdp-custom .highlighted-date {
           cursor: pointer;
         }
-        
+
         .rdp-custom .rdp-day:not(.highlighted-date) {
           cursor: default;
           opacity: 0.9;
         }
-        
+
         /* Dark mode support */
         .dark .rdp-custom {
           color: white;
         }
-        
+
         .dark .rdp-custom .rdp-head_cell {
           color: #9ca3af;
         }
-        
+
         .dark .rdp-custom .rdp-day:not(.highlighted-date):hover {
           background-color: #374151;
         }

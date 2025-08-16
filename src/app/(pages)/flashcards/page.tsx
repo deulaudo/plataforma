@@ -2,6 +2,9 @@
 
 import { Calendar } from "lucide-react";
 import { useState } from "react";
+import { twMerge } from "tailwind-merge";
+
+import { useRouter } from "next/navigation";
 
 import IconButton from "@/components/IconButton";
 import PageLayout from "@/components/PageLayout";
@@ -9,8 +12,6 @@ import Tabs from "@/components/Tabs";
 import FlashcardCategoryList from "@/features/flashcards/components/FlashcardCategoryList";
 import FlashcardDiscartedList from "@/features/flashcards/components/FlashcardDiscartedList";
 import FlashcardSearch from "@/features/flashcards/components/FlashcardSearch";
-import { twMerge } from "tailwind-merge";
-import { useRouter } from "next/navigation";
 
 const tabs = [
   {
@@ -38,12 +39,13 @@ const FlashcardsPage = () => {
     <PageLayout headerTitle="Flashcards" headerType="back">
       <div className="flex flex-col gap-[36px]">
         <div
-        onClick={() => router.push("/flashcards/reviews")}
-        className={twMerge(
-          "cursor-pointer w-fit flex items-center gap-2 border border-gray-200 dark:border-gray-700 rounded-lg p-2",
-          "hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors",
-          "justify-center self-end",
-        )}>
+          onClick={() => router.push("/flashcards/reviews")}
+          className={twMerge(
+            "cursor-pointer w-fit flex items-center gap-2 border border-gray-200 dark:border-gray-700 rounded-lg p-2",
+            "hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors",
+            "justify-center self-end",
+          )}
+        >
           <Calendar className="text-gray-500" size={20} />
           <span className="text-gray-500 text-sm">Revisões agendadas</span>
         </div>

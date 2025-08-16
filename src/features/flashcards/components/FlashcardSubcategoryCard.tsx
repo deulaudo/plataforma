@@ -12,12 +12,12 @@ import {
 } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useState } from "react";
+import { twMerge } from "tailwind-merge";
 
 import { useRouter } from "next/navigation";
 
 import ProgressBar from "@/components/ProgressBar";
 import { FlashcardCardSubcategoryType } from "@/types/flashcardType";
-import { twMerge } from "tailwind-merge";
 
 type FlashcardSubcategoryCardProps = {
   subcategory: FlashcardCardSubcategoryType;
@@ -37,10 +37,12 @@ const FlashcardSubcategoryCard = ({
     return (
       <div className="flex items-center">
         <div className="flex flex-1 gap-4 flex-col p-[16px]">
-          <h3 className={twMerge(
-            "font-extrabold text-[16px] dark:text-white text-black",
-            isChildSubcategory ? "text-[14px]" : ""
-          )}>
+          <h3
+            className={twMerge(
+              "font-extrabold text-[16px] dark:text-white text-black",
+              isChildSubcategory ? "text-[14px]" : "",
+            )}
+          >
             {subcategory.name}{" "}
             {subcategory.questionsCount > 0 &&
               subcategory.questionsCount === subcategory.questionsDone && (
@@ -132,10 +134,10 @@ const FlashcardSubcategoryCard = ({
     <div className="flex items-center w-full">
       <div className="flex flex-col gap-4 flex-1 p-[16px]">
         <div className="flex flex-1 items-center gap-2">
-          <h3 className={
-            twMerge(
+          <h3
+            className={twMerge(
               "font-extrabold text-[16px] dark:text-white text-black",
-              isChildSubcategory ? "text-[14px]" : ""
+              isChildSubcategory ? "text-[14px]" : "",
             )}
           >
             {subcategory.name}
@@ -183,5 +185,7 @@ export default FlashcardSubcategoryCard;
 const FlashcardChildSubcategoryCard = ({
   subcategory,
 }: FlashcardSubcategoryCardProps) => {
-  return <FlashcardSubcategoryCard isChildSubcategory subcategory={subcategory} />;
+  return (
+    <FlashcardSubcategoryCard isChildSubcategory subcategory={subcategory} />
+  );
 };

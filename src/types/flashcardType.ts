@@ -57,7 +57,7 @@ export type FlashcardDeckType = {
 };
 
 export type FlashcardReviewType = {
-  id:string;
+  id: string;
   revisionDate: string;
   done: boolean;
   delayed: boolean;
@@ -71,4 +71,4 @@ export type FlashcardReviewType = {
     reviews: number;
     reviewsDone: number;
   };
-}
+};

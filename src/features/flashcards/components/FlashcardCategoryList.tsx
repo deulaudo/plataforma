@@ -1,10 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import { Loader } from "lucide-react";
+import { useState } from "react";
 
 import SearchInput from "@/components/SearchInput";
 
 import FlashcardCategory from "./FlashcardCategory";
-import { useState } from "react";
 
 const FlashcardCategoryList = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
@@ -17,7 +17,7 @@ const FlashcardCategoryList = () => {
   });
 
   const filteredCategories = (categories || []).filter((category) =>
-    category.name.toLowerCase().includes(searchTerm.toLowerCase())
+    category.name.toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
   if (isPending) {

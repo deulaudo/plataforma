@@ -46,15 +46,20 @@ const LateFlashcardReviewModal = ({
           </AlertDialogTitle>
         </AlertDialogHeader>
 
-        <span className="text-center">Esta revisão está atrasada. Deseja reiniciar ou continuar de onde parou?</span>
+        <span className="text-center">
+          Esta revisão está atrasada. Deseja reiniciar ou continuar de onde
+          parou?
+        </span>
 
         <div className="flex flex-col gap-4 items-center">
-            <Button
-              theme="green"
-              onClick={() => router.push(`/flashcards/decks/${review.subcategory.id}/review`)}
-            >
-              Continuar
-            </Button>
+          <Button
+            theme="green"
+            onClick={() =>
+              router.push(`/flashcards/decks/${review.subcategory.id}/review`)
+            }
+          >
+            Continuar
+          </Button>
           <Button
             theme="blue"
             loading={restartReviewMutation.isPending}
