@@ -4,8 +4,10 @@ import { Loader } from "lucide-react";
 import SearchInput from "@/components/SearchInput";
 
 import FlashcardCategory from "./FlashcardCategory";
+import { useState } from "react";
 
 const FlashcardCategoryList = () => {
+  const [searchTerm, setSearchTerm] = useState<string>("");
   const { data: categories, isPending } = useQuery({
     queryKey: ["flashcards-categories"],
     queryFn: async () => {
@@ -13,6 +15,10 @@ const FlashcardCategoryList = () => {
       return flashcardService.listFlashcardCategories();
     },
   });
+
+  const filteredCategories = (categories || []).filter((category) =>
+    category.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   if (isPending) {
     return <Loader className="animate-spin" size={24} />;
@@ -28,10 +34,13 @@ const FlashcardCategoryList = () => {
 
   return (
     <div className="flex flex-col gap-4">
-      <SearchInput placeholder="Pesquise por categorias" />
+      <SearchInput
+        onChange={(e) => setSearchTerm(e.target.value)}
+        placeholder="Pesquise por categorias"
+      />
 
       <div className="flex justify-between gap-[24px] flex-wrap">
-        {categories.map((category) => (
+        {filteredCategories.map((category) => (
           <FlashcardCategory
             id={category.id}
             key={category.id}
