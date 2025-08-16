@@ -4,15 +4,12 @@ import { useQuery } from "@tanstack/react-query";
 import { Loader } from "lucide-react";
 import { use } from "react";
 
-import { useRouter } from "next/navigation";
-
 import PageLayout from "@/components/PageLayout";
 import Flashcard from "@/features/flashcards/components/Flashcard";
 import { flashcardService } from "@/services/flashcardService";
 
 const FlashcardPage = ({ params }: { params: Promise<{ id: string }> }) => {
   const { id } = use(params);
-  const router = useRouter();
 
   const {
     data: flashcard,
@@ -27,7 +24,9 @@ const FlashcardPage = ({ params }: { params: Promise<{ id: string }> }) => {
   });
 
   const onFlashcardFeedback = async () => {
-    router.push(`/flashcards/`);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+
+    await refetch();
   };
 
   if (isLoadingFlashcard) {

@@ -7,11 +7,12 @@ import LateFlashcardReviewModal from "@/features/flashcards/components/LateFlash
 import { flashcardService } from "@/services/flashcardService";
 import { FlashcardReviewType } from "@/types/flashcardType";
 import { useQuery } from "@tanstack/react-query";
-import { isBefore, toDate } from "date-fns";
 import { Clipboard, Loader } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 
 const FlashcardReviewsPage = () => {
+  const router = useRouter();
   const [showLateReviewModal, setShowLateReviewModal] = useState<boolean>(false);
   const [selectedReview, setSelectedReview] = useState<FlashcardReviewType | null>(null);
   const [selectedDate, setSelectedDate] = useState<Date | null>(() => {
@@ -64,9 +65,10 @@ const FlashcardReviewsPage = () => {
 
   const onReviewClick = (review: FlashcardReviewType) => {
     setSelectedReview(review);
-    const reviewDate = toDate(review.revisionDate);
-    if (isBefore(reviewDate, new Date()) && !review.done) {
+    if (review.delayed) {
       setShowLateReviewModal(true);
+    } else {
+      router.push(`/flashcards/decks/${review.subcategory.id}/review`);
     }
   }
 

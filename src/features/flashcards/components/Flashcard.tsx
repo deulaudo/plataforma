@@ -26,6 +26,7 @@ const Flashcard = ({ flashcard, onFeedback }: FlashcardProps) => {
     { feedback: "EASY" | "MEDIUM" | "HARD" | "SUSPEND" }
   >({
     mutationFn: async ({ feedback }) => {
+      setShowAnswer(false);
       if (feedback === "SUSPEND") {
         await flashcardService.changeDiscardedStatus(flashcard.id, true);
         queryClient.invalidateQueries({
