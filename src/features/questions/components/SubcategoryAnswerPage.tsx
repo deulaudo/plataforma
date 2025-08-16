@@ -6,6 +6,8 @@ import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 
 import ImageViewer from "@/components/ImageViewer";
+import Tabs from "@/components/Tabs";
+import CommentsBox from "@/features/comments/CommentsBox";
 import { ExamMode, ExamSubcategory } from "@/types/examType";
 
 import QuestionAlternatives from "./QuestionAlternatives";
@@ -27,6 +29,7 @@ const SubcategoryAnswerPage = ({
   onQuestionAnswered,
 }: SubcategoryAnswerPageProps) => {
   const searchParams = useSearchParams();
+  const [currentTab, setCurrentTab] = useState<string>("explanation");
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(0);
   const [loadedQuestionFromURL, setLoadedQuestionFromURL] =
     useState<boolean>(false);
@@ -155,12 +158,39 @@ const SubcategoryAnswerPage = ({
           </div>
         )}
 
-      {showAnswer && subcategory.exams[currentQuestionIndex].learnMore && (
-        <div className="self-start w-full">
-          <QuestionExplanation
-            question={subcategory.exams[currentQuestionIndex]}
-          />
-        </div>
+      {showAnswer && (
+        <Tabs
+          activeTabId={currentTab}
+          onTabChange={(tabId: string) => setCurrentTab(tabId)}
+          tabs={[
+            {
+              id: "explanation",
+              label: "Explicação",
+              content: (
+                <>
+                  {showAnswer &&
+                    subcategory.exams[currentQuestionIndex].learnMore && (
+                      <div className="self-start w-full">
+                        <QuestionExplanation
+                          question={subcategory.exams[currentQuestionIndex]}
+                        />
+                      </div>
+                    )}
+                </>
+              ),
+            },
+            {
+              id: "comments",
+              label: "Comentários",
+              content: (
+                <CommentsBox
+                  referenceType="QUESTION"
+                  referenceId={subcategory.exams[currentQuestionIndex].id}
+                />
+              ),
+            },
+          ]}
+        />
       )}
     </div>
   );
