@@ -55,3 +55,20 @@ export type FlashcardDeckType = {
   totalHard: number;
   hasReview: true;
 };
+
+export type FlashcardReviewType = {
+  id:string;
+  revisionDate: string;
+  done: boolean;
+  delayed: boolean;
+  reviewCycle: number;
+  hashId: string;
+  subcategory: {
+    id: string;
+    name: string;
+    questionsCount: number;
+    questionsDone: number;
+    reviews: number;
+    reviewsDone: number;
+  };
+}

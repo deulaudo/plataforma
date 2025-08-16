@@ -20,6 +20,7 @@ type DeckFinishedModalProps = {
   isOpen: boolean;
   onClose: () => void;
   onRestart: () => void;
+  onScheduleReview: () => void;
   hasReview: boolean;
 };
 
@@ -29,6 +30,7 @@ const DeckFinishedModal = ({
   onClose,
   hasReview,
   onRestart,
+  onScheduleReview,
 }: DeckFinishedModalProps) => {
   const router = useRouter();
   const restartDeckMutation = useMutation({
@@ -37,6 +39,16 @@ const DeckFinishedModal = ({
     },
     onSuccess: () => {
       onRestart();
+      onClose();
+    },
+  });
+
+  const scheduleReviewMutation = useMutation({
+    mutationFn: async () => {
+      await flashcardService.scheduleDeckReview(deckId);
+    },
+    onSuccess: () => {
+      onScheduleReview();
       onClose();
     },
   });
@@ -86,7 +98,15 @@ const DeckFinishedModal = ({
           >
             Reiniciar
           </Button>
-          {!hasReview && <Button theme="green">Agenda revisões</Button>}
+          {!hasReview && (
+            <Button
+              theme="green"
+              loading={scheduleReviewMutation.isPending}
+              onClick={() => scheduleReviewMutation.mutate()}
+            >
+              Agendar revisão
+            </Button>
+          )}
           <Button
             onClick={() => {
               router.push("/flashcards");

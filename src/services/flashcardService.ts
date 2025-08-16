@@ -2,6 +2,7 @@ import {
   FlashcardCategoryType,
   FlashcardDeckType,
   FlashcardQuestionType,
+  FlashcardReviewType,
 } from "@/types/flashcardType";
 
 import api from "./api";
@@ -61,6 +62,12 @@ async function restartDeck(deckId: string): Promise<void> {
   await api.post(`category/subcategory/${deckId}/reset-history`);
 }
 
+async function scheduleDeckReview(deckId: string): Promise<void> {
+  await api.post(`schedule-reviews`, {
+    subcategoryId: deckId,
+  });
+}
+
 async function searchFlashcards(
   query: string,
   discarted: boolean = false,
@@ -80,6 +87,18 @@ async function searchFlashcards(
   return response.data.questions;
 }
 
+async function getFlashcardReviews(): Promise<{[data: string]: FlashcardReviewType[]}> {
+  const response = await api.get<{[data: string]: FlashcardReviewType[]}>(
+    `schedule-reviews`,
+  );
+
+  return response.data;
+}
+
+async function resetFlashcardReview(hashId: string): Promise<void> {
+  await api.delete(`schedule-reviews/${hashId}`);
+}
+
 export const flashcardService = {
   listFlashcardCategories,
   getFlashcardCategoryById,
@@ -89,4 +108,7 @@ export const flashcardService = {
   changeDiscardedStatus,
   restartDeck,
   searchFlashcards,
+  scheduleDeckReview,
+  getFlashcardReviews,
+  resetFlashcardReview,
 };

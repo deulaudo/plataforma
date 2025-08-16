@@ -4,21 +4,17 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Loader } from "lucide-react";
 import { use, useEffect, useMemo, useState } from "react";
 
-import { useRouter } from "next/navigation";
-
 import PageLayout from "@/components/PageLayout";
-import DeckFinishedModal from "@/features/flashcards/components/DeckFinishedModal";
 import Flashcard from "@/features/flashcards/components/Flashcard";
 import FlashcardDeckProgress from "@/features/flashcards/components/FlashcardDeckProgress";
 import { flashcardService } from "@/services/flashcardService";
+import DeckReviewFinishedModal from "@/features/flashcards/components/DeckReviewFinishedModal";
 
-const FlashcardDeckPage = ({ params }: { params: Promise<{ id: string }> }) => {
+const FlashcardReviewDeckPage = ({ params }: { params: Promise<{ id: string }> }) => {
   const { id } = use(params);
-  const router = useRouter();
   const [showDeckCompletedModal, setShowDeckCompletedModal] =
     useState<boolean>(false);
   const [currentFlashcardIndex, setCurrentFlashcardIndex] = useState<number>(0);
-  const queryClient = useQueryClient();
 
   const {
     data: deck,
@@ -59,7 +55,11 @@ const FlashcardDeckPage = ({ params }: { params: Promise<{ id: string }> }) => {
   }, [deck]);
 
   const onFlashcardFeedback = async () => {
-    refetch();
+    if (deck && deck.questions.length === 1) {
+      setShowDeckCompletedModal(true);
+    } else {
+      refetch();
+    }
   };
 
   if (!deck && isLoadingDeck) {
@@ -83,17 +83,8 @@ const FlashcardDeckPage = ({ params }: { params: Promise<{ id: string }> }) => {
       {showDeckCompletedModal ||
       deck?.questions.length === 0 ||
       !currentFlashcard ? (
-        <DeckFinishedModal
-          deckId={id}
-          onRestart={refetch}
-          onScheduleReview={() => {
-            router.push(`/flashcards`);
-            queryClient.invalidateQueries({
-              queryKey: ["flashcardDeck", { id }],
-            });
-          }}
+        <DeckReviewFinishedModal
           isOpen={showDeckCompletedModal}
-          hasReview={deck?.hasReview || false}
           onClose={() => {
             setShowDeckCompletedModal(false);
           }}
@@ -111,4 +102,4 @@ const FlashcardDeckPage = ({ params }: { params: Promise<{ id: string }> }) => {
   );
 };
 
-export default FlashcardDeckPage;
+export default FlashcardReviewDeckPage;
