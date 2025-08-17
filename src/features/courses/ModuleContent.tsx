@@ -1,43 +1,50 @@
 "use client";
-import { CheckCircle2 } from 'lucide-react';
+import { coursesService } from '@/services/coursesService';
+import { useQuery } from '@tanstack/react-query';
+import { Loader } from 'lucide-react';
 import { useTheme } from 'next-themes';
-import React, { useMemo } from 'react';
+import React, { useCallback, useState } from 'react';
+import ModuleItem from './ModuleItem';
+import { useRouter } from "next/navigation";
+import VideoItem from './VideoItem';
 
 type ModuleContentProps = {
-  module: ModuleType
-  onModuleClick: (moduleId: string) => void;
+  isExpanded: boolean;
+  moduleId: string;
 };
 
 const ModuleContent = ({
-  module,
-  onModuleClick,
+  isExpanded,
+  moduleId,
 }: ModuleContentProps) => {
   const { theme } = useTheme();
+  const router = useRouter();
+  const { data: videos, isPending: isPedingVideos } = useQuery({
+    queryKey: ["videos", moduleId, isExpanded],
+    queryFn: async () => {
+      if (isExpanded) {
+        return await coursesService.listVideos(moduleId);
+      }
 
-  const moduleDone = useMemo(() => module.totalVideosWatched === module.totalVideos , []);
+      return Promise.resolve([]);
+    },
+  });
 
-  return (
-    <div className="flex cursor-pointer flex-1 justify-between pb-[16px] items-center border-b border-b-[#E9EAEC] dark:border-b[#FFFFFF0D]" onClick={() => {
-      onModuleClick(module.id);
-    }}>
-      <div className="flex gap-3 items-center">
-        <div className="flex justify-center items-center w-[52px] h-[52px] p-[4px] rounded-[20px] border border-[#E9EAEC] dark:border-[#FFFFFF0D]">
-          <img className="w-[25px] h-[25px]" src={module.cover} />
-        </div>
-        <div className="flex flex-1 flex-col gap-1">
-          <span className="font-bold text-[16px] dark:text-white">{module.title}</span>
-          <span className={`font-bold text-[12px] ${moduleDone ? 'text-[#1CD475]' : 'text-[#2056F2]'}`}>
-            {module.totalVideos} vídeo {module.totalVideos > 1 ? 'aulas' : 'aula'}
-          </span>
-        </div>
-      </div>
+  const goToModule = useCallback((videoId: string) => {
+    console.log(videoId);
+    // router.push(`/courses/videos/${moduleId}`);
+  }, []);
 
-      <CheckCircle2
-          size={20}
-          className={`${moduleDone ? 'text-[#1CD475]' : 'text-[#808080] dark:text-[#4c515e]'} cursor-pointer`}
-        />
-    </div>
+  return (<>
+    {isExpanded && (<div className="flex gap-4 flex-col mt-[16px]">
+      {isPedingVideos ? (
+        <Loader className="animate-spin" />
+      ) : videos?.sort((v1, v2) => (+v1.videoId > +v2.videoId) ? 1 : 0).map((video) => (
+        <VideoItem video={video} onModuleClick={goToModule} key={video.id} />
+      ))}
+    </div>)}
+  </>
   );
-}
+};
 
 export default ModuleContent;

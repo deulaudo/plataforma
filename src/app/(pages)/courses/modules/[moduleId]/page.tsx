@@ -8,6 +8,7 @@ import PageLayout from "@/components/PageLayout";
 import withAuth from "@/hocs/withAuth";
 import { coursesService } from "@/services/coursesService";
 import SearchInput from "@/components/SearchInput";
+import ModuleCard from "@/features/courses/ModuleCard";
 
 const ModulePage = ({
   params,
@@ -21,6 +22,10 @@ const ModulePage = ({
     queryFn: async () => {
       return await coursesService.getModule(moduleId);
     },
+    initialData: {
+      totalVideos: 0,
+      totalWatched: 0
+    } as ModuleType
   });
 
   const HeaderTitle = useMemo(() => {
@@ -35,10 +40,10 @@ const ModulePage = ({
       headerType="back"
       headerTitle={HeaderTitle}
     >
-      {isPending ? (
+      {isPending && !module ? (
         <Loader className="animate-spin" />
       ) : (
-        <>{module?.title}</>
+          <ModuleCard module={module} />
       )}
     </PageLayout>
   );

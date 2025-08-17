@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { Loader } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import React, { useCallback, useState } from 'react';
-import ModuleContent from './ModuleContent';
+import ModuleItem from './ModuleItem';
 import { useRouter } from "next/navigation";
 
 type CourseContentProps = {
@@ -39,7 +39,7 @@ const CourseContent = ({
       {isPedingModules ? (
         <Loader className="animate-spin" />
       ) : modules?.map((module) => (
-        <ModuleContent module={module} onModuleClick={goToModule} key={module.id}/>
+        <ModuleItem module={module} onModuleClick={goToModule} key={module.id} />
       ))}
     </div>)}
   </>

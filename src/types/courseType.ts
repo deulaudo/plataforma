@@ -13,6 +13,7 @@ interface CourseType {
 
 interface VideoType {
   id: string;
+  videoId: string;
   description: string;
   title: string;
   url: string;
@@ -30,7 +31,7 @@ interface ModuleType {
   description: string;
   knowledgeArea: string;
   totalVideos: number;
-  totalVideosWatched: number;
+  totalWatched: number;
   createdAt: string; // Assuming this is a date-time string
   updatedAt: string; // Assuming this is a date-time string
 }
