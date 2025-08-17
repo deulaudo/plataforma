@@ -22,9 +22,9 @@ const PageLayout = ({ children, headerTitle, headerType }: PageLayoutProps) => (
 
     {/* Main Content */}
     <div className="flex flex-col flex-1">
-      <div className="flex flex-col gap-[48px] flex-1 p-6 md:p-6 mt-[64px] md:mt-0 mb-[64px] md:mb-0 overflow-y-auto">
+      <div className="flex h-screen flex-col gap-[48px] flex-1 p-6 md:p-6 mt-[64px] md:mt-0 mb-[64px] md:mb-0 overflow-y-auto">
         <Header headerTitle={headerTitle} headerType={headerType} />
-        <div className="overflow-y-auto flex-1">{children}</div>
+        <div className="flex-1">{children}</div>
       </div>
     </div>
 

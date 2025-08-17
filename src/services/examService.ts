@@ -1,4 +1,9 @@
-import { ExamCategory, ExamMode, ExamSubcategory } from "@/types/examType";
+import {
+  ExamCategory,
+  ExamMode,
+  ExamSearchItem,
+  ExamSubcategory,
+} from "@/types/examType";
 
 import api from "./api";
 
@@ -63,10 +68,29 @@ async function resetExamSubcategory(id: string, mode: ExamMode): Promise<void> {
   });
 }
 
+async function searchQuestions(params: {
+  search: string;
+  product_id?: string;
+  perPage?: number;
+  page?: number;
+}): Promise<ExamSearchItem[]> {
+  const response = await api.get<{ exams: ExamSearchItem[] }>("/exam", {
+    params: {
+      module: "STUDY",
+      search: params.search,
+      product_id: params.product_id,
+      perPage: params.perPage || 10,
+      page: params.page || 1,
+    },
+  });
+  return response.data.exams;
+}
+
 export const examService = {
   listExamCategories,
   getExamCategoryById,
   getExamSubcategoryById,
   answerQuestion,
   resetExamSubcategory,
+  searchQuestions,
 };

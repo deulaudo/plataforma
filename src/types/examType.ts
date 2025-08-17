@@ -58,3 +58,36 @@ export type ExamSubcategory = {
   wrongQuestions: number;
   cancelledQuestions: number;
 };
+
+export type ExamSearchItem = {
+  id: string;
+  question: string;
+  ordering: number;
+  learnMore: string;
+  cancelled: boolean;
+  subcategory: {
+    id: string;
+    name: string;
+    category: {
+      name: string;
+    };
+  };
+  alternatives: {
+    id: string;
+    text: string;
+    correct: boolean;
+    createdAt: string;
+  }[];
+  tags: {
+    id: string;
+    tag: string;
+    createdAt: string;
+    updatedAt: string;
+  }[];
+  examAnswer: {
+    id: string;
+    correct: boolean;
+    module: string;
+    alternativeId: string;
+  } | null;
+};

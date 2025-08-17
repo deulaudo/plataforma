@@ -45,15 +45,23 @@ const SubcategoryAnswerPage = ({
    */
   useEffect(() => {
     if (loadedQuestionFromURL) return;
+
     const questionId = searchParams.get("questionId");
     if (questionId) {
-      const index = subcategory.exams.findIndex(
+      const questionIndex = subcategory.exams.findIndex(
         (exam) => exam.id === questionId,
       );
-      if (index !== -1) {
-        setCurrentQuestionIndex(index);
+
+      if (questionIndex !== -1) {
+        setCurrentQuestionIndex(questionIndex);
+        setLoadedQuestionFromURL(true);
+      } else {
+        // Se não encontrar a questão, mantém o índice 0 e marca como carregado
         setLoadedQuestionFromURL(true);
       }
+    } else {
+      // Se não há questionId nos params, marca como carregado
+      setLoadedQuestionFromURL(true);
     }
   }, [loadedQuestionFromURL, searchParams, subcategory.exams]);
 

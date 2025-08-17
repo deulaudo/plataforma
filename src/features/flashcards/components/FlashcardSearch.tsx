@@ -21,8 +21,9 @@ const FlashcardSearch = () => {
       if (debouncedSearchQuery.length < 3) {
         return [];
       }
-      const response =
-        await flashcardService.searchFlashcards(debouncedSearchQuery);
+      const response = await flashcardService.searchFlashcards({
+        search: debouncedSearchQuery,
+      });
       return response;
     },
   });

@@ -68,19 +68,20 @@ async function scheduleDeckReview(deckId: string): Promise<void> {
   });
 }
 
-async function searchFlashcards(
-  query: string,
-  discarted: boolean = false,
-): Promise<FlashcardQuestionType[]> {
-  let params = {};
-  if (discarted) {
-    params = { discarted: "true" };
-  }
-
+async function searchFlashcards(params: {
+  search: string;
+  discarted?: boolean;
+  product_id?: string;
+  perPage?: number;
+  page?: number;
+}): Promise<FlashcardQuestionType[]> {
+  const { search, ...rest } = params;
   const response = await api.get<{ questions: FlashcardQuestionType[] }>(
-    `question?search=${encodeURIComponent(query)}`,
+    `question?search=${encodeURIComponent(search)}`,
     {
-      params,
+      params: {
+        ...rest,
+      },
     },
   );
 

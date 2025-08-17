@@ -17,7 +17,12 @@ const FlashcardDiscartedList = () => {
   } = useQuery<FlashcardQuestionType[]>({
     queryKey: ["flashcards-search", { discarted: true }],
     queryFn: async () => {
-      return await flashcardService.searchFlashcards("", true);
+      return await flashcardService.searchFlashcards({
+        search: "",
+        discarted: true,
+        perPage: 50,
+        page: 1,
+      });
     },
   });
 
