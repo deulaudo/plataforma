@@ -87,7 +87,7 @@ const GlobalSearch = () => {
         onChange={(e) => setSearch(e.target.value)}
         highlightWhenFocused
         icon={<Search size={16} />}
-        placeholder="Pesquise por questões"
+        placeholder="Pesquise por questões e flashcards"
         onFocus={handleInputFocus}
         onBlur={handleInputBlur}
       />
