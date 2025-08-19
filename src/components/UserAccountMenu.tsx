@@ -4,10 +4,13 @@
 import { ChevronLeft, ChevronRight, LogOut, User } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
+import { useRouter } from "next/navigation";
+
 import { useAuthStore } from "@/stores/authStore";
 
 const UserAccountMenu = () => {
   const { user, signOut } = useAuthStore();
+  const router = useRouter();
   const [isMenuOpened, setIsMenuOpened] = useState<boolean>(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -60,7 +63,10 @@ const UserAccountMenu = () => {
 
       {isMenuOpened && (
         <div className="flex flex-col gap-3 absolute left-[250px] bottom-[-10px] w-[200px] bg-white dark:bg-[#141926] border border-[#EDEEEF] dark:border-[#202531] rounded-lg shadow-lg p-4">
-          <div className="cursor-pointer flex gap-2 items-center">
+          <div
+            onClick={() => router.push("/profile")}
+            className="cursor-pointer flex gap-2 items-center"
+          >
             <User size={16} />
             <span className="text-sm">Perfil</span>
           </div>
