@@ -63,7 +63,9 @@ const HomePage = () => {
           data-tooltip-content="Número de dias de estudo consecutivos"
         >
           <Zap size={24} className="text-[#e7bd14]" />
-          <span className="text-[16px] font-bold">4</span>
+          <span className="text-[16px] font-bold">
+            {user?.statistics.daysStudiedConsecutively}
+          </span>
         </div>
         <Tooltip id="consecutive-study" />
       </div>
@@ -93,7 +95,9 @@ const HomePage = () => {
           />
         </div>
         <div className="w-full max-w-[527px]">
-          <FlashcardsStatistics totalFlashcardsStudied={0} />
+          <FlashcardsStatistics
+            totalFlashcardsStudied={user?.statistics.completedFlashcards}
+          />
         </div>
         <div className="w-full max-w-[527px] max-h-[500px] overflow-y-auto">
           <TestHistory

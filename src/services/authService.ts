@@ -134,12 +134,14 @@ function isUserWithAuthenticationToken(): boolean {
 }
 
 async function getAuthenticatedUser(): Promise<GetAuthenticatedUserResponse> {
-  const { id, products } = (await api.get<MeResponse>("/auth/me/")).data;
+  const { id, products, statistics } = (await api.get<MeResponse>("/auth/me/"))
+    .data;
   const userData = (await api.get<GetAuthenticatedUserResponse>(`/user/${id}`))
     .data;
   return {
     ...userData,
     products,
+    statistics,
   };
 }
 
