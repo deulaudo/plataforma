@@ -3,6 +3,7 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { ToastContainer } from "react-toastify";
+import "react-tooltip/dist/react-tooltip.css";
 
 import { useAuthStore } from "@/stores/authStore";
 
