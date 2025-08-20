@@ -8,6 +8,7 @@ import PageLayout from "@/components/PageLayout";
 import ExamStatistics from "@/features/statistics/components/ExamStatistics";
 import FlashcardsStatistics from "@/features/statistics/components/FlashcardsStatistics";
 import TestHistory from "@/features/statistics/components/TestHistory";
+import CourseTrack from "@/features/track/components/CourseTrack";
 import withAuth from "@/hocs/withAuth";
 import { statisticsService } from "@/services/statisticsService";
 import { useAuthStore } from "@/stores/authStore";
@@ -69,6 +70,40 @@ const HomePage = () => {
         </div>
         <Tooltip id="consecutive-study" />
       </div>
+
+      <CourseTrack
+        courseName="Preparatório"
+        modules={[
+          {
+            id: "1",
+            imageUrl: null,
+            title: "Cabeça e Pescoço",
+            description:
+              "O bloco de cabeça e pescoço aborda as intricadas estruturas anatômicas e as condições associadas, como tumores, infecções, doenças vasculares e alterações congênitas. Foco especial é dado à ressonância magnética e tomografia computadorizada, métodos cruciais para estudar os seios paranasais, base do crânio, região cervical e cavidade oral. Entender os achados específicos de patologias nesta região é indispensável.",
+            totalVideos: 8,
+            totalVideosWatched: 8,
+          },
+          {
+            id: "2",
+            imageUrl: null,
+            title: "Lições de Anatomia",
+            description:
+              "O bloco de cabeça e pescoço aborda as intricadas estruturas anatômicas e as condições associadas, como tumores, infecções, doenças vasculares e alterações congênitas. Foco especial é dado à ressonância magnética e tomografia computadorizada, métodos cruciais para estudar os seios paranasais, base do crânio, região cervical e cavidade oral. Entender os achados específicos de patologias nesta região é indispensável.",
+            totalVideos: 8,
+            totalVideosWatched: 4,
+          },
+          {
+            id: "3",
+            imageUrl: null,
+            title: "Raio X",
+            description:
+              "O bloco de cabeça e pescoço aborda as intricadas estruturas anatômicas e as condições associadas, como tumores, infecções, doenças vasculares e alterações congênitas. Foco especial é dado à ressonância magnética e tomografia computadorizada, métodos cruciais para estudar os seios paranasais, base do crânio, região cervical e cavidade oral. Entender os achados específicos de patologias nesta região é indispensável.",
+            totalVideos: 8,
+            totalVideosWatched: 0,
+          },
+        ]}
+      />
+
       <div className="flex flex-col items-center justify-center xl:flex-row xl:justify-between gap-6 md:gap-12 flex-wrap">
         <div className="w-full max-w-[527px]">
           <ExamStatistics
