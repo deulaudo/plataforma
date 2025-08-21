@@ -1,6 +1,7 @@
 import { CircleCheck, X } from "lucide-react";
 import { useTheme } from "next-themes";
 
+import Button from "@/components/Button";
 import SegmentedProgressCircle from "@/components/SegmentedProgressCircle";
 import {
   AlertDialog,
@@ -8,7 +9,6 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import Button from "@/components/Button";
 
 type CourseTrackModuleInfoProps = {
   isOpen: boolean;
@@ -29,9 +29,8 @@ const CourseTrackModuleInfo = ({
   module,
 }: CourseTrackModuleInfoProps) => {
   const { theme } = useTheme();
-  const isModuleCompleted =
-    module.totalVideosWatched === module.totalVideos;
-    
+  const isModuleCompleted = module.totalVideosWatched === module.totalVideos;
+
   return (
     <AlertDialog open={isOpen} onOpenChange={onClose}>
       <AlertDialogContent>
@@ -67,11 +66,7 @@ const CourseTrackModuleInfo = ({
           </span>
 
           <Button theme={isModuleCompleted ? "green" : "blue"} fullWidth>
-            {isModuleCompleted ? (
-              "Revisar módulo"
-            ) : (
-              "Acessar módulo"
-            )}
+            {isModuleCompleted ? "Revisar módulo" : "Acessar módulo"}
           </Button>
         </div>
       </AlertDialogContent>
