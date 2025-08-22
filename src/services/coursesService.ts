@@ -32,11 +32,17 @@ async function listVideos(moduleId?: string): Promise<ListVideosResponse> {
   return response.data;
 }
 
+async function getVideo(videoId: string): Promise<VideoType> {
+  const response = await api.get<VideoType>(`web-platform/videos/${videoId}`);
+  return response.data;
+}
+
 export const coursesService = {
   listCourses,
   getModule,
   listModules,
-  listVideos
+  getVideo,
+  listVideos,
 };
 
 

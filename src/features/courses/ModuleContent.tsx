@@ -11,11 +11,13 @@ import VideoItem from './VideoItem';
 type ModuleContentProps = {
   isExpanded: boolean;
   moduleId: string;
+  onChooseVideo: (video: VideoType) => void;
 };
 
 const ModuleContent = ({
   isExpanded,
   moduleId,
+  onChooseVideo,
 }: ModuleContentProps) => {
   const { theme } = useTheme();
   const router = useRouter();
@@ -30,17 +32,17 @@ const ModuleContent = ({
     },
   });
 
-  const goToModule = useCallback((videoId: string) => {
-    console.log(videoId);
-    // router.push(`/courses/videos/${moduleId}`);
+  const goToVideo = useCallback((video: VideoType) => {
+    console.log(video.id);
+    onChooseVideo(video);
   }, []);
 
   return (<>
     {isExpanded && (<div className="flex gap-4 flex-col mt-[16px]">
       {isPedingVideos ? (
         <Loader className="animate-spin" />
-      ) : videos?.sort((v1, v2) => (+v1.videoId > +v2.videoId) ? 1 : 0).map((video) => (
-        <VideoItem video={video} onModuleClick={goToModule} key={video.id} />
+      ) : videos?.sort((v1, v2) => (+v1.videoId > +v2.videoId) ? 1 : 0).map((video, index) => (
+        <VideoItem video={video} order={index + 1} onVideoClick={goToVideo} key={video.id} />
       ))}
     </div>)}
   </>

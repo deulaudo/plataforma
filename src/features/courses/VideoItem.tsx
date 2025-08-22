@@ -4,28 +4,34 @@ import { useTheme } from 'next-themes';
 import React, { useMemo } from 'react';
 
 type VideoItemProps = {
+  order: number,
   video: VideoType
-  onModuleClick: (videoId: string) => void;
+  onVideoClick: (video: VideoType) => void;
 };
 
 const VideoItem = ({
+  order,
   video,
-  onModuleClick,
+  onVideoClick,
 }: VideoItemProps) => {
   const { theme } = useTheme();
 
-  const videoDone = useMemo(() => video.wasWatched , [video]);
+  const videoDone = useMemo(() => video.wasWatched, [video]);
 
   return (
     <div className="flex cursor-pointer flex-1 justify-between pb-[16px] items-center border-b border-b-[#E9EAEC] dark:border-b[#FFFFFF0D]" onClick={() => {
-      onModuleClick(video.id);
+      onVideoClick(video);
     }}>
       <div className="flex gap-3 items-center">
-        <div className="flex justify-center items-center w-[52px] h-[52px] p-[4px] rounded-[20px] border border-[#E9EAEC] dark:border-[#FFFFFF0D]">
-          <img className="w-[25px] h-[25px]" src={video.thumbnailUrl} />
+        <div className="flex relative justify-center cursor-pointer items-center w-[56px] h-[32px] rounded-[8px] border-[1px] border-[#E9EAEC] dark:border-[#FFFFFF0D]">
+          <img className="object-contain rounded-[8px]" src={video.thumbnailUrl} />
+          <img className="absolute" src="/icons/play.svg" />
         </div>
-        <div className="flex flex-1 flex-col gap-1">
-          <span className="font-bold text-[16px] dark:text-white">{video.title}</span>
+        <div className="flex flex-1 flex-col h-[32px]">
+          <p className="font-normal text-[10px] text-justify text-[#00000080] dark:text-[#FFFFFF40]">
+            Aula {order}
+          </p>
+          <span className="font-bold text-[12px] dark:text-white">{video.title}</span>
         </div>
       </div>
 
