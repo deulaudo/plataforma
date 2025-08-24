@@ -1,36 +1,53 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import { useMemo, useState } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
-import ModuleContent from "./ModuleContent";
+import { useMemo, useState } from "react";
 import { twMerge } from "tailwind-merge";
+
+import { useRouter } from "next/navigation";
+
+import ModuleContent from "./ModuleContent";
 
 type ModuleCardProps = {
   module: ModuleType;
+  currentVideo?: VideoType;
+  someVideoWatched: boolean;
   onChooseVideo: (video: VideoType) => void;
   contentClassName?: string;
 };
 
 const ModuleCard = ({
   module,
+  currentVideo,
+  someVideoWatched,
   onChooseVideo,
   contentClassName,
 }: ModuleCardProps) => {
-  const router = useRouter();
   const [isCardExpanded, setIsCardExpanded] = useState<boolean>(true);
 
-  const moduleDone = useMemo(() => module.totalWatched === module.totalVideos, [module]);
+  const moduleDone = useMemo(
+    () => module.totalWatched === module.totalVideos,
+    [module],
+  );
 
   return (
-    <div className={twMerge(`flex min-h-[170px] flex-shrink-0 flex-col gap-2 py-[24px] px-[16px] ${moduleDone ? 'dark:bg-[#101F25] bg-[#ECFBF4]' : 'dark:bg-[#10182C] bg-[#EDF1FE]'} rounded-[36px] border border-[#FFFFFF0D] self-start`, contentClassName)}>
+    <div
+      className={twMerge(
+        `flex min-h-[480px] flex-shrink-0 flex-col gap-2 py-[24px] px-[16px] ${moduleDone ? "dark:bg-[#101F25] bg-[#ECFBF4]" : "dark:bg-[#10182C] bg-[#EDF1FE]"} rounded-[36px] border border-[#FFFFFF0D] self-start`,
+        contentClassName,
+      )}
+    >
       <div className="flex gap-3 items-center">
         <div className="flex justify-center items-center w-[52px] h-[52px] p-[4px] rounded-[20px] border border-[#E9EAEC] dark:border-[#FFFFFF0D]">
-          <img className="w-[25px] h-[25px]" src={module.cover} />
+          <img alt="Capa" className="w-[25px] h-[25px]" src={module.cover} />
         </div>
         <div className="flex flex-1 flex-col gap-1">
-          <span className="font-bold text-[16px] dark:text-white">{module.title}</span>
-          <span className={`font-bold text-[12px] ${moduleDone ? 'text-[#1CD475]' : 'text-[#2056F2]'}`}>
+          <span className="font-bold text-[16px] dark:text-white">
+            {module.title}
+          </span>
+          <span
+            className={`font-bold text-[12px] ${moduleDone ? "text-[#1CD475]" : "text-[#2056F2]"}`}
+          >
             {module.totalVideos} aulas
           </span>
         </div>
@@ -54,7 +71,13 @@ const ModuleCard = ({
         </p>
       </div>
 
-      <ModuleContent moduleId={module.id} isExpanded={isCardExpanded} onChooseVideo={onChooseVideo} />
+      <ModuleContent
+        moduleId={module.id}
+        currentVideoId={currentVideo?.id}
+        someVideoWatched={someVideoWatched}
+        isExpanded={isCardExpanded}
+        onChooseVideo={onChooseVideo}
+      />
     </div>
   );
 };
