@@ -34,6 +34,7 @@ const ModulePage = ({
 
   const onChangeVideo = useCallback(async (video: VideoType) => {
     setIsLoadingVideo(true);
+    setVideoLoaded(undefined);
     try {
       const result = await coursesService.getVideo(video.id);
 
@@ -45,7 +46,16 @@ const ModulePage = ({
     } finally {
       setIsLoadingVideo(false);
     }
-  }, [])
+  }, []);
+
+  const onVideoWatched = useCallback(async () => {
+    try {
+      if (!videoLoaded) return;
+      await coursesService.updateVideo(videoLoaded.id);
+    } catch (error) {
+      console.error(error);
+    }
+  }, [videoLoaded]);
 
   const HeaderTitle = useMemo(() => {
     return <div className="flex justify-start items-center w-full gap-[16px]">
@@ -63,15 +73,23 @@ const ModulePage = ({
         <Loader className="animate-spin" />
       ) : (
           <div className="flex flex-row gap-4">
-            {
-              videoLoaded &&
-              <div className="flex w-2/3">
-                <VideoPlayer
-                  videoSource={videoLoaded.url}
-                />
-              </div>
-            }
-            <ModuleCard contentClassName={`${!videoLoaded ? 'w-full' : 'w-1/3'}`} module={module} onChooseVideo={onChangeVideo} />
+            <div className={`flex ${isLoadingVideo || videoLoaded ? 'w-2/3' : 'hidden'}`}>
+              {
+                isLoadingVideo ?
+                  (
+                    <div className="flex flex-col justify-center items-center w-full h-full mx-auto bg-gray-800 rounded-lg overflow-hidden shadow-lg">
+                      <Loader className="animate-spin" />
+                    </div>
+                  ) :
+                  <>
+                    {
+                      videoLoaded &&
+                      <VideoPlayer videoSource={videoLoaded.url} videoThumbnail={videoLoaded.thumbnailUrl} onVideoWasWatched={onVideoWatched} />
+                    }
+                  </>
+              }
+            </div>
+            <ModuleCard contentClassName={`${isLoadingVideo || videoLoaded ? 'w-1/3' : 'w-full'}`} module={module} onChooseVideo={onChangeVideo} />
           </div>
       )}
     </PageLayout>

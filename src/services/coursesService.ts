@@ -37,12 +37,18 @@ async function getVideo(videoId: string): Promise<VideoType> {
   return response.data;
 }
 
+async function updateVideo(videoId: string): Promise<VideoType> {
+  const response = await api.post<VideoType>(`web-platform/videos/${videoId}/watched`, {});
+  return response.data;
+}
+
 export const coursesService = {
   listCourses,
   getModule,
   listModules,
   getVideo,
   listVideos,
+  updateVideo,
 };
 
 
