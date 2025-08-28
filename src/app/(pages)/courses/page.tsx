@@ -1,22 +1,21 @@
 "use client";
 
-import React, { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { Loader } from "lucide-react";
+import React, { useCallback, useMemo, useState } from "react";
+
+import { useRouter } from "next/navigation";
 
 import PageLayout from "@/components/PageLayout";
 import SearchInput from "@/components/SearchInput";
-import { useQuery } from "@tanstack/react-query";
-import { coursesService } from "@/services/coursesService";
-import { Loader } from "lucide-react";
-import CourseCard from "@/features/courses/CourseCard";
+import CourseCard from "@/features/courses/components/CourseCard";
+import Module from "@/features/courses/components/Module";
 import withAuth from "@/hocs/withAuth";
+import { coursesService } from "@/services/coursesService";
 
 const CoursesPage = () => {
-  const HeaderTitle = React.useMemo(() => {
-    return <div className="flex justify-start items-center w-full gap-[16px]">
-      <span>Vídeo Aulas</span>
-      <SearchInput placeholder="Pesquise por termos e questões" className="mr-[16px] ml-auto min-w-[400px]" />
-    </div>
-  }, []);
+  const { back } = useRouter();
+  const [currentModule, setCurrentModule] = useState<ModuleType>();
 
   const { data: courses, isPending: isPendingCourses } = useQuery({
     queryKey: ["courses"],
@@ -25,23 +24,65 @@ const CoursesPage = () => {
     },
   });
 
-  return (
-    <PageLayout headerTitle={HeaderTitle} headerType="back">
-      <div className="grid grid-cols-3 gap-4">
-        {isPendingCourses ? (
-          <Loader className="animate-spin" />
-        ) : (
-          // Ensure that you handle the case where courses might be undefined or an array of objects
-          courses && Array.isArray(courses) ? (
-            courses.map((course, index) => (
-              <CourseCard key={index} course={course} />
-            ))
-          ) : (
-            // Handle the case where courses is not available or incorrectly typed
-            <p>No courses available</p>
-          )
-        )}
+  const HeaderTitle = React.useMemo(() => {
+    return (
+      <div className="flex justify-start items-center w-full gap-[16px]">
+        <span>Vídeo Aulas</span>
+        <SearchInput
+          placeholder="Pesquise por termos e questões"
+          className="mr-[16px] ml-auto min-w-[400px]"
+        />
       </div>
+    );
+  }, []);
+
+  const showCoursesList = useMemo(() => {
+    return !currentModule && courses && Array.isArray(courses);
+  }, [courses, currentModule]);
+
+  const goToModule = useCallback((module: ModuleType) => {
+    setCurrentModule(module);
+  }, []);
+
+  const pageBack = useCallback(() => {
+    if (currentModule) {
+      setCurrentModule(undefined);
+    } else {
+      back();
+    }
+  }, [back, currentModule]);
+
+  const PageContent = useMemo(() => {
+    if (isPendingCourses) {
+      return <Loader className="animate-spin" />;
+    }
+    if (currentModule) {
+      return <Module module={currentModule} />;
+    }
+    if (showCoursesList && courses) {
+      return (
+        <div className="grid grid-cols-3 gap-4">
+          {courses.map((course) => (
+            <CourseCard
+              course={course}
+              key={course.id}
+              goToModule={goToModule}
+            />
+          ))}
+        </div>
+      );
+    }
+
+    return <p>No courses available</p>;
+  }, [courses, currentModule, goToModule, isPendingCourses, showCoursesList]);
+
+  return (
+    <PageLayout
+      headerTitle={HeaderTitle}
+      headerType="back"
+      backAction={pageBack}
+    >
+      {PageContent}
     </PageLayout>
   );
 };

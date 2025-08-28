@@ -2,20 +2,21 @@
 
 /* eslint-disable @next/next/no-img-element */
 import { ArrowLeft } from "lucide-react";
+import React from "react";
 
 import { useRouter } from "next/navigation";
 
 import { useAuthStore } from "@/stores/authStore";
 
 import AppThemeToggler from "./AppThemeToggler";
-import React from "react";
 
 type HeaderProps = {
   headerTitle?: string | React.ReactElement;
   headerType?: "welcome" | "back";
+  backAction?: () => void;
 };
 
-const Header = ({ headerTitle, headerType }: HeaderProps) => {
+const Header = ({ headerTitle, headerType, backAction }: HeaderProps) => {
   const { user } = useAuthStore();
   const { back } = useRouter();
 
@@ -36,7 +37,16 @@ const Header = ({ headerTitle, headerType }: HeaderProps) => {
           </div>
         ) : headerType === "back" ? (
           <div className="flex gap-4 items-center">
-            <ArrowLeft className="cursor-pointer" onClick={back} />
+            <ArrowLeft
+              className="cursor-pointer"
+              onClick={() => {
+                if (backAction) {
+                  backAction();
+                } else {
+                  back();
+                }
+              }}
+            />
             <h1 className="text-2xl font-bold w-full">{headerTitle}</h1>
           </div>
         ) : null}
