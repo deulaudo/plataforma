@@ -43,7 +43,7 @@ const ProductSelect = ({
     queryFn: productService.listProducts,
   });
 
-  const sortedProducts = products?.sort((a, b) =>
+  const sortedProducts = products?.sort((a) =>
     user?.products.some((p) => p.id === a.id) ? -1 : 1,
   );
 
@@ -117,6 +117,13 @@ const ProductSelect = ({
   }, []);
 
   const handleProductSelect = (product: ProductType) => {
+    if (user?.role === "ADMIN") {
+      // Se for admin, selecionar normalmente
+      onSelect(product);
+      setIsOpen(false);
+      return;
+    }
+
     // Se o usuário não possui o produto, abrir modal
     if (!userOwnsProduct(product.id)) {
       setSelectedProductForModal(product);
