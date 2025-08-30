@@ -1,23 +1,13 @@
 "use client";
 
-import { ChevronDown, ChevronUp } from "lucide-react";
-import { useTheme } from "next-themes";
-import { useCallback, useMemo, useState } from "react";
-
-import { useRouter } from "next/navigation";
-
-import CourseContent from "./CourseContent";
+import { useMemo } from "react";
 
 type CourseCardProps = {
   course: CourseType;
-  goToModule: (module: ModuleType) => void;
+  goToCourse: (courseId: string) => void;
 };
 
-const CourseCard = ({ course, goToModule }: CourseCardProps) => {
-  const router = useRouter();
-  const { theme } = useTheme();
-  const [isCardExpanded, setIsCardExpanded] = useState<boolean>(false);
-
+const CourseCard = ({ course, goToCourse }: CourseCardProps) => {
   const courseDone = useMemo(
     () => course.totalModulesDone === course.totalModules,
     [course],
@@ -25,7 +15,10 @@ const CourseCard = ({ course, goToModule }: CourseCardProps) => {
 
   return (
     <div
-      className={`flex w-full min-h-[170px] flex-shrink-0 flex-col gap-2 py-[24px] px-[16px] ${courseDone ? "dark:bg-[#101F25] bg-[#ECFBF4]" : "dark:bg-[#10182C] bg-[#EDF1FE]"} rounded-[36px] border border-[#FFFFFF0D] self-start`}
+      onClick={() => {
+        goToCourse(course.id);
+      }}
+      className={`flex w-full cursor-pointer min-h-[170px] flex-shrink-0 flex-col gap-2 py-[24px] px-[16px] ${courseDone ? "dark:bg-[#101F25] bg-[#ECFBF4]" : "dark:bg-[#10182C] bg-[#EDF1FE]"} rounded-[36px] border border-[#FFFFFF0D] self-start`}
     >
       <div className="flex gap-3 items-center">
         <div className="flex justify-center items-center w-[52px] h-[52px] p-[4px] rounded-[20px] border border-[#E9EAEC] dark:border-[#FFFFFF0D]">
@@ -41,18 +34,6 @@ const CourseCard = ({ course, goToModule }: CourseCardProps) => {
             {course.totalModules} modulos
           </span>
         </div>
-
-        {isCardExpanded ? (
-          <ChevronUp
-            className="dark:text-[#4b505d] text-[#7c7d80] cursor-pointer"
-            onClick={() => setIsCardExpanded(false)}
-          />
-        ) : (
-          <ChevronDown
-            className="dark:text-[#4b505d] text-[#7c7d80] cursor-pointer"
-            onClick={() => setIsCardExpanded(true)}
-          />
-        )}
       </div>
 
       <div className="flex w-full p-[4px]">
@@ -60,12 +41,6 @@ const CourseCard = ({ course, goToModule }: CourseCardProps) => {
           {course.description}
         </p>
       </div>
-
-      <CourseContent
-        courseId={course.id}
-        isExpanded={isCardExpanded}
-        goToModule={goToModule}
-      />
     </div>
   );
 };

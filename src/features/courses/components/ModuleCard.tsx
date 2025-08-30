@@ -1,7 +1,7 @@
 "use client";
 
 import { ChevronDown, ChevronUp } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { twMerge } from "tailwind-merge";
 
 import { useRouter } from "next/navigation";
@@ -10,30 +10,36 @@ import ModuleContent from "./ModuleContent";
 
 type ModuleCardProps = {
   module: ModuleType;
+  courseId: string;
   currentVideo?: VideoType;
-  someVideoWatched: boolean;
-  onChooseVideo: (video: VideoType) => void;
   contentClassName?: string;
+  handleVideoSelect?: (videoId: string) => void;
 };
 
 const ModuleCard = ({
   module,
+  courseId,
   currentVideo,
-  someVideoWatched,
-  onChooseVideo,
   contentClassName,
+  handleVideoSelect,
 }: ModuleCardProps) => {
-  const [isCardExpanded, setIsCardExpanded] = useState<boolean>(true);
+  const [isCardExpanded, setIsCardExpanded] = useState<boolean>(false);
 
   const moduleDone = useMemo(
     () => module.totalWatched === module.totalVideos,
     [module],
   );
 
+  useEffect(() => {
+    if (currentVideo) {
+      setIsCardExpanded(true);
+    }
+  }, [currentVideo]);
+
   return (
     <div
       className={twMerge(
-        `flex min-h-[480px] flex-shrink-0 flex-col gap-2 py-[24px] px-[16px] ${moduleDone ? "dark:bg-[#101F25] bg-[#ECFBF4]" : "dark:bg-[#10182C] bg-[#EDF1FE]"} rounded-[36px] border border-[#FFFFFF0D] self-start`,
+        `flex min-h-[120px] w-full flex-shrink-0 flex-col gap-2 py-[24px] px-[16px] ${moduleDone ? "dark:bg-[#101F25] bg-[#ECFBF4]" : "dark:bg-[#10182C] bg-[#EDF1FE]"} rounded-[36px] border border-[#FFFFFF0D] self-start`,
         contentClassName,
       )}
     >
@@ -45,11 +51,13 @@ const ModuleCard = ({
           <span className="font-bold text-[16px] dark:text-white">
             {module.title}
           </span>
-          <span
-            className={`font-bold text-[12px] ${moduleDone ? "text-[#1CD475]" : "text-[#2056F2]"}`}
-          >
-            {module.totalVideos} aulas
-          </span>
+          {module.totalVideos && (
+            <span
+              className={`font-bold text-[12px] ${moduleDone ? "text-[#1CD475]" : "text-[#2056F2]"}`}
+            >
+              {module.totalVideos} aulas
+            </span>
+          )}
         </div>
 
         {isCardExpanded ? (
@@ -72,11 +80,11 @@ const ModuleCard = ({
       </div>
 
       <ModuleContent
+        courseId={courseId}
         moduleId={module.id}
         currentVideoId={currentVideo?.id}
-        someVideoWatched={someVideoWatched}
         isExpanded={isCardExpanded}
-        onChooseVideo={onChooseVideo}
+        handleVideoSelect={handleVideoSelect}
       />
     </div>
   );

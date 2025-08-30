@@ -78,7 +78,7 @@ const CommentsBox = ({ referenceId, referenceType }: CommentsBoxProps) => {
         ))}
       </div>
     );
-  }, [isPending, comments, refetch]);
+  }, [isPending, comments, referenceType, refetch]);
 
   return (
     <div className="flex flex-col gap-2">

@@ -34,7 +34,7 @@ const PageLayout = ({
           headerType={headerType}
           backAction={backAction}
         />
-        <div className="flex-1">{children}</div>
+        <div className="flex flex-col flex-1">{children}</div>
       </div>
     </div>
 

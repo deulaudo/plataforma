@@ -4,27 +4,30 @@ import { useQuery } from "@tanstack/react-query";
 import { Loader } from "lucide-react";
 import React, { useCallback } from "react";
 
+import { useRouter } from "next/navigation";
+
 import { coursesService } from "@/services/coursesService";
 
 import VideoItem from "./VideoItem";
 
 type ModuleContentProps = {
-  isExpanded: boolean;
+  courseId: string;
   moduleId: string;
+  isExpanded: boolean;
   currentVideoId?: string;
-  someVideoWatched: boolean;
-  onChooseVideo: (video: VideoType) => void;
+  handleVideoSelect?: (videoId: string) => void;
 };
 
 const ModuleContent = ({
-  isExpanded,
+  courseId,
   moduleId,
+  isExpanded,
   currentVideoId,
-  someVideoWatched,
-  onChooseVideo,
+  handleVideoSelect,
 }: ModuleContentProps) => {
+  const { back, push } = useRouter();
   const { data: videos, isPending: isPedingVideos } = useQuery({
-    queryKey: ["videos", moduleId, isExpanded, someVideoWatched],
+    queryKey: ["videos", moduleId, isExpanded],
     queryFn: async () => {
       if (isExpanded) {
         return await coursesService.listVideos(moduleId);
@@ -35,10 +38,15 @@ const ModuleContent = ({
   });
 
   const goToVideo = useCallback(
-    (video: VideoType) => {
-      onChooseVideo(video);
+    (courseId: string, moduleId: string, videoId: string) => {
+      if (handleVideoSelect) {
+        handleVideoSelect(videoId);
+        return;
+      }
+
+      push(`/courses/${courseId}/modules/${moduleId}?video=${videoId}`, {});
     },
-    [onChooseVideo],
+    [handleVideoSelect, push],
   );
 
   return (
@@ -55,7 +63,9 @@ const ModuleContent = ({
                   watching={currentVideoId === video.id}
                   video={video}
                   order={index + 1}
-                  onVideoClick={goToVideo}
+                  onVideoClick={() => {
+                    goToVideo(courseId, moduleId, video.id);
+                  }}
                   key={video.id}
                 />
               ))

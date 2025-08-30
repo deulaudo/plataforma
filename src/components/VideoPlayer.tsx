@@ -46,10 +46,21 @@ const VideoPlayer = ({
     [isWatched, onVideoWasWatched],
   );
 
-  // Handle video loaded
   const handleStart = useCallback(() => {
     onVideoStart && onVideoStart();
   }, [onVideoStart]);
+
+  const handleLoad = useCallback(() => {
+    onVideoLoad && onVideoLoad();
+  }, [onVideoLoad]);
+
+  const handleLoadDone = useCallback(() => {
+    onVideoLoadDone && onVideoLoadDone();
+  }, [onVideoLoadDone]);
+
+  const handleEnd = useCallback(() => {
+    onVideoEnd && onVideoEnd();
+  }, [onVideoEnd]);
 
   return (
     <Theme
@@ -72,6 +83,10 @@ const VideoPlayer = ({
         playsInline
         src={videoSource}
         controls={false}
+        onPlaying={handleStart}
+        onEnded={handleEnd}
+        onLoadStart={handleLoad}
+        onReady={handleLoadDone}
         onTimeUpdate={handleTimeUpdate}
         style={{
           width: "100%",

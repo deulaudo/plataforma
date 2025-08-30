@@ -15,6 +15,13 @@ async function listCourses(props?: {
   return response.data;
 }
 
+async function getCourse(courseId: string): Promise<CourseType> {
+  const response = await api.get<CourseType[]>(
+    `web-platform/courses?course_id=${courseId}`,
+  );
+  return response.data[0];
+}
+
 async function getModule(moduleId: string): Promise<ModuleType> {
   const response = await api.get<ModuleType>(
     `web-platform/modules/${moduleId}`,
@@ -75,6 +82,7 @@ async function createVideoComentario(
 }
 
 export const coursesService = {
+  getCourse,
   listCourses,
   getModule,
   listModules,

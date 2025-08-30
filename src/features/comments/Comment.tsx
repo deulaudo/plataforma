@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import { formatDate } from "date-fns";
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 import Button from "@/components/Button";
 import TextArea from "@/components/TextArea";
@@ -32,6 +32,7 @@ const ReplyComment = ({ reply }: { reply: CommentType }) => {
 const Comment = ({ comment, onReply }: CommentProps) => {
   const [replyMode, setReplyMode] = useState<boolean>(false);
   const [replyText, setReplyText] = useState<string>("");
+  const inputRef = useRef<HTMLTextAreaElement>(null);
 
   const createCommentMutation = useMutation({
     mutationFn: async () => {
@@ -64,7 +65,9 @@ const Comment = ({ comment, onReply }: CommentProps) => {
           </span>
 
           <span
-            onClick={() => setReplyMode(true)}
+            onClick={() => {
+              setReplyMode(true);
+            }}
             className="cursor-pointer dark:text-[#FFFFFF80] text-[#000000BF] text-[12px] hover:opacity-80 transition-opacity"
           >
             Responder
@@ -73,13 +76,15 @@ const Comment = ({ comment, onReply }: CommentProps) => {
           {replyMode && (
             <div className="flex flex-col gap-2 mt-2">
               <TextArea
+                ref={inputRef}
+                autoFocus
                 value={replyText}
                 onChange={(e) => setReplyText(e.target.value)}
                 rows={2}
                 resize="none"
                 placeholder="Escreva sua resposta..."
               />
-              <div className="flex gap-2 justify-end">
+              <div className="flex gap-2 justify-between">
                 <Button onClick={() => setReplyMode(false)}>Cancelar</Button>
                 <Button
                   loading={createCommentMutation.isPending}
