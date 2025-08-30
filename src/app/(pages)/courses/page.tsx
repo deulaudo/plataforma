@@ -32,10 +32,6 @@ const CoursesPage = () => {
     return (
       <div className="flex justify-start items-center w-full gap-[16px]">
         <span>Vídeo Aulas</span>
-        <SearchInput
-          placeholder="Pesquise por termos e questões"
-          className="mr-[16px] ml-auto min-w-[400px]"
-        />
       </div>
     );
   }, []);
