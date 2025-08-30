@@ -52,7 +52,13 @@ const VideoPlayer = ({
   }, [onVideoStart]);
 
   return (
-    <Theme style={{ width: "100%", borderRadius: "36px", overflow: "hidden" }}>
+    <Theme
+      style={{
+        width: "100%",
+        borderRadius: "36px",
+        overflow: "hidden",
+      }}
+    >
       <img
         className="object-contain w-full h-full"
         slot="poster"

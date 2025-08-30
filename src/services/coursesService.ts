@@ -47,6 +47,27 @@ async function updateVideo(videoId: string): Promise<VideoType> {
   return response.data;
 }
 
+async function getVideoComentarios(videoId: string): Promise<ComentarioType[]> {
+  const response = await api.get<ComentarioType[]>(
+    `web-platform/comments?reference_id=${videoId}&reference_type=VIDEO`,
+  );
+  return response.data;
+}
+
+async function createVideoComentario(
+  videoId: string,
+  comentario: string,
+  parent_id?: string,
+): Promise<VideoType> {
+  const response = await api.post<VideoType>(`web-platform/comments`, {
+    content: comentario,
+    referenceType: "VIDEO",
+    referenceId: videoId,
+    parentId: parent_id,
+  });
+  return response.data;
+}
+
 export const coursesService = {
   listCourses,
   getModule,
@@ -54,4 +75,6 @@ export const coursesService = {
   getVideo,
   listVideos,
   updateVideo,
+  getVideoComentarios,
+  createVideoComentario,
 };

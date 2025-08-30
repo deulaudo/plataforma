@@ -35,3 +35,19 @@ interface ModuleType {
   createdAt: string; // Assuming this is a date-time string
   updatedAt: string; // Assuming this is a date-time string
 }
+
+interface ComentarioType {
+  id: string;
+  content: string;
+  referenceType: "QUESTION" | "VIDEO";
+  referenceId: string;
+  parentId: string;
+  user: {
+    id: string;
+    name: string;
+    email: string;
+  };
+  createdAt: string;
+  updatedAt: string;
+  parent: ComentarioType | null;
+}

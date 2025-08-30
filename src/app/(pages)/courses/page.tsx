@@ -47,9 +47,10 @@ const CoursesPage = () => {
   const pageBack = useCallback(() => {
     if (currentModule) {
       setCurrentModule(undefined);
-    } else {
-      back();
+      return;
     }
+
+    back();
   }, [back, currentModule]);
 
   const PageContent = useMemo(() => {
@@ -74,7 +75,7 @@ const CoursesPage = () => {
     }
 
     return <p>No courses available</p>;
-  }, [courses, currentModule, goToModule, isPendingCourses, showCoursesList]);
+  }, [courses, currentModule, isPendingCourses, showCoursesList, goToModule]);
 
   return (
     <PageLayout
