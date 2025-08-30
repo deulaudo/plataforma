@@ -57,6 +57,7 @@ const VideoPlayer = ({
         width: "100%",
         borderRadius: "36px",
         overflow: "hidden",
+        height: "100%",
       }}
     >
       <img

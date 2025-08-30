@@ -1,3 +1,4 @@
+import VideoPlayer from "@/components/VideoPlayer";
 import { ExamSubcategoryQuestion } from "@/types/examType";
 
 type QuestionVideoProps = {
@@ -11,12 +12,12 @@ const QuestionVideo = ({ question }: QuestionVideoProps) => {
         Comentário em vídeo
       </span>
 
-      <video
-        className="w-full h-[399px] rounded-[36px] object-cover"
-        controls
-        src={question.learnMoreVideoUrl}
-        poster={question.thumbnailVideoUrl}
-      ></video>
+      <div className="w-full h-[400px]">
+        <VideoPlayer
+          videoSource={question.learnMoreVideoUrl}
+          videoThumbnail={question.thumbnailVideoUrl}
+        />
+      </div>
     </div>
   );
 };

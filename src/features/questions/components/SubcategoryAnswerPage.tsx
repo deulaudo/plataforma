@@ -159,13 +159,6 @@ const SubcategoryAnswerPage = ({
         </div>
       )}
 
-      {showAnswer &&
-        subcategory.exams[currentQuestionIndex].learnMoreVideoUrl && (
-          <div className="self-start w-full">
-            <QuestionVideo question={subcategory.exams[currentQuestionIndex]} />
-          </div>
-        )}
-
       {showAnswer && (
         <Tabs
           activeTabId={currentTab}
@@ -175,7 +168,16 @@ const SubcategoryAnswerPage = ({
               id: "explanation",
               label: "Explicação",
               content: (
-                <>
+                <div className="flex flex-col gap-8">
+                  {showAnswer &&
+                    subcategory.exams[currentQuestionIndex]
+                      .learnMoreVideoUrl && (
+                      <div className="self-start w-full">
+                        <QuestionVideo
+                          question={subcategory.exams[currentQuestionIndex]}
+                        />
+                      </div>
+                    )}
                   {showAnswer &&
                     subcategory.exams[currentQuestionIndex].learnMore && (
                       <div className="self-start w-full">
@@ -184,7 +186,7 @@ const SubcategoryAnswerPage = ({
                         />
                       </div>
                     )}
-                </>
+                </div>
               ),
             },
             {

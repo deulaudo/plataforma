@@ -11,16 +11,20 @@ import SearchInput from "@/components/SearchInput";
 import CourseCard from "@/features/courses/components/CourseCard";
 import Module from "@/features/courses/components/Module";
 import withAuth from "@/hocs/withAuth";
+import { useSelectedProduct } from "@/hooks/useSelectedProduct";
 import { coursesService } from "@/services/coursesService";
 
 const CoursesPage = () => {
   const { back } = useRouter();
   const [currentModule, setCurrentModule] = useState<ModuleType>();
+  const { selectedProduct } = useSelectedProduct();
 
   const { data: courses, isPending: isPendingCourses } = useQuery({
     queryKey: ["courses"],
     queryFn: async () => {
-      return await coursesService.listCourses();
+      return await coursesService.listCourses({
+        productId: selectedProduct?.id,
+      });
     },
   });
 
