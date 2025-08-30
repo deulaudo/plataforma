@@ -8,6 +8,7 @@ import z, { set } from "zod";
 
 import TextArea from "@/components/TextArea";
 import VideoPlayer from "@/components/VideoPlayer";
+import CommentsBox from "@/features/comments/CommentsBox";
 import { coursesService } from "@/services/coursesService";
 
 import ModuleCard from "./ModuleCard";
@@ -108,9 +109,9 @@ const Module: React.FC<ModuleProps> = ({ module }) => {
   );
 
   return (
-    <div className="flex flex-row gap-4">
+    <div className="flex flex-row gap-4 overflow-hidden">
       <div
-        className={`flex flex-col items-center gap-4 ${isLoadingVideo || videoLoaded ? "w-2/3" : "hidden"}`}
+        className={`flex flex-col items-center gap-4 overflow-y-auto ${isLoadingVideo || videoLoaded ? "w-2/3" : "hidden"}`}
       >
         <div className="flex flex-1 relative w-full h-full">
           <button
@@ -133,99 +134,10 @@ const Module: React.FC<ModuleProps> = ({ module }) => {
             )
           )}
         </div>
-        <div className="flex flex-col w-[80%] gap-2">
-          <p className="font-bold">
-            <span className="text-[#2056F2] dark:text-[#2056F2] mr-1">
-              {comentarios?.length && comentarios?.length > 0
-                ? comentarios?.length
-                : 0}
-            </span>
-            {comentarios?.length && comentarios?.length > 1
-              ? "Comentários"
-              : "Comentário"}
-          </p>
-          <form
-            onSubmit={handleSubmit(onComentarioSubmit)}
-            className="w-full relative"
-          >
-            <Controller
-              control={control}
-              name="comentario"
-              render={({ field, fieldState }) => (
-                <TextArea
-                  ref={field.ref}
-                  value={field.value}
-                  placeholder={
-                    !!replyComment
-                      ? `Respondendo: ${replyComment.user.name}`
-                      : "Faça um comentário ou tire uma dúvida"
-                  }
-                  error={fieldState.error?.message}
-                  onChange={field.onChange}
-                />
-              )}
-            />
-            {(!!replyComment || formState.isDirty) && (
-              <button
-                type="button"
-                className="cursor-pointer absolute left-2 bottom-2 dark:text-[#FFFFFF80] text-[#000000BF]"
-                onClick={() => {
-                  setReplyComment(undefined);
-                  reset();
-                  setTimeout(() => {
-                    setFocus("comentario");
-                  });
-                }}
-              >
-                <X size={20} />
-              </button>
-            )}
-            <button
-              type="submit"
-              className="cursor-pointer absolute right-2 bottom-2 dark:text-[#FFFFFF80] text-[#000000BF]"
-            >
-              {loadingSubmitComment ? (
-                <Loader className="animate-spin mr-2" size={16} />
-              ) : (
-                <SendHorizontal size={20} />
-              )}
-            </button>
-          </form>
-          <div className="flex flex-col gap-[8px]">
-            {isPendingComentarios ? (
-              <Loader className="animate-spin mr-2" size={16} />
-            ) : (
-              <>
-                {comentarios?.map((comentario) => (
-                  <div
-                    key={comentario.id}
-                    className="flex flex-row w-full gap-[16px] p-[16px]"
-                  >
-                    <div className="w-[24px] h-[24px] rounded dark:text-[#FFFFFF80] text-[#000000BF]">
-                      <CircleUser />
-                    </div>
-                    <div className="flex flex-col w-full gap-[4px] items-start">
-                      <span className="dark:text-[#FFFFFF80] text-[#000000BF] text-[12px] font-normal">
-                        {comentario.user.name}
-                      </span>
-                      <p className="dark:text-[#FFFFFF] text-[#000000] text-[16px] font-normal">
-                        {comentario.content}
-                      </p>
-                      <button
-                        type="button"
-                        className="cursor-pointer dark:text-[#FFFFFF80] text-[#000000BF] text-[12px] font-normal]"
-                        onClick={() => {
-                          onResponderComentario(comentario);
-                        }}
-                      >
-                        Responder
-                      </button>
-                    </div>
-                  </div>
-                ))}
-              </>
-            )}
-          </div>
+        <div className="flex flex-col w-full gap-2">
+          {videoLoaded && (
+            <CommentsBox referenceType="VIDEO" referenceId={videoLoaded.id} />
+          )}
         </div>
       </div>
       <ModuleCard

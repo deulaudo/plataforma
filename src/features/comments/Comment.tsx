@@ -76,6 +76,7 @@ const Comment = ({ comment, onReply }: CommentProps) => {
                 value={replyText}
                 onChange={(e) => setReplyText(e.target.value)}
                 rows={2}
+                resize="none"
                 placeholder="Escreva sua resposta..."
               />
               <div className="flex gap-2 justify-end">

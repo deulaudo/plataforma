@@ -79,7 +79,7 @@ const CoursesPage = () => {
 
   return (
     <PageLayout
-      headerTitle={HeaderTitle}
+      headerTitle="Vídeo Aulas"
       headerType="back"
       backAction={pageBack}
     >

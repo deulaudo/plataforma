@@ -96,6 +96,7 @@ const CommentsBox = ({ referenceId, referenceType }: CommentsBoxProps) => {
           value={commentText}
           onChange={(e) => setCommentText(e.target.value)}
           placeholder="Faça um comentário ou tire uma dúvida"
+          resize="none"
         />
         <div className="flex justify-end">
           <Button
