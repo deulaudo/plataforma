@@ -11,16 +11,20 @@ import SearchInput from "@/components/SearchInput";
 import CourseCard from "@/features/courses/components/CourseCard";
 import Module from "@/features/courses/components/Module";
 import withAuth from "@/hocs/withAuth";
+import { useSelectedProduct } from "@/hooks/useSelectedProduct";
 import { coursesService } from "@/services/coursesService";
 
 const CoursesPage = () => {
   const { back } = useRouter();
   const [currentModule, setCurrentModule] = useState<ModuleType>();
+  const { selectedProduct } = useSelectedProduct();
 
   const { data: courses, isPending: isPendingCourses } = useQuery({
     queryKey: ["courses"],
     queryFn: async () => {
-      return await coursesService.listCourses();
+      return await coursesService.listCourses({
+        productId: selectedProduct?.id,
+      });
     },
   });
 
@@ -28,10 +32,6 @@ const CoursesPage = () => {
     return (
       <div className="flex justify-start items-center w-full gap-[16px]">
         <span>Vídeo Aulas</span>
-        <SearchInput
-          placeholder="Pesquise por termos e questões"
-          className="mr-[16px] ml-auto min-w-[400px]"
-        />
       </div>
     );
   }, []);

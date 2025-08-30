@@ -4,8 +4,14 @@ type ListCoursesResponse = CourseType[];
 type ListModulesResponse = ModuleType[];
 type ListVideosResponse = VideoType[];
 
-async function listCourses(): Promise<ListCoursesResponse> {
-  const response = await api.get<ListCoursesResponse>("web-platform/courses");
+async function listCourses(props?: {
+  productId?: string;
+}): Promise<ListCoursesResponse> {
+  const response = await api.get<ListCoursesResponse>("web-platform/courses", {
+    params: {
+      product_id: props?.productId,
+    },
+  });
   return response.data;
 }
 
