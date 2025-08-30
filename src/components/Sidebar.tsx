@@ -7,6 +7,8 @@ import { twMerge } from "tailwind-merge";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
+import ProductSelect from "@/features/products/components/ProductSelect";
+
 import Logo from "./Logo";
 import UserAccountMenu from "./UserAccountMenu";
 
@@ -86,6 +88,8 @@ const Sidebar = () => {
         <Logo />
 
         <div className="flex flex-col gap-[16px] mt-[32px] flex-1">
+          <ProductSelect />
+
           {links.map((link) => (
             <SidebarLink
               key={link.name}

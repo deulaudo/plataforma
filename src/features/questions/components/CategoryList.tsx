@@ -21,7 +21,7 @@ const CategoryList = ({ mode = "STUDY" }: CategoryListProps) => {
   });
 
   return (
-    <div className="flex gap-[24px] flex-wrap">
+    <div className="flex gap-[24px] justify-between flex-wrap">
       {isPendingCategories ? (
         <Loader className="animate-spin" />
       ) : (
