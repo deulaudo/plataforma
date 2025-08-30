@@ -13,6 +13,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { useSelectedProduct } from "@/hooks/useSelectedProduct";
 import { productService } from "@/services/productService";
 import { useAuthStore } from "@/stores/authStore";
 import { ProductType } from "@/types/productType";
@@ -31,7 +32,8 @@ const ProductSelect = ({
   label,
 }: ProductSelectProps) => {
   const { user } = useAuthStore();
-  const [value, setValue] = useState<string>("");
+  const { selectedProduct, selectProduct, isProductSelected } =
+    useSelectedProduct();
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [selectedProductForModal, setSelectedProductForModal] =
     useState<ProductType | null>(null);
@@ -47,9 +49,12 @@ const ProductSelect = ({
     user?.products.some((p) => p.id === a.id) ? -1 : 1,
   );
 
-  const onSelect = useCallback((product: ProductType) => {
-    setValue(product.id);
-  }, []);
+  const onSelect = useCallback(
+    (product: ProductType) => {
+      selectProduct(product);
+    },
+    [selectProduct],
+  );
 
   const buyProductMutation = useMutation<{ id: string; link: string }>({
     mutationFn: async () => {
@@ -66,8 +71,6 @@ const ProductSelect = ({
       toast.error("Não foi possível iniciar a compra do produto");
     },
   });
-
-  const selectedProduct = products?.find((product) => product.id === value);
 
   const userOwnsProduct = useCallback(
     (productId: string) => {
@@ -90,14 +93,29 @@ const ProductSelect = ({
     return null;
   }, [products, user?.products, userOwnsProduct]);
 
+  // Lógica para selecionar automaticamente um produto
   useEffect(() => {
-    if (!value && products && user?.products) {
-      const firstOwnedProduct = getFirstOwnedProduct();
-      if (firstOwnedProduct) {
-        onSelect(firstOwnedProduct);
-      }
+    if (!products || !user?.products) return;
+
+    // Se já existe um produto selecionado no store e o usuário possui esse produto, mantém selecionado
+    if (selectedProduct && userOwnsProduct(selectedProduct.id)) {
+      return;
     }
-  }, [products, user?.products, value, onSelect, getFirstOwnedProduct]);
+
+    // Se não há produto selecionado ou o usuário não possui o produto selecionado,
+    // seleciona o primeiro produto que o usuário possui
+    const firstOwnedProduct = getFirstOwnedProduct();
+    if (firstOwnedProduct) {
+      onSelect(firstOwnedProduct);
+    }
+  }, [
+    products,
+    user?.products,
+    selectedProduct,
+    userOwnsProduct,
+    getFirstOwnedProduct,
+    onSelect,
+  ]);
 
   // Fechar dropdown ao clicar fora
   useEffect(() => {
@@ -236,7 +254,7 @@ const ProductSelect = ({
                       className={twMerge(
                         "flex flex-col gap-1 p-[12px] rounded-[16px] cursor-pointer transition-all duration-200",
                         "hover:dark:bg-[#FFFFFF0D] hover:bg-[#F5F5F5]",
-                        value === product.id &&
+                        isProductSelected(product.id) &&
                           "dark:bg-[#FFFFFF0D] bg-[#F5F5F5]",
                         // Destacar produtos que o usuário possui
                         isOwned && "ring-1 ring-[#1CD475] dark:ring-[#1CD475]",

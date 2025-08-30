@@ -16,10 +16,14 @@ type FlashcardCategoryListItemType = FlashcardCategoryType & {
   };
 };
 
-async function listFlashcardCategories(): Promise<
-  FlashcardCategoryListItemType[]
-> {
-  const response = await api.get<FlashcardCategoryListItemType[]>("category");
+async function listFlashcardCategories(props?: {
+  productId?: string;
+}): Promise<FlashcardCategoryListItemType[]> {
+  const response = await api.get<FlashcardCategoryListItemType[]>("category", {
+    params: {
+      product_id: props?.productId,
+    },
+  });
   return response.data;
 }
 

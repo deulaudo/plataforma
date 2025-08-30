@@ -4,24 +4,27 @@ import { useQuery } from "@tanstack/react-query";
 import { Loader } from "lucide-react";
 import { useMemo, useState } from "react";
 
+import { useSelectedProduct } from "@/hooks/useSelectedProduct";
 import { flashcardService } from "@/services/flashcardService";
 import { FlashcardQuestionType } from "@/types/flashcardType";
 
 import FlashcardSearchItem from "./FlashcardSearchItem";
 
 const FlashcardDiscartedList = () => {
+  const { selectedProduct } = useSelectedProduct();
   const {
     data: flashcards,
     isPending,
     refetch,
   } = useQuery<FlashcardQuestionType[]>({
-    queryKey: ["flashcards-search", { discarted: true }],
+    queryKey: ["flashcards-search", { discarted: true, selectedProduct }],
     queryFn: async () => {
       return await flashcardService.searchFlashcards({
         search: "",
         discarted: true,
         perPage: 50,
         page: 1,
+        product_id: selectedProduct?.id,
       });
     },
   });

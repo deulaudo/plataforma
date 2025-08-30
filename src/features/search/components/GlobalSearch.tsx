@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 
 import Input from "@/components/Input";
 import { useDebounce } from "@/hooks/useDebounce";
+import { useSelectedProduct } from "@/hooks/useSelectedProduct";
 import { examService } from "@/services/examService";
 import { flashcardService } from "@/services/flashcardService";
 
@@ -41,6 +42,7 @@ const highlightSearchText = (text: string, searchTerm: string) => {
 };
 
 const GlobalSearch = () => {
+  const { selectedProduct } = useSelectedProduct();
   const [search, setSearch] = useState<string>("");
   const debouncedSearch = useDebounce(search, 500);
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -48,14 +50,16 @@ const GlobalSearch = () => {
   const router = useRouter();
 
   const { data: searchResponse, isPending } = useQuery({
-    queryKey: ["globalSearch", debouncedSearch],
+    queryKey: ["globalSearch", debouncedSearch, selectedProduct],
     queryFn: async () => {
       if (!debouncedSearch) return { questions: [], flashcards: [] };
       const questionsResponsePromise = examService.searchQuestions({
         search: debouncedSearch,
+        product_id: selectedProduct?.id,
       });
       const flashcardsResponsePromise = flashcardService.searchFlashcards({
         search: debouncedSearch,
+        product_id: selectedProduct?.id,
       });
 
       const [questionsResponse, flashcardsResponse] = await Promise.all([

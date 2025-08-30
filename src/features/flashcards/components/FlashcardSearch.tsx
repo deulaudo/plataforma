@@ -6,23 +6,26 @@ import { useMemo, useState } from "react";
 
 import SearchInput from "@/components/SearchInput";
 import { useDebounce } from "@/hooks/useDebounce";
+import { useSelectedProduct } from "@/hooks/useSelectedProduct";
 import { flashcardService } from "@/services/flashcardService";
 import { FlashcardQuestionType } from "@/types/flashcardType";
 
 import FlashcardSearchItem from "./FlashcardSearchItem";
 
 const FlashcardSearch = () => {
+  const { selectedProduct } = useSelectedProduct();
   const [searchQuery, setSearchQuery] = useState<string>("");
   const debouncedSearchQuery = useDebounce(searchQuery, 500);
 
   const { data: flashcards, isPending } = useQuery<FlashcardQuestionType[]>({
-    queryKey: ["flashcards-search", debouncedSearchQuery],
+    queryKey: ["flashcards-search", debouncedSearchQuery, selectedProduct],
     queryFn: async () => {
       if (debouncedSearchQuery.length < 3) {
         return [];
       }
       const response = await flashcardService.searchFlashcards({
         search: debouncedSearchQuery,
+        product_id: selectedProduct?.id,
       });
       return response;
     },

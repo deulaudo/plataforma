@@ -3,16 +3,20 @@ import { Loader } from "lucide-react";
 import { useState } from "react";
 
 import SearchInput from "@/components/SearchInput";
+import { useSelectedProduct } from "@/hooks/useSelectedProduct";
 
 import FlashcardCategory from "./FlashcardCategory";
 
 const FlashcardCategoryList = () => {
+  const { selectedProduct } = useSelectedProduct();
   const [searchTerm, setSearchTerm] = useState<string>("");
   const { data: categories, isPending } = useQuery({
-    queryKey: ["flashcards-categories"],
+    queryKey: ["flashcards-categories", { selectedProduct }],
     queryFn: async () => {
       const { flashcardService } = await import("@/services/flashcardService");
-      return flashcardService.listFlashcardCategories();
+      return flashcardService.listFlashcardCategories({
+        productId: selectedProduct?.id,
+      });
     },
   });
 
