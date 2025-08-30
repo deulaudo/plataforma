@@ -153,7 +153,6 @@ const Module: React.FC<ModuleProps> = ({ module }) => {
               name="comentario"
               render={({ field, fieldState }) => (
                 <TextArea
-                  ref={field.ref}
                   value={field.value}
                   placeholder={
                     !!replyComment
