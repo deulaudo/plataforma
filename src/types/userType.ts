@@ -18,6 +18,14 @@ export interface UserType {
     status: string;
     expirateAt: string;
   }[];
+  statistics: {
+    totalQuestionsAnswered: number;
+    completedFlashcards: number;
+    daysStudiedConsecutively: number;
+    percentageQuestionsCorrect: number;
+    percentageVideosWatched: number;
+    totalQuestionsAnsweredToday: number;
+  };
 }
 
 export interface Subscription {

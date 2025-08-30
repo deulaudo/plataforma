@@ -34,7 +34,11 @@ const StudyModeSubcategory = ({
     useState<boolean>(false);
   const { data: subcategory, isPending } = useQuery({
     queryKey: ["studyMode", { subcategoryId: id }],
-    queryFn: async () => examService.getExamSubcategoryById(id),
+    queryFn: async () =>
+      examService.getExamSubcategoryById({
+        id,
+        mode: "STUDY",
+      }),
     enabled: isSubcategoryExpanded,
   });
 

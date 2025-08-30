@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { Loader } from "lucide-react";
 
+import { useSelectedProduct } from "@/hooks/useSelectedProduct";
 import { examService } from "@/services/examService";
 import { ExamMode } from "@/types/examType";
 
@@ -11,17 +12,20 @@ type CategoryListProps = {
 };
 
 const CategoryList = ({ mode = "STUDY" }: CategoryListProps) => {
+  const { selectedProduct } = useSelectedProduct();
+
   const { data: categories, isPending: isPendingCategories } = useQuery({
-    queryKey: ["examCategories", { mode }],
+    queryKey: ["examCategories", { mode, selectedProduct }],
     queryFn: async () => {
       return await examService.listExamCategories({
         module: mode,
+        product_id: selectedProduct?.id || undefined,
       });
     },
   });
 
   return (
-    <div className="flex gap-[24px] flex-wrap">
+    <div className="flex gap-[24px] justify-between flex-wrap">
       {isPendingCategories ? (
         <Loader className="animate-spin" />
       ) : (

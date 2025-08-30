@@ -6,6 +6,8 @@ import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 
 import ImageViewer from "@/components/ImageViewer";
+import Tabs from "@/components/Tabs";
+import CommentsBox from "@/features/comments/CommentsBox";
 import { ExamMode, ExamSubcategory } from "@/types/examType";
 
 import QuestionAlternatives from "./QuestionAlternatives";
@@ -27,6 +29,7 @@ const SubcategoryAnswerPage = ({
   onQuestionAnswered,
 }: SubcategoryAnswerPageProps) => {
   const searchParams = useSearchParams();
+  const [currentTab, setCurrentTab] = useState<string>("explanation");
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(0);
   const [loadedQuestionFromURL, setLoadedQuestionFromURL] =
     useState<boolean>(false);
@@ -42,15 +45,23 @@ const SubcategoryAnswerPage = ({
    */
   useEffect(() => {
     if (loadedQuestionFromURL) return;
+
     const questionId = searchParams.get("questionId");
     if (questionId) {
-      const index = subcategory.exams.findIndex(
+      const questionIndex = subcategory.exams.findIndex(
         (exam) => exam.id === questionId,
       );
-      if (index !== -1) {
-        setCurrentQuestionIndex(index);
+
+      if (questionIndex !== -1) {
+        setCurrentQuestionIndex(questionIndex);
+        setLoadedQuestionFromURL(true);
+      } else {
+        // Se não encontrar a questão, mantém o índice 0 e marca como carregado
         setLoadedQuestionFromURL(true);
       }
+    } else {
+      // Se não há questionId nos params, marca como carregado
+      setLoadedQuestionFromURL(true);
     }
   }, [loadedQuestionFromURL, searchParams, subcategory.exams]);
 
@@ -155,12 +166,39 @@ const SubcategoryAnswerPage = ({
           </div>
         )}
 
-      {showAnswer && subcategory.exams[currentQuestionIndex].learnMore && (
-        <div className="self-start w-full">
-          <QuestionExplanation
-            question={subcategory.exams[currentQuestionIndex]}
-          />
-        </div>
+      {showAnswer && (
+        <Tabs
+          activeTabId={currentTab}
+          onTabChange={(tabId: string) => setCurrentTab(tabId)}
+          tabs={[
+            {
+              id: "explanation",
+              label: "Explicação",
+              content: (
+                <>
+                  {showAnswer &&
+                    subcategory.exams[currentQuestionIndex].learnMore && (
+                      <div className="self-start w-full">
+                        <QuestionExplanation
+                          question={subcategory.exams[currentQuestionIndex]}
+                        />
+                      </div>
+                    )}
+                </>
+              ),
+            },
+            {
+              id: "comments",
+              label: "Comentários",
+              content: (
+                <CommentsBox
+                  referenceType="QUESTION"
+                  referenceId={subcategory.exams[currentQuestionIndex].id}
+                />
+              ),
+            },
+          ]}
+        />
       )}
     </div>
   );

@@ -1,18 +1,28 @@
 import { useQuery } from "@tanstack/react-query";
 import { Loader } from "lucide-react";
+import { useState } from "react";
 
 import SearchInput from "@/components/SearchInput";
+import { useSelectedProduct } from "@/hooks/useSelectedProduct";
 
 import FlashcardCategory from "./FlashcardCategory";
 
 const FlashcardCategoryList = () => {
+  const { selectedProduct } = useSelectedProduct();
+  const [searchTerm, setSearchTerm] = useState<string>("");
   const { data: categories, isPending } = useQuery({
-    queryKey: ["flashcards-categories"],
+    queryKey: ["flashcards-categories", { selectedProduct }],
     queryFn: async () => {
       const { flashcardService } = await import("@/services/flashcardService");
-      return flashcardService.listFlashcardCategories();
+      return flashcardService.listFlashcardCategories({
+        productId: selectedProduct?.id,
+      });
     },
   });
+
+  const filteredCategories = (categories || []).filter((category) =>
+    category.name.toLowerCase().includes(searchTerm.toLowerCase()),
+  );
 
   if (isPending) {
     return <Loader className="animate-spin" size={24} />;
@@ -28,10 +38,13 @@ const FlashcardCategoryList = () => {
 
   return (
     <div className="flex flex-col gap-4">
-      <SearchInput placeholder="Pesquise por categorias" />
+      <SearchInput
+        onChange={(e) => setSearchTerm(e.target.value)}
+        placeholder="Pesquise por categorias"
+      />
 
-      <div className="flex gap-[24px] flex-wrap">
-        {categories.map((category) => (
+      <div className="flex justify-between gap-[24px] flex-wrap">
+        {filteredCategories.map((category) => (
           <FlashcardCategory
             id={category.id}
             key={category.id}

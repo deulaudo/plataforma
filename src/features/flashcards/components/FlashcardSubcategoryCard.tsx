@@ -4,6 +4,7 @@ import {
   ChevronDown,
   ChevronRight,
   ChevronUp,
+  CircleCheck,
   CreditCard,
   Frown,
   Meh,
@@ -11,6 +12,7 @@ import {
 } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useState } from "react";
+import { twMerge } from "tailwind-merge";
 
 import { useRouter } from "next/navigation";
 
@@ -19,11 +21,12 @@ import { FlashcardCardSubcategoryType } from "@/types/flashcardType";
 
 type FlashcardSubcategoryCardProps = {
   subcategory: FlashcardCardSubcategoryType;
-  className?: string;
+  isChildSubcategory?: boolean;
 };
 
 const FlashcardSubcategoryCard = ({
   subcategory,
+  isChildSubcategory = false,
 }: FlashcardSubcategoryCardProps) => {
   const router = useRouter();
   const { theme } = useTheme();
@@ -34,8 +37,21 @@ const FlashcardSubcategoryCard = ({
     return (
       <div className="flex items-center">
         <div className="flex flex-1 gap-4 flex-col p-[16px]">
-          <h3 className="font-extrabold text-[16px] dark:text-white text-black">
-            {subcategory.name}
+          <h3
+            className={twMerge(
+              "font-extrabold text-[16px] dark:text-white text-black",
+              isChildSubcategory ? "text-[14px]" : "",
+            )}
+          >
+            {subcategory.name}{" "}
+            {subcategory.questionsCount > 0 &&
+              subcategory.questionsCount === subcategory.questionsDone && (
+                <CircleCheck
+                  strokeWidth={3}
+                  className="text-[#1ed475] inline-block ml-1"
+                  size={16}
+                />
+              )}
           </h3>
           <div className="flex justify-between items-center">
             <div className="flex gap-2">
@@ -107,7 +123,7 @@ const FlashcardSubcategoryCard = ({
           size={24}
           className="text-[#808080] dark:text-[#4c515e] cursor-pointer"
           onClick={() => {
-            router.push(`/flashcards/${subcategory.id}`);
+            router.push(`/flashcards/decks/${subcategory.id}`);
           }}
         />
       </div>
@@ -118,7 +134,12 @@ const FlashcardSubcategoryCard = ({
     <div className="flex items-center w-full">
       <div className="flex flex-col gap-4 flex-1 p-[16px]">
         <div className="flex flex-1 items-center gap-2">
-          <h3 className="font-extrabold text-[16px] dark:text-white text-black">
+          <h3
+            className={twMerge(
+              "font-extrabold text-[16px] dark:text-white text-black",
+              isChildSubcategory ? "text-[14px]" : "",
+            )}
+          >
             {subcategory.name}
           </h3>
 
@@ -164,5 +185,7 @@ export default FlashcardSubcategoryCard;
 const FlashcardChildSubcategoryCard = ({
   subcategory,
 }: FlashcardSubcategoryCardProps) => {
-  return <FlashcardSubcategoryCard subcategory={subcategory} />;
+  return (
+    <FlashcardSubcategoryCard isChildSubcategory subcategory={subcategory} />
+  );
 };

@@ -8,6 +8,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;
   icon?: React.ReactNode;
   error?: string;
+  highlightWhenFocused?: boolean;
 }
 
 const Input: React.FC<InputProps> = ({
@@ -15,10 +16,12 @@ const Input: React.FC<InputProps> = ({
   icon,
   type,
   error,
+  highlightWhenFocused = false,
   ...props
 }) => {
   const randomId = useId();
   const [showPassword, setShowPassword] = useState(false);
+  const [isFocused, setIsFocused] = useState<boolean>(false);
 
   const isPassword = type === "password";
   const inputType = isPassword && showPassword ? "text" : type;
@@ -38,18 +41,34 @@ const Input: React.FC<InputProps> = ({
       )}
       <div
         className={twMerge(
-          "flex items-center text-xs relative w-full border border-[#FFFFFF0D] rounded-[20px] bg-white dark:bg-transparent p-[16px] h-[48px] placeholder:text-[#FFFFFF40]",
+          "flex items-center text-xs relative w-full border border-[#FFFFFF0D] rounded-[20px] bg-[#0000000D] dark:bg-transparent p-[16px] h-[48px] placeholder:text-[#FFFFFF40]",
           error ? "border-red-500" : "",
+          highlightWhenFocused ? "focus-within:border-[#2056F2]" : "",
         )}
       >
         {icon && (
-          <div className="text-[#FFFFFF40] absolute left-[16px]">{icon}</div>
+          <div
+            className={twMerge(
+              "dark:text-[#FFFFFF40] text-[#00000080] absolute left-[16px]",
+              highlightWhenFocused && isFocused ? "text-[#2056F2]" : "",
+            )}
+          >
+            {icon}
+          </div>
         )}
 
         <input
           id={randomId}
           type={inputType}
           {...props}
+          onFocus={(e) => {
+            props.onFocus?.(e);
+            setIsFocused(true);
+          }}
+          onBlur={(e) => {
+            props.onBlur?.(e);
+            setIsFocused(false);
+          }}
           className={`h-[48px] w-full outline-0 ${icon && "ml-[32px]"} ${isPassword ? "pr-[40px]" : ""}`}
         />
 
