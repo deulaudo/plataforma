@@ -98,16 +98,16 @@ const ModulePage = ({
     }
     if (module) {
       return (
-        <div className="flex flex-1 flex-row gap-4 overflow-hidden">
+        <div className="flex flex-1 flex-col lg:flex-row gap-4 overflow-hidden">
           <div
-            className={`flex flex-col items-center gap-4 overflow-y-auto ${isLoadingVideo || videoLoaded ? "w-2/3" : "hidden"}`}
+            className={`flex flex-col items-center gap-4 ${isLoadingVideo || videoLoaded ? "w-full lg:w-2/3" : "hidden"}`}
           >
-            <div className="flex flex-1 relative w-full h-full">
+            <div className="flex flex-1 relative w-full h-full min-h-[200px] lg:min-h-[400px]">
               <button
                 onClick={closeVideo}
-                className="absolute bg-white hover:border-b-blue-800 top-4 right-4 z-100 text-gray-800 rounded-full cursor-pointer w-8 h-8 flex items-center justify-center"
+                className="absolute bg-white hover:border-b-blue-800 top-2 right-2 lg:top-4 lg:right-4 z-50 text-gray-800 rounded-full cursor-pointer w-6 h-6 lg:w-8 lg:h-8 flex items-center justify-center shadow-md"
               >
-                <XIcon size={18} />
+                <XIcon size={14} className="lg:w-[18px] lg:h-[18px]" />
               </button>
               {!isLoadingVideo && videoLoaded ? (
                 <VideoPlayer
@@ -133,7 +133,7 @@ const ModulePage = ({
           <ModuleCard
             courseId={id}
             module={module}
-            contentClassName={`${isLoadingVideo || videoLoaded ? "w-1/3" : "w-full"}`}
+            contentClassName={`${isLoadingVideo || videoLoaded ? "w-full lg:w-1/3" : "w-full"} ${isLoadingVideo || videoLoaded ? "mt-4 lg:mt-0" : ""}`}
             currentVideo={videoLoaded}
             handleVideoSelect={onChangeVideo}
           />

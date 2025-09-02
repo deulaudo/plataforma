@@ -14,7 +14,7 @@ import { coursesService } from "@/services/coursesService";
 
 const CoursePage = ({ params }: { params: Promise<{ id: string }> }) => {
   const { id } = use(params);
-  const { back, push } = useRouter();
+  const { back } = useRouter();
 
   const { data: course, isPending: isPendingCourse } = useQuery({
     queryKey: ["course"],
@@ -42,7 +42,7 @@ const CoursePage = ({ params }: { params: Promise<{ id: string }> }) => {
   }, [course]);
 
   const PageContent = useMemo(() => {
-    if (isPendingModules) {
+    if (isPendingModules || isPendingCourse) {
       return (
         <div className="flex flex-col justify-center items-center rounded-[36px] w-full h-full mx-auto overflow-hidden">
           <Loader className="animate-spin" />
@@ -50,16 +50,12 @@ const CoursePage = ({ params }: { params: Promise<{ id: string }> }) => {
       );
     }
 
-    if (modules) {
-      const chunckSize = Math.ceil(modules.length / 3);
-      const gridModules = _.chunk(modules, chunckSize);
+    if (modules && modules.length > 0) {
       return (
-        <div className="flex flex-1 flex-row gap-4">
-          {gridModules.map((modulesGrid, index) => (
-            <div key={index} className="flex flex-col gap-4 w-[33%]">
-              {modulesGrid.map((module) => (
-                <ModuleCard courseId={id} module={module} key={module.id} />
-              ))}
+        <div className="flex gap-4 justify-between flex-wrap">
+          {modules.map((module) => (
+            <div key={module.id} className="w-full lg:max-w-[486px]">
+              <ModuleCard courseId={id} module={module} key={module.id} />
             </div>
           ))}
         </div>

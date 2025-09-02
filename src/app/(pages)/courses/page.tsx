@@ -43,19 +43,21 @@ const CoursesPage = () => {
 
     if (courses) {
       return (
-        <div className="grid grid-cols-3 gap-4">
+        <div className="flex gap-4 justify-between flex-wrap">
           {courses.map((course) => (
-            <CourseCard
-              course={course}
-              key={course.id}
-              goToCourse={goToCourse}
-            />
+            <div key={course.id} className="w-full lg:max-w-[486px]">
+              <CourseCard
+                course={course}
+                key={course.id}
+                goToCourse={goToCourse}
+              />
+            </div>
           ))}
         </div>
       );
     }
 
-    return <p>No courses available</p>;
+    return <p>Sem cursos disponíveis</p>;
   }, [courses, goToCourse, isPendingCourses]);
 
   return (

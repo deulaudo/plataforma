@@ -4,8 +4,6 @@ import { ChevronDown, ChevronUp } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { twMerge } from "tailwind-merge";
 
-import { useRouter } from "next/navigation";
-
 import ModuleContent from "./ModuleContent";
 
 type ModuleCardProps = {
@@ -39,7 +37,7 @@ const ModuleCard = ({
   return (
     <div
       className={twMerge(
-        `flex min-h-[120px] w-full flex-shrink-0 flex-col gap-2 py-[24px] px-[16px] ${moduleDone ? "dark:bg-[#101F25] bg-[#ECFBF4]" : "dark:bg-[#10182C] bg-[#EDF1FE]"} rounded-[36px] border border-[#FFFFFF0D] self-start`,
+        `flex min-h-[120px] h-full w-full flex-shrink flex-col gap-2 py-[24px] px-[16px] ${moduleDone ? "dark:bg-[#101F25] bg-[#ECFBF4]" : "dark:bg-[#10182C] bg-[#EDF1FE]"} rounded-[36px] border border-[#FFFFFF0D] self-stretch`,
         contentClassName,
       )}
     >
