@@ -18,7 +18,7 @@ const ReplyComment = ({ reply }: { reply: CommentType }) => {
     <div className="flex ml-4 border-l-2 border-[black] dark:border-[#FFFFFF20] pl-4">
       <div className="flex flex-col w-full">
         <span className="dark:text-[#FFFFFF80] text-[#000000BF] text-[12px]">
-          {reply.user.name} •{" "}
+          {reply.user?.name} •{" "}
           {formatDate(new Date(reply.createdAt), "dd/MM/yyyy 'às' HH:mm")}
         </span>
         <span className="dark:text-white text-black text-[16px] mt-1">
