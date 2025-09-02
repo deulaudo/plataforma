@@ -162,6 +162,7 @@ const TrackModule = ({
         <CourseTrackInfo
           isOpen={isModuleInfoOpen}
           onClose={() => setIsModuleInfoOpen(false)}
+          courseId={id}
           module={{
             id,
             imageUrl,

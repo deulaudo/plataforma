@@ -21,7 +21,7 @@ const ModuleCard = ({
   contentClassName,
   handleVideoSelect,
 }: ModuleCardProps) => {
-  const [isCardExpanded, setIsCardExpanded] = useState<boolean>(false);
+  const [isCardExpanded, setIsCardExpanded] = useState<boolean>(true);
 
   const moduleDone = useMemo(
     () => module.totalWatched === module.totalVideos,

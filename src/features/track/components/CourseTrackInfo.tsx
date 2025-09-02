@@ -1,5 +1,9 @@
-import { CircleCheck, X } from "lucide-react";
+"use client";
+
+import { X } from "lucide-react";
 import { useTheme } from "next-themes";
+
+import { useRouter } from "next/navigation";
 
 import Button from "@/components/Button";
 import SegmentedProgressCircle from "@/components/SegmentedProgressCircle";
@@ -13,6 +17,7 @@ import {
 type CourseTrackModuleInfoProps = {
   isOpen: boolean;
   onClose: () => void;
+  courseId: string;
   module: {
     id: string;
     imageUrl: string | null;
@@ -26,9 +31,11 @@ type CourseTrackModuleInfoProps = {
 const CourseTrackModuleInfo = ({
   isOpen,
   onClose,
+  courseId,
   module,
 }: CourseTrackModuleInfoProps) => {
   const { theme } = useTheme();
+  const router = useRouter();
   const isModuleCompleted = module.totalVideosWatched === module.totalVideos;
 
   return (
@@ -65,7 +72,13 @@ const CourseTrackModuleInfo = ({
             {module.description}
           </span>
 
-          <Button theme={isModuleCompleted ? "green" : "blue"} fullWidth>
+          <Button
+            onClick={() => {
+              router.push(`/courses/${courseId}/modules/${module.id}`);
+            }}
+            theme={isModuleCompleted ? "green" : "blue"}
+            fullWidth
+          >
             {isModuleCompleted ? "Revisar módulo" : "Acessar módulo"}
           </Button>
         </div>
