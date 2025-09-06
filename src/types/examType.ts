@@ -17,6 +17,8 @@ export type ExamCategory = {
     subcategoryId: string;
     questionsCount: number;
     questionsAnswered: number;
+    correctQuestions: number;
+    wrongQuestions: number;
   }[];
 };
 

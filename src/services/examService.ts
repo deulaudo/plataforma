@@ -27,8 +27,14 @@ async function listExamCategories(params?: {
   return response.data;
 }
 
-async function getExamCategoryById(id: string): Promise<ExamCategory> {
-  const response = await api.get<ExamCategory>(`/exam/category/${id}`);
+async function getExamCategoryById(params: {
+  id: string;
+  mode: "TEST" | "STUDY";
+}): Promise<ExamCategory> {
+  const { id, mode } = params;
+  const response = await api.get<ExamCategory>(`/exam/category/${id}`, {
+    params: { module: mode },
+  });
   return response.data;
 }
 

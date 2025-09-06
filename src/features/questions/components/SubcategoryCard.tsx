@@ -1,4 +1,4 @@
-import { ChevronRight, ListChecks } from "lucide-react";
+import { ChevronRight, CircleCheck, CircleX, ListChecks } from "lucide-react";
 import { useTheme } from "next-themes";
 
 import { useRouter } from "next/navigation";
@@ -11,6 +11,8 @@ type SubcategoryCardProps = {
   name: string;
   questionsCount: number;
   questionsAnswered: number;
+  correctQuestions: number;
+  wrongQuestions: number;
   mode?: ExamMode;
 };
 
@@ -19,10 +21,17 @@ const SubcategoryCard = ({
   name,
   questionsCount,
   questionsAnswered,
+  correctQuestions,
+  wrongQuestions,
   mode = "STUDY",
 }: SubcategoryCardProps) => {
   const router = useRouter();
   const { theme } = useTheme();
+
+  const correctPercentage =
+    questionsAnswered > 0 ? (correctQuestions / questionsAnswered) * 100 : 0;
+  const wrongPercentage =
+    questionsAnswered > 0 ? (wrongQuestions / questionsAnswered) * 100 : 0;
 
   return (
     <div className="flex items-center">
@@ -37,9 +46,39 @@ const SubcategoryCard = ({
               <ListChecks
                 className="dark:text-[#4c515e] text-[#808080]"
                 size={16}
+                strokeWidth={3}
               />
               <span className="text-xs dark:text-white text-black font-bold">
                 {questionsCount}
+              </span>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <CircleCheck
+                className="dark:text-[#4c515e] text-[#808080]"
+                size={16}
+                strokeWidth={3}
+              />
+              <span className="text-xs dark:text-white text-black font-bold">
+                {questionsCount - questionsAnswered}
+              </span>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <CircleCheck
+                className="text-[#1cce7c]"
+                size={16}
+                strokeWidth={3}
+              />
+              <span className="text-xs dark:text-white text-black font-bold">
+                {correctQuestions}
+              </span>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <CircleX className="text-[#dd4b4a]" size={16} strokeWidth={3} />
+              <span className="text-xs dark:text-white text-black font-bold">
+                {wrongQuestions}
               </span>
             </div>
           </div>
@@ -49,11 +88,11 @@ const SubcategoryCard = ({
           segments={[
             {
               color: "#e14a45",
-              value: 20,
+              value: wrongPercentage,
             },
             {
               color: "#46d07a",
-              value: 10,
+              value: correctPercentage,
             },
             {
               color: theme === "dark" ? "#2a334a" : "#ccd0d4",

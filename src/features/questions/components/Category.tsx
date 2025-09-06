@@ -28,9 +28,14 @@ const Category = ({
   const [isCategoryExpanded, setIsCategoryExpanded] = useState<boolean>(false);
 
   const { data: subcategories, isPending: isPendingSubcategories } = useQuery({
-    queryKey: ["studyModeSubcategories", { categoryId: id }],
+    queryKey: ["studyModeSubcategories", { categoryId: id, mode }],
     queryFn: async () => {
-      return (await examService.getExamCategoryById(id)).subcategories;
+      return (
+        await examService.getExamCategoryById({
+          id,
+          mode: mode === "TEST" ? "TEST" : "STUDY",
+        })
+      ).subcategories;
     },
   });
 
@@ -81,6 +86,8 @@ const Category = ({
                 name={subcategory.name}
                 questionsCount={subcategory.questionsCount}
                 questionsAnswered={subcategory.questionsAnswered}
+                correctQuestions={subcategory.correctQuestions}
+                wrongQuestions={subcategory.wrongQuestions}
               />
             </div>
           ))}
