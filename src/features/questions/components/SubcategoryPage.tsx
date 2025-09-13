@@ -213,6 +213,7 @@ const SubcategoryPage = ({
             question={question.question}
             id={question.id}
             examAnswer={question.examAnswer}
+            tags={question.tags}
             onClick={() => {
               if (mode === "STUDY") {
                 router.push(

@@ -26,7 +26,6 @@ export type ExamSubcategoryQuestion = {
   id: string;
   question: string;
   imageUrl: string;
-  tags: string[];
   learnMore: string;
   learnMoreImageUrl: string;
   learnMoreVideoUrl: string;
@@ -35,6 +34,10 @@ export type ExamSubcategoryQuestion = {
   ordering: number;
   active: boolean;
   cancelled: boolean;
+  tags: {
+    id: string;
+    tag: string;
+  }[];
   alternatives: {
     id: string;
     correct: boolean;
