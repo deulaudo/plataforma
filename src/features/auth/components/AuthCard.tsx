@@ -26,7 +26,7 @@ const AuthCard = ({ children, title, subtitle, className }: AuthCardProps) => {
           <span className="font-extrabold text-2xl text-[#2056F2]">
             {title}
           </span>
-          <span className="max-w-[297] font-medium text-center text-xs text-black dark:text-white">
+          <span className="max-w-[350] font-medium text-center text-sm text-black dark:text-white">
             {subtitle}
           </span>
         </div>

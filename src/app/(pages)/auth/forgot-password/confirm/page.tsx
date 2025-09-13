@@ -15,28 +15,30 @@ import Input from "@/components/Input";
 import AuthCard from "@/features/auth/components/AuthCard";
 import { authService } from "@/services/authService";
 
-const confirmSignupSchema = z.object({
+const confirmForgotPasswordSchema = z.object({
   code: z.string().min(2, "Código deve ter pelo menos 2 caracteres"),
   password: z.string().min(2, "Senha deve ter pelo menos 6 caracteres"),
 });
 
-type ConfirmSignupFormData = z.infer<typeof confirmSignupSchema>;
+type ConfirmForgotPasswordFormData = z.infer<
+  typeof confirmForgotPasswordSchema
+>;
 
-const ConfirmSignupPage = () => {
+const ConfirmForgotPasswordPage = () => {
   const router = useRouter();
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<ConfirmSignupFormData>({
-    resolver: zodResolver(confirmSignupSchema),
+  } = useForm<ConfirmForgotPasswordFormData>({
+    resolver: zodResolver(confirmForgotPasswordSchema),
   });
 
-  const confirmSignupMutation = useMutation<
+  const confirmForgotPasswordMutation = useMutation<
     void,
     unknown,
-    ConfirmSignupFormData
+    ConfirmForgotPasswordFormData
   >({
     mutationFn: async (data) => {
       try {
@@ -52,24 +54,26 @@ const ConfirmSignupPage = () => {
       } catch (error) {
         if (error instanceof AxiosError) {
           toast.error(
-            "Erro ao confirmar cadastro. Verifique o código e tente novamente.",
+            "Erro ao resetar senha. Verifique o código e tente novamente.",
           );
+
+          throw error;
         }
       }
     },
     onSuccess: () => {
       router.push("/auth/login");
-      toast.success("Conta confirmada com sucesso! Agora você já pode logar.");
+      toast.success("Senha resetada com sucesso! Agora você já pode logar.");
     },
   });
 
-  const onSubmit = async (data: ConfirmSignupFormData) => {
-    confirmSignupMutation.mutate(data);
+  const onSubmit = async (data: ConfirmForgotPasswordFormData) => {
+    confirmForgotPasswordMutation.mutate(data);
   };
 
   return (
     <AuthCard
-      title="Confirme sua conta"
+      title="Recuperar senha"
       subtitle="Entre com o código de validação enviado para o seu e-mail"
       className="max-w-[500px]"
     >
@@ -78,14 +82,14 @@ const ConfirmSignupPage = () => {
           <Input
             icon={<User size={16} />}
             label="Código de confirmação"
-            placeholder="Ex: João"
+            placeholder="Ex: 244433"
             {...register("code")}
             error={errors.code?.message}
           />
 
           <Input
             icon={<Lock size={16} />}
-            label="Escolha sua senha"
+            label="Escolha sua nova senha"
             placeholder="********"
             type="password"
             {...register("password")}
@@ -95,10 +99,10 @@ const ConfirmSignupPage = () => {
 
         <div className="flex flex-col gap-[24px] w-full justify-center">
           <Button
-            loading={confirmSignupMutation.isPending}
+            loading={confirmForgotPasswordMutation.isPending}
             type="submit"
             theme="blue"
-            disabled={confirmSignupMutation.isPending}
+            disabled={confirmForgotPasswordMutation.isPending}
           >
             Salvar
           </Button>
@@ -108,7 +112,7 @@ const ConfirmSignupPage = () => {
             theme="secondary"
             type="button"
           >
-            Já possui uma conta? Clique aqui
+            Voltar
           </Button>
         </div>
       </form>
@@ -116,4 +120,4 @@ const ConfirmSignupPage = () => {
   );
 };
 
-export default ConfirmSignupPage;
+export default ConfirmForgotPasswordPage;

@@ -32,7 +32,7 @@ const InputPhone: React.FC<InputPhoneProps> = ({
         <label
           htmlFor={randomId}
           className={twMerge(
-            "font-bold text-xs text-black dark:text-white",
+            "font-bold text-sm text-black dark:text-white",
             error ? "text-red-500" : "",
           )}
         >
@@ -41,7 +41,7 @@ const InputPhone: React.FC<InputPhoneProps> = ({
       )}
       <div
         className={twMerge(
-          "flex items-center text-xs relative w-full border border-[#FFFFFF0D] rounded-[20px] bg-[#0000000D] dark:bg-transparent p-[16px] h-[48px] placeholder:text-[#FFFFFF40]",
+          "flex items-center text-sm relative w-full border border-[#FFFFFF0D] rounded-[20px] bg-[#0000000D] dark:bg-transparent p-[16px] h-[48px] placeholder:text-[#FFFFFF40]",
           error ? "border-red-500" : "",
           highlightWhenFocused ? "focus-within:border-[#2056F2]" : "",
           "phone-input-container",
@@ -68,7 +68,7 @@ const InputPhone: React.FC<InputPhoneProps> = ({
         />
       </div>
 
-      {error && <span className="text-red-500 text-xs mt-1">{error}</span>}
+      {error && <span className="text-red-500 text-sm mt-1">{error}</span>}
 
       <style jsx global>{`
         .phone-input-container .PhoneInput {
@@ -82,7 +82,7 @@ const InputPhone: React.FC<InputPhoneProps> = ({
           border: none;
           outline: none;
           color: inherit;
-          font-size: 12px;
+          font-size: 14px;
           height: 100%;
           width: 100%;
           padding: 0;

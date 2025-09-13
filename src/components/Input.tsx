@@ -41,7 +41,7 @@ const Input: React.FC<InputProps> = ({
       )}
       <div
         className={twMerge(
-          "flex items-center text-xs relative w-full border border-[#FFFFFF0D] rounded-[20px] bg-[#0000000D] dark:bg-transparent p-[16px] h-[48px] placeholder:text-[#FFFFFF40]",
+          "flex items-center text-sm relative w-full border border-[#FFFFFF0D] rounded-[20px] bg-[#0000000D] dark:bg-transparent p-[16px] h-[48px] placeholder:text-[#FFFFFF40]",
           error ? "border-red-500" : "",
           highlightWhenFocused ? "focus-within:border-[#2056F2]" : "",
         )}
@@ -84,7 +84,7 @@ const Input: React.FC<InputProps> = ({
         )}
       </div>
 
-      {error && <span className="text-red-500 text-xs mt-1">{error}</span>}
+      {error && <span className="text-red-500 text-sm mt-1">{error}</span>}
     </div>
   );
 };
