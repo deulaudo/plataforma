@@ -39,10 +39,10 @@ const UserAccountMenu = () => {
       />
 
       <div className="flex flex-col gap-1 flex-1">
-        <span className="font-bold text-[12px] dark:text-white text-black">
-          {user?.name}
+        <span className="font-bold text-[14px] dark:text-white text-black">
+          {user?.name.split(" ")[0]}
         </span>
-        <span className="font-medium text-[10px] dark:text-[#FFFFFF40]">
+        <span className="font-medium text-[12px] dark:text-[#FFFFFF40]">
           {user?.email}
         </span>
       </div>

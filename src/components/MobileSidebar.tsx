@@ -191,7 +191,7 @@ const MobileSidebar = ({ isOpen, onClose }: MobileSidebarProps) => {
                 <span className="font-bold text-[12px] dark:text-white text-black">
                   {user?.name}
                 </span>
-                <span className="font-medium text-[10px] dark:text-[#FFFFFF40]">
+                <span className="font-medium text-[12px] dark:text-[#FFFFFF40]">
                   {user?.email}
                 </span>
               </div>

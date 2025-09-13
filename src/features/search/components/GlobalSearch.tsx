@@ -190,12 +190,12 @@ const SearchResultGroup = ({
     <div className="flex flex-col gap-[12px]">
       <div className="flex gap-1 items-center">
         {icon}
-        <span className="text-[12px] font-medium dark:text-[#FFFFFF80]">
+        <span className="text-sm font-medium dark:text-[#FFFFFF80]">
           {name}
         </span>
         {results.length && (
           <div className="w-[16px] h-[16px] bg-[#2c303c] rounded-full flex items-center justify-center">
-            <span className="text-[10px] text-white">{results.length}</span>
+            <span className="text-sm text-white">{results.length}</span>
           </div>
         )}
       </div>
@@ -206,10 +206,10 @@ const SearchResultGroup = ({
           key={result.id}
           onClick={() => result.onResultItemClick(result.id)}
         >
-          <span className="text-[10px] dark:text-white italic">
+          <span className="text-sm dark:text-white italic">
             {highlightSearchText(result.title, searchTerm)}
           </span>
-          <span className="text-[10px] dark:text-[#888c92] italic">
+          <span className="text-sm dark:text-[#888c92] italic">
             {result.description}
           </span>
         </div>
