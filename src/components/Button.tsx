@@ -13,6 +13,7 @@ const Button: React.FC<ButtonProps> = ({
   children,
   loading,
   fullWidth,
+  type = "button",
   ...props
 }) => {
   const getButtonTheme = () => {
@@ -49,6 +50,7 @@ const Button: React.FC<ButtonProps> = ({
         getButtonTheme(),
         fullWidth && "w-full",
       )}
+      type={type}
       {...props}
     >
       {loading && <Loader className="animate-spin mr-2" size={16} />}

@@ -1,52 +1,35 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
-import { Mail, Smartphone, User } from "lucide-react";
-import { Controller, useForm } from "react-hook-form";
-import { isValidPhoneNumber } from "react-phone-number-input";
+import { Lock, Mail, Smartphone, User } from "lucide-react";
+import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 import { useRouter } from "next/navigation";
 
 import Button from "@/components/Button";
 import Input from "@/components/Input";
-import InputPhone from "@/components/InputPhone";
 import AuthCard from "@/features/auth/components/AuthCard";
-import { authService } from "@/services/authService";
 
-const signupSchema = z.object({
-  name: z.string().min(2, "Nome deve ter pelo menos 2 caracteres"),
-  email: z.string().email("E-mail inválido"),
-  phone: z
-    .string()
-    .min(1, "Telefone é obrigatório")
-    .refine((value) => isValidPhoneNumber(value), {
-      message: "Número de telefone inválido",
-    }),
+const confirmSignupSchema = z.object({
+  code: z.string().min(2, "Código deve ter pelo menos 2 caracteres"),
+  password: z.string().min(2, "Senha deve ter pelo menos 6 caracteres"),
 });
 
-type SignupFormData = z.infer<typeof signupSchema>;
+type ConfirmSignupFormData = z.infer<typeof confirmSignupSchema>;
 
-const SignupPage = () => {
+const ConfirmSignupPage = () => {
   const router = useRouter();
 
   const {
     register,
     handleSubmit,
-    control,
     formState: { errors, isSubmitting },
-  } = useForm<SignupFormData>({
-    resolver: zodResolver(signupSchema),
+  } = useForm<ConfirmSignupFormData>({
+    resolver: zodResolver(confirmSignupSchema),
   });
 
-  const signUpMutation = useMutation<void, unknown, SignupFormData>({
-    mutationFn: async (data) => {
-      await authService.signUp(data);
-    },
-  });
-
-  const onSubmit = async (data: SignupFormData) => {
+  const onSubmit = async (data: ConfirmSignupFormData) => {
     try {
       // Aqui você pode implementar a lógica de criação da conta
       // console.log("Form data:", data);
@@ -67,7 +50,7 @@ const SignupPage = () => {
             icon={<User size={16} />}
             label="Nome completo"
             placeholder="Ex: João"
-            {...register("name")}
+            {...register("code")}
             error={errors.name?.message}
           />
 
@@ -80,19 +63,13 @@ const SignupPage = () => {
             error={errors.email?.message}
           />
 
-          <Controller
-            name="phone"
-            control={control}
-            render={({ field }) => (
-              <InputPhone
-                icon={<Smartphone size={16} />}
-                label="Celular"
-                placeholder="(11) 99999-9999"
-                value={field.value}
-                onChange={field.onChange}
-                error={errors.phone?.message}
-              />
-            )}
+          <Input
+            icon={<Smartphone size={16} />}
+            label="Celular"
+            placeholder="Ex: (00) 00000-0000"
+            type="tel"
+            {...register("phone")}
+            error={errors.phone?.message}
           />
         </div>
 
@@ -114,4 +91,4 @@ const SignupPage = () => {
   );
 };
 
-export default SignupPage;
+export default ConfirmSignupPage;

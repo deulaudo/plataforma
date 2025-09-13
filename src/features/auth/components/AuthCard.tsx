@@ -16,7 +16,7 @@ const AuthCard = ({ children, title, subtitle, className }: AuthCardProps) => {
   return (
     <div
       className={twMerge(
-        "flex flex-col items-center justify-center w-full max-w-[575px] p-[80px] rounded-[80px] bg-[#EDEEEF] dark:bg-[#141926] border border-[#0000000D] dark:border-[#FFFFFF0D]",
+        "flex flex-col items-center justify-center w-full max-w-[575px] p-[40px] md:p-[80px] rounded-[80px] bg-[#EDEEEF] dark:bg-[#141926] border border-[#0000000D] dark:border-[#FFFFFF0D]",
         className,
       )}
     >
