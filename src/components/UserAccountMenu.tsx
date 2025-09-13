@@ -62,7 +62,7 @@ const UserAccountMenu = () => {
       </div>
 
       {isMenuOpened && (
-        <div className="flex flex-col gap-3 absolute left-[250px] bottom-[-10px] w-[200px] bg-white dark:bg-[#141926] border border-[#EDEEEF] dark:border-[#202531] rounded-lg shadow-lg p-4">
+        <div className="flex flex-col gap-3 absolute left-[250px] bottom-[-10px] w-[200px] bg-white dark:bg-[#141926] border border-[#EDEEEF] dark:border-[#202531] rounded-lg shadow-lg p-4 z-10">
           <div
             onClick={() => router.push("/profile")}
             className="cursor-pointer flex gap-2 items-center"

@@ -9,7 +9,7 @@ interface InputPhoneProps {
   label?: string;
   icon?: React.ReactNode;
   error?: string;
-  value?: string;
+  value?: string | Value;
   onChange: (value: Value | undefined) => void;
   placeholder?: string;
   highlightWhenFocused?: boolean;
@@ -58,7 +58,7 @@ const InputPhone: React.FC<InputPhoneProps> = ({
           international
           countryCallingCodeEditable={false}
           defaultCountry="BR"
-          value={value}
+          value={value as Value}
           onChange={onChange}
           placeholder={placeholder}
           className={twMerge("phone-input", icon && "pl-[32px]")}
