@@ -21,7 +21,7 @@ const ModuleCard = ({
   contentClassName,
   handleVideoSelect,
 }: ModuleCardProps) => {
-  const [isCardExpanded, setIsCardExpanded] = useState<boolean>(true);
+  const [isCardExpanded, setIsCardExpanded] = useState<boolean>(false);
 
   const moduleDone = useMemo(
     () => module.totalWatched === module.totalVideos,
@@ -37,7 +37,7 @@ const ModuleCard = ({
   return (
     <div
       className={twMerge(
-        `flex min-h-[120px] h-full w-full flex-shrink flex-col gap-2 py-[24px] px-[16px] ${moduleDone ? "dark:bg-[#101F25] bg-[#ECFBF4]" : "dark:bg-[#10182C] bg-[#EDF1FE]"} rounded-[36px] border border-[#FFFFFF0D] self-stretch`,
+        `flex min-h-[120px] w-full flex-col gap-2 py-[24px] px-[16px] ${moduleDone ? "dark:bg-[#101F25] bg-[#ECFBF4]" : "dark:bg-[#10182C] bg-[#EDF1FE]"} rounded-[36px] border border-[#FFFFFF0D]`,
         contentClassName,
       )}
     >

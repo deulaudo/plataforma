@@ -70,6 +70,7 @@ const CoursePage = ({ params }: { params: Promise<{ id: string }> }) => {
         </span>
       </div>
     );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id, isPendingModules, modules]);
 
   return (

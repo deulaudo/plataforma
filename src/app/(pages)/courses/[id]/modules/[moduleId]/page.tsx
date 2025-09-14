@@ -1,6 +1,6 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import _ from "lodash";
 import { Loader, XIcon } from "lucide-react";
 import React, { use, useCallback, useEffect, useMemo, useState } from "react";
@@ -19,6 +19,7 @@ const ModulePage = ({
 }: {
   params: Promise<{ id: string; moduleId: string }>;
 }) => {
+  const queryClient = useQueryClient();
   const { id, moduleId } = use(params);
   const { back, push } = useRouter();
   const searchParams = useSearchParams();
@@ -64,12 +65,17 @@ const ModulePage = ({
 
       if (!result) return;
       setSomeVideoWatched(true);
+
+      queryClient.invalidateQueries({
+        queryKey: ["videos", moduleId, true],
+      });
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error(error);
     } finally {
       setSomeVideoWatched(false);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [videoLoaded]);
 
   const headerTitle = useMemo(() => {
