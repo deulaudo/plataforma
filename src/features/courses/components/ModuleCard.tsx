@@ -12,6 +12,7 @@ type ModuleCardProps = {
   currentVideo?: VideoType;
   contentClassName?: string;
   handleVideoSelect?: (videoId: string) => void;
+  isCardExpandedByDefault?: boolean;
 };
 
 const ModuleCard = ({
@@ -20,8 +21,11 @@ const ModuleCard = ({
   currentVideo,
   contentClassName,
   handleVideoSelect,
+  isCardExpandedByDefault = true,
 }: ModuleCardProps) => {
-  const [isCardExpanded, setIsCardExpanded] = useState<boolean>(false);
+  const [isCardExpanded, setIsCardExpanded] = useState<boolean>(
+    isCardExpandedByDefault,
+  );
 
   const moduleDone = useMemo(
     () => module.totalWatched === module.totalVideos,
