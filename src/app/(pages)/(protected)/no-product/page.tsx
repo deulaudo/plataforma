@@ -57,12 +57,12 @@ const NoProductPage = () => {
       <div className="mt-4 text-sm text-gray-500 dark:text-gray-400">
         <p>Ou entre em contato pelo WhatsApp:</p>
         <a
-          href="https://wa.me/5511999999999"
+          href="https://wa.me/5551920024719"
           target="_blank"
           rel="noopener noreferrer"
           className="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 underline"
         >
-          (11) 99999-9999
+          +55 (51) 92002-4719
         </a>
       </div>
     </div>
