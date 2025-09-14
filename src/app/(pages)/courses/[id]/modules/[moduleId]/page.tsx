@@ -62,13 +62,12 @@ const ModulePage = ({
     try {
       if (!videoLoaded) return;
       const result = await coursesService.updateVideo(videoLoaded.id);
+      queryClient.invalidateQueries({
+        queryKey: ["videos"],
+      });
 
       if (!result) return;
       setSomeVideoWatched(true);
-
-      queryClient.invalidateQueries({
-        queryKey: ["videos", moduleId, true],
-      });
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error(error);
