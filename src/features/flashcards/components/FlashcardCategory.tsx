@@ -43,8 +43,8 @@ const FlashcardCategory = ({
           segments={subcategoriesCount}
           progress={subcategoriesDone}
           activeColor="#346fff"
-          inactiveColor={theme === "dark" ? "#2a2a2a" : "#dcdee5"}
-          textColor={theme !== "dark" ? "#000000" : "#ffffff"}
+          inactiveColor={theme === "light" ? "#2a2a2a" : "#dcdee5"}
+          textColor={theme === "light" ? "#000000" : "#ffffff"}
           size={64}
           strokeWidth={5}
         />
