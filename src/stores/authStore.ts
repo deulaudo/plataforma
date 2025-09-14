@@ -7,9 +7,11 @@ import { UserType } from "@/types/userType";
 type AuthStoreType = {
   user: UserType | null;
   loadingUser: boolean;
+  isMultipleLoginError: boolean;
 
   setUser: (user: UserType | null) => void;
   setLoadingUser: (loadingUser: boolean) => void;
+  setIsMultipleLoginError: (isMultipleLoginError: boolean) => void;
 
   loadUser: () => Promise<void>;
   signOut: () => void;
@@ -19,9 +21,12 @@ export const useAuthStore = create<AuthStoreType>((set) => ({
   user: null,
   loadingUser: true,
   userProfile: null,
+  isMultipleLoginError: false,
 
   setUser: (user) => set({ user }),
   setLoadingUser: (loadingUser) => set({ loadingUser }),
+  setIsMultipleLoginError: (isMultipleLoginError) =>
+    set({ isMultipleLoginError }),
 
   loadUser: async () => {
     if (!authService.isUserWithAuthenticationToken()) {

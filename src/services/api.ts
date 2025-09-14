@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 
 import { useAuthStore } from "@/stores/authStore";
 import { API_URL } from "@/utils/constants";
@@ -29,7 +29,7 @@ api.interceptors.response.use(
     return response;
   },
   async (error) => {
-    const { setUser } = useAuthStore.getState();
+    const { setUser, setIsMultipleLoginError } = useAuthStore.getState();
 
     const originalRequest = error.config;
 
@@ -55,6 +55,16 @@ api.interceptors.response.use(
           originalRequest.headers["Authorization"] = `Bearer ${accessToken}`;
           return api.request(originalRequest);
         } catch (refreshError) {
+          if (refreshError instanceof AxiosError) {
+            if (
+              refreshError.response?.status === 401 &&
+              refreshError.response?.data?.message ===
+                "Multiple accesses not allowed"
+            ) {
+              setIsMultipleLoginError(true);
+            }
+          }
+
           setUser(null);
           authService.signOut();
 

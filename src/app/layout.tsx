@@ -3,6 +3,7 @@ import { twMerge } from "tailwind-merge";
 
 import localFont from "next/font/local";
 
+import { MultipleLoginAlert } from "@/components/MultipleLoginAlert";
 import { ThemeProvider } from "@/components/ThemeProvider";
 
 import "./globals.css";
@@ -44,6 +45,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           {children}
+          <MultipleLoginAlert />
         </ThemeProvider>
       </body>
     </html>
