@@ -29,7 +29,7 @@ const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
         )}
         <div
           className={twMerge(
-            "flex items-start text-xs relative w-full border border-[#FFFFFF0D] rounded-[20px] bg-white dark:bg-[#182031] p-[16px] min-h-[120px] placeholder:text-[#FFFFFF40]",
+            "flex items-start text-[16px] relative w-full border border-[#FFFFFF0D] rounded-[20px] bg-white dark:bg-[#182031] p-[16px] min-h-[120px] placeholder:text-[#FFFFFF40]",
             error ? "border-red-500" : "",
           )}
         >

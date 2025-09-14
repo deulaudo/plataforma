@@ -35,7 +35,12 @@ const FlashcardSubcategoryCard = ({
 
   if (subcategory.subcategoriesChildsCount === 0) {
     return (
-      <div className="flex items-center">
+      <div
+        className="flex items-center"
+        onClick={() => {
+          router.push(`/flashcards/decks/${subcategory.id}`);
+        }}
+      >
         <div className="flex flex-1 gap-4 flex-col p-[16px]">
           <h3
             className={twMerge(

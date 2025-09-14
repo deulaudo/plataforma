@@ -47,7 +47,7 @@ const PageLayout = ({
 
       {/* Main Content */}
       <div className="flex flex-col flex-1">
-        <div className="flex flex-col gap-[48px] flex-1 p-6 md:p-6 mt-[64px] md:mt-0 overflow-y-auto">
+        <div className="flex flex-col gap-[48px] flex-1 p-6 md:p-6 mt-[64px] md:mt-0 md:overflow-y-auto">
           <Header
             headerTitle={headerTitle}
             headerType={headerType}

@@ -54,7 +54,7 @@ const Header = ({ headerTitle, headerType, backAction }: HeaderProps) => {
           </div>
         ) : null}
       </div>
-      <div className="flex items-center gap-[16px]">
+      <div className="flex flex-col md:flex-row items-end md:items-center gap-[16px]">
         <div className="w-full flex-1 xl:w-[455px]">
           <GlobalSearch />
         </div>
