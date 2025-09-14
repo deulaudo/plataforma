@@ -27,7 +27,12 @@ const StudyModeCategory = ({
   const { data: subcategories, isPending: isPendingSubcategories } = useQuery({
     queryKey: ["studyModeSubcategories", { categoryId: id }],
     queryFn: async () => {
-      return (await examService.getExamCategoryById(id)).subcategories;
+      return (
+        await examService.getExamCategoryById({
+          id,
+          mode: "STUDY",
+        })
+      ).subcategories;
     },
   });
 
