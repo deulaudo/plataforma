@@ -70,7 +70,7 @@ const FlashcardSubcategoryCard = ({
                 </span>
               </div>
 
-              <div className="flex items-center gap-2">
+              {/* <div className="flex items-center gap-2">
                 <Meh className="dark:text-[#4c515e] text-[#808080]" size={16} />
                 <span className="text-xs dark:text-white text-black font-bold">
                   {0}
@@ -102,20 +102,20 @@ const FlashcardSubcategoryCard = ({
                 <span className="text-xs dark:text-white text-black font-bold">
                   {0}
                 </span>
-              </div>
+              </div> */}
             </div>
           </div>
 
           <ProgressBar
             segments={[
-              {
-                color: "#e14a45",
-                value: 20,
-              },
-              {
-                color: "#46d07a",
-                value: 10,
-              },
+              // {
+              //   color: "#e14a45",
+              //   value: 20,
+              // },
+              // {
+              //   color: "#46d07a",
+              //   value: 10,
+              // },
               {
                 color: theme === "dark" ? "#2a334a" : "#ccd0d4",
                 value: 100,
