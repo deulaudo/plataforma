@@ -8,6 +8,7 @@ import React, { use, useCallback, useEffect, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
 import PageLayout from "@/components/PageLayout";
+import Tabs from "@/components/Tabs";
 import VideoPlayer from "@/components/VideoPlayer";
 import CommentsBox from "@/features/comments/CommentsBox";
 import ModuleCard from "@/features/courses/components/ModuleCard";
@@ -26,6 +27,7 @@ const ModulePage = ({
   const [videoLoaded, setVideoLoaded] = useState<VideoType>();
   const [isLoadingVideo, setIsLoadingVideo] = useState(false);
   const [someVideoWatched, setSomeVideoWatched] = useState(false);
+  const [currentTab, setCurrentTab] = useState<string>("dicas");
 
   const { data: module, isPending: isPendingModule } = useQuery({
     queryKey: ["module"],
@@ -127,12 +129,38 @@ const ModulePage = ({
               )}
             </div>
             <div className="w-full gap-2">
-              {videoLoaded && (
-                <CommentsBox
-                  referenceType="VIDEO"
-                  referenceId={videoLoaded.id}
-                />
-              )}
+              <Tabs
+                activeTabId={currentTab}
+                onTabChange={(tabId: string) => setCurrentTab(tabId)}
+                tabs={[
+                  {
+                    id: "dicas",
+                    label: "Dicas do Duzinho",
+                    content: (
+                      <div
+                        className="p-4 bg-white dark:bg-[#141926] border border-[#EDEEEF] dark:border-[#202531] rounded-lg text-sm text-gray-700 dark:text-gray-300"
+                        dangerouslySetInnerHTML={{
+                          __html:
+                            videoLoaded?.description.replace(
+                              /\n/g,
+                              "<br /><br/>",
+                            ) || "",
+                        }}
+                      />
+                    ),
+                  },
+                  {
+                    id: "comentarios",
+                    label: "Comentários",
+                    content: videoLoaded && (
+                      <CommentsBox
+                        referenceType="VIDEO"
+                        referenceId={videoLoaded.id}
+                      />
+                    ),
+                  },
+                ]}
+              />
             </div>
           </div>
           <ModuleCard
@@ -147,6 +175,7 @@ const ModulePage = ({
     }
   }, [
     closeVideo,
+    currentTab,
     id,
     isLoadingVideo,
     isPendingModule,
