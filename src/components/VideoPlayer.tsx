@@ -1,6 +1,6 @@
 "use client";
 
-import Theme from "player.style/demuxed-2022/react";
+import Theme from "player.style/sutro/react";
 import { SyntheticEvent, useCallback, useRef, useState } from "react";
 import ReactPlayer from "react-player";
 
