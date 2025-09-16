@@ -78,13 +78,13 @@ const MobileSidebar = ({ isOpen, onClose }: MobileSidebarProps) => {
       active: () => pathname === "/",
       enabled: () => true,
     },
-    {
-      name: "Trilhas",
-      icon: <Workflow />,
-      active: () => pathname.startsWith("/tracks"),
-      href: "/tracks",
-      enabled: (product: ProductType) => product.modes.course,
-    },
+    // {
+    //   name: "Trilhas",
+    //   icon: <Workflow />,
+    //   active: () => pathname.startsWith("/tracks"),
+    //   href: "/tracks",
+    //   enabled: (product: ProductType) => product.modes.course,
+    // },
     {
       name: "Vídeo Aulas",
       icon: <Tv />,
