@@ -36,7 +36,12 @@ const ExamStatistics = ({
       </div>
 
       <div className="flex gap-10 mt-6 items-center justify-between">
-        <DualProgressRing p1={85} p2={15} size={149} thickness={16}>
+        <DualProgressRing
+          p1={(correctAnswers / totalQuestions) * 100}
+          p2={(wrongAnswers / totalQuestions) * 100}
+          size={149}
+          thickness={16}
+        >
           <div className="flex flex-col items-center justify-center">
             <span className="font-medium text-[12px] dark:text-[#FFFFFF80] text-[#000000BF]">
               Questões

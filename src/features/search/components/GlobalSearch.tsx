@@ -101,7 +101,7 @@ const GlobalSearch = () => {
           className={twMerge(
             "absolute top-full left-0 w-full max-h-[500px] overflow-y-auto min-h-[200px] rounded-[36px] p-[24px]",
             "flex flex-col gap-[24px]",
-            "z-10",
+            "z-40",
             // Dark Mode
             "dark:bg-[#141926] border border-[#FFFFFF0D]",
             // Light Mode

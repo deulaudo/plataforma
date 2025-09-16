@@ -38,11 +38,11 @@ const UserAccountMenu = () => {
         alt="User Avatar"
       />
 
-      <div className="flex flex-col gap-1 flex-1">
-        <span className="font-bold text-[14px] dark:text-white text-black">
+      <div className="flex flex-col gap-1 flex-1 min-w-0">
+        <span className="font-bold text-[14px] dark:text-white text-black truncate">
           {user?.name.split(" ")[0]}
         </span>
-        <span className="font-medium text-[12px] dark:text-[#FFFFFF40]">
+        <span className="font-medium text-[12px] dark:text-[#FFFFFF40] text-gray-600 truncate">
           {user?.email}
         </span>
       </div>

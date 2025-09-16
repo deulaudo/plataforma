@@ -6,9 +6,6 @@ import {
   ChevronUp,
   CircleCheck,
   CreditCard,
-  Frown,
-  Meh,
-  Smile,
 } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useState } from "react";
@@ -33,10 +30,15 @@ const FlashcardSubcategoryCard = ({
   const [isSubcategoryExpanded, setIsSubcategoryExpanded] =
     useState<boolean>(false);
 
+  const toggleSubcategoryExpansion = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIsSubcategoryExpanded(!isSubcategoryExpanded);
+  };
+
   if (subcategory.subcategoriesChildsCount === 0) {
     return (
       <div
-        className="flex items-center"
+        className="flex items-center cursor-pointer"
         onClick={() => {
           router.push(`/flashcards/decks/${subcategory.id}`);
         }}
@@ -70,7 +72,7 @@ const FlashcardSubcategoryCard = ({
                 </span>
               </div>
 
-              <div className="flex items-center gap-2">
+              {/* <div className="flex items-center gap-2">
                 <Meh className="dark:text-[#4c515e] text-[#808080]" size={16} />
                 <span className="text-xs dark:text-white text-black font-bold">
                   {0}
@@ -102,20 +104,20 @@ const FlashcardSubcategoryCard = ({
                 <span className="text-xs dark:text-white text-black font-bold">
                   {0}
                 </span>
-              </div>
+              </div> */}
             </div>
           </div>
 
           <ProgressBar
             segments={[
-              {
-                color: "#e14a45",
-                value: 20,
-              },
-              {
-                color: "#46d07a",
-                value: 10,
-              },
+              // {
+              //   color: "#e14a45",
+              //   value: 20,
+              // },
+              // {
+              //   color: "#46d07a",
+              //   value: 10,
+              // },
               {
                 color: theme === "dark" ? "#2a334a" : "#ccd0d4",
                 value: 100,
@@ -136,7 +138,10 @@ const FlashcardSubcategoryCard = ({
   }
 
   return (
-    <div className="flex items-center w-full">
+    <div
+      className="flex items-center w-full cursor-pointer"
+      onClick={toggleSubcategoryExpansion}
+    >
       <div className="flex flex-col gap-4 flex-1 p-[16px]">
         <div className="flex flex-1 items-center gap-2">
           <h3
@@ -173,8 +178,9 @@ const FlashcardSubcategoryCard = ({
         {isSubcategoryExpanded && (
           <div className="flex flex-col gap-2">
             {subcategory.childSubcategories.map((childSubcategory) => (
-              <FlashcardChildSubcategoryCard
+              <FlashcardSubcategoryCard
                 key={childSubcategory.id}
+                isChildSubcategory
                 subcategory={childSubcategory}
               />
             ))}

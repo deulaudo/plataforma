@@ -71,24 +71,24 @@ const StatisticsPage = () => {
         <div className="w-full max-w-[527px]">
           <ExamStatistics
             totalQuestions={
-              statistics?.studyMode.totalCorrectQuestionsByUser || 0
+              statistics?.studyMode.totalQuestionsAnsweredByUser || 0
             }
             correctAnswers={
               statistics?.studyMode.totalCorrectQuestionsByUser || 0
             }
-            wrongAnswers={0}
+            wrongAnswers={statistics?.studyMode.totalWrongQuestionsByUser || 0}
             module="STUDY"
           />
         </div>
         <div className="w-full max-w-[527px]">
           <ExamStatistics
             totalQuestions={
-              statistics?.testMode.totalCorrectQuestionsByUser || 0
+              statistics?.testMode.totalQuestionsAnsweredByUser || 0
             }
             correctAnswers={
               statistics?.testMode.totalCorrectQuestionsByUser || 0
             }
-            wrongAnswers={0}
+            wrongAnswers={statistics?.testMode.totalWrongQuestionsByUser || 0}
             module="TEST"
           />
         </div>

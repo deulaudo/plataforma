@@ -4,7 +4,10 @@
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 
+import { useRouter } from "next/navigation";
+
 const Logo = () => {
+  const router = useRouter();
   const { theme } = useTheme();
   const [logoImage, setLogoImage] = useState<string>(
     "/images/DeuLaudoLogoWhite.svg",
@@ -22,9 +25,10 @@ const Logo = () => {
     <img
       src={logoImage}
       alt="DeuLaudo Logo"
+      onClick={() => router.push("/")}
       width={189}
       height={30.24}
-      className="w-[189px] h-[30.24px]"
+      className="w-[189px] h-[30.24px] cursor-pointer"
     />
   );
 };
