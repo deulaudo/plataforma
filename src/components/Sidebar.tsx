@@ -1,6 +1,13 @@
 "use client";
 
-import { CardSim, Home, ListCheck, NotebookPen, Tv } from "lucide-react";
+import {
+  CardSim,
+  Home,
+  ListCheck,
+  NotebookPen,
+  Tv,
+  Workflow,
+} from "lucide-react";
 import { JSX, cloneElement } from "react";
 import { twMerge } from "tailwind-merge";
 
@@ -61,6 +68,13 @@ const Sidebar = () => {
       href: "/",
       active: () => pathname === "/",
       enabled: () => true,
+    },
+    {
+      name: "Trilhas",
+      icon: <Workflow />,
+      active: () => pathname.startsWith("/tracks"),
+      href: "/tracks",
+      enabled: (product: ProductType) => product.modes.course,
     },
     {
       name: "Vídeo Aulas",

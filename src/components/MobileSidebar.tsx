@@ -8,6 +8,7 @@ import {
   NotebookPen,
   Tv,
   User,
+  Workflow,
   X,
 } from "lucide-react";
 import { JSX, cloneElement } from "react";
@@ -76,6 +77,13 @@ const MobileSidebar = ({ isOpen, onClose }: MobileSidebarProps) => {
       href: "/",
       active: () => pathname === "/",
       enabled: () => true,
+    },
+    {
+      name: "Trilhas",
+      icon: <Workflow />,
+      active: () => pathname.startsWith("/tracks"),
+      href: "/tracks",
+      enabled: (product: ProductType) => product.modes.course,
     },
     {
       name: "Vídeo Aulas",
