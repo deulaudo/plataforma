@@ -2,9 +2,10 @@ import api from "./api";
 
 type ExamDashboardResponse = {
   totalQuestions: number;
-  totalQuestionsAnswered: number;
+  totalQuestionsAnsweredByUser: number;
   totalCorrectQuestionsByUser: number;
   totalCorrectQuestions: number;
+  totalWrongQuestionsByUser: number;
 };
 
 type ExamHistoryResponse = {

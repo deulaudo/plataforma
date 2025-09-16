@@ -55,7 +55,12 @@ const CoursePage = ({ params }: { params: Promise<{ id: string }> }) => {
         <div className="flex gap-4 justify-between flex-wrap">
           {modules.map((module) => (
             <div key={module.id} className="w-full lg:max-w-[486px]">
-              <ModuleCard courseId={id} module={module} key={module.id} />
+              <ModuleCard
+                isCardExpandedByDefault={false}
+                courseId={id}
+                module={module}
+                key={module.id}
+              />
             </div>
           ))}
         </div>
