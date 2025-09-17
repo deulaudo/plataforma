@@ -48,9 +48,10 @@ const ModuleCard = ({
       )}
     >
       <div className="flex gap-3 items-center">
-        <div className="flex justify-center items-center w-[52px] h-[52px] p-[4px] rounded-[20px] border border-[#E9EAEC] dark:border-[#FFFFFF0D]">
-          {/* <img alt="Capa" className="w-[25px] h-[25px]" src={module.cover} /> */}
-          {theme === "light" ? (
+        <div className="flex bg-slate-400 dark:bg-transparent justify-center items-center w-[52px] h-[52px] p-[4px] rounded-[20px] border border-[#E9EAEC] dark:border-[#FFFFFF0D]">
+          {module.cover ? (
+            <img alt="Capa" className="w-[25px] h-[25px]" src={module.cover} />
+          ) : theme === "light" ? (
             <img
               alt="Capa"
               className="w-[25px] h-[25px]"
