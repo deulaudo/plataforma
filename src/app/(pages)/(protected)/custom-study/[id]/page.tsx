@@ -4,12 +4,15 @@ import { useQuery } from "@tanstack/react-query";
 import { Loader } from "lucide-react";
 import { use } from "react";
 
+import { useRouter } from "next/navigation";
+
 import PageLayout from "@/components/PageLayout";
-import CustomStudyPage from "@/features/custom-study/components/CustomStudyPage";
+import CustomStudyQuestions from "@/features/custom-study/components/CustomStudyQuestions";
 import { customStudyService } from "@/services/customStudyService";
 
 const CustomStudy = ({ params }: { params: Promise<{ id: string }> }) => {
   const { id } = use(params);
+  const router = useRouter();
 
   const {
     data: customStudy,
@@ -32,7 +35,13 @@ const CustomStudy = ({ params }: { params: Promise<{ id: string }> }) => {
 
   return (
     <PageLayout headerType="back" headerTitle={"Estudo Personalizado"}>
-      <CustomStudyPage customStudy={customStudy!} onReset={refetch} />
+      <CustomStudyQuestions
+        customStudy={customStudy!}
+        onReset={refetch}
+        onDelete={() => {
+          router.replace("/custom-study");
+        }}
+      />
     </PageLayout>
   );
 };

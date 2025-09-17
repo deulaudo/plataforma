@@ -1,30 +1,37 @@
 "use client";
 
 import { useMutation } from "@tanstack/react-query";
-import { CircleCheck, ListChecks, XCircle } from "lucide-react";
+import { CircleCheck, ListChecks, Pen, Trash, XCircle } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useMemo, useState } from "react";
 
 import { useRouter } from "next/navigation";
 
 import Button from "@/components/Button";
+import IconButton from "@/components/IconButton";
 import ProgressBar from "@/components/ProgressBar";
 import { customStudyService } from "@/services/customStudyService";
 import { CustomStudyType } from "@/types/customStudyType";
-import { ExamMode, ExamSubcategory } from "@/types/examType";
 
+import ConfirmDeleteCustomStudy from "./ConfirmDeleteCustomStudy";
 import ConfirmResetCustomStudy from "./ConfirmResetCustomStudy";
 import QuestionCard from "./QuestionCard";
 
-type CustomStudyPageProps = {
+type CustomStudyQuestionsProps = {
   customStudy: CustomStudyType;
   onReset?: () => void;
+  onDelete?: () => void;
 };
 
-const CustomStudyPage = ({ customStudy, onReset }: CustomStudyPageProps) => {
+const CustomStudyQuestions = ({
+  customStudy,
+  onReset,
+  onDelete,
+}: CustomStudyQuestionsProps) => {
   const router = useRouter();
   const { theme } = useTheme();
   const [isResetModalOpen, setIsResetModalOpen] = useState<boolean>(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
 
   const questionsCount = customStudy.exams.length;
   const questionsAnswered = customStudy.exams.filter(
@@ -92,6 +99,20 @@ const CustomStudyPage = ({ customStudy, onReset }: CustomStudyPageProps) => {
 
   return (
     <div className="flex flex-col gap-4 dark:bg-[#151b2b] bg-[#e5e8ef] p-[24px] rounded-[36px] border dark:border-[#FFFFFF0D] border-[#E9EAEC]">
+      <div className="flex justify-end gap-2">
+        <IconButton
+          icon={<Pen size={16} />}
+          onClick={() => {
+            router.push(`/custom-study/${customStudy.id}/edit`);
+          }}
+        />
+        <IconButton
+          icon={<Trash size={16} />}
+          onClick={() => {
+            setIsDeleteModalOpen(true);
+          }}
+        />
+      </div>
       <div className="flex flex-col xl:flex-row gap-[24px] xl:items-center">
         <h1 className="font-extrabold text-[24px] dark:text-white text-black">
           {customStudy.name}
@@ -176,8 +197,20 @@ const CustomStudyPage = ({ customStudy, onReset }: CustomStudyPageProps) => {
             setIsResetModalOpen(false);
           }}
         />
-      </div>
 
+        <ConfirmDeleteCustomStudy
+          isOpen={isDeleteModalOpen}
+          onClose={() => {
+            setIsDeleteModalOpen(false);
+          }}
+          onConfirm={() => {
+            if (onDelete) {
+              onDelete();
+            }
+            setIsDeleteModalOpen(false);
+          }}
+        />
+      </div>
       <div className="flex gap-4 flex-wrap justify-center sm:justify-start">
         {customStudy.exams.map((question, index) => (
           <QuestionCard
@@ -199,4 +232,4 @@ const CustomStudyPage = ({ customStudy, onReset }: CustomStudyPageProps) => {
   );
 };
 
-export default CustomStudyPage;
+export default CustomStudyQuestions;
