@@ -1,3 +1,5 @@
+"use client";
+
 import { useMutation } from "@tanstack/react-query";
 import { CircleCheck, ListChecks, XCircle } from "lucide-react";
 import { useTheme } from "next-themes";
@@ -7,79 +9,79 @@ import { useRouter } from "next/navigation";
 
 import Button from "@/components/Button";
 import ProgressBar from "@/components/ProgressBar";
-import { examService } from "@/services/examService";
+import { customStudyService } from "@/services/customStudyService";
+import { CustomStudyType } from "@/types/customStudyType";
 import { ExamMode, ExamSubcategory } from "@/types/examType";
 
-import ConfirmFinishTest from "./ConfirmFinishTest";
-import ConfirmSubcategoryReset from "./ConfirmSubcategoryReset";
+import ConfirmResetCustomStudy from "./ConfirmResetCustomStudy";
 import QuestionCard from "./QuestionCard";
 
-type SubcategoryPageProps = {
-  subcategory: ExamSubcategory;
-  mode?: ExamMode;
-  isCustomStudy?: boolean;
+type CustomStudyPageProps = {
+  customStudy: CustomStudyType;
   onReset?: () => void;
 };
 
-const SubcategoryPage = ({
-  subcategory,
-  mode = "STUDY",
-  isCustomStudy = false,
-  onReset,
-}: SubcategoryPageProps) => {
+const CustomStudyPage = ({ customStudy, onReset }: CustomStudyPageProps) => {
   const router = useRouter();
   const { theme } = useTheme();
   const [isResetModalOpen, setIsResetModalOpen] = useState<boolean>(false);
-  const [isFinishTestModalOpen, setIsFinishTestModalOpen] =
-    useState<boolean>(false);
-  const isTestFinished =
-    localStorage.getItem(`test:${subcategory.id}`) === "true";
+
+  const questionsCount = customStudy.exams.length;
+  const questionsAnswered = customStudy.exams.filter(
+    (exam) => exam.examAnswer !== null,
+  ).length;
 
   const correctQuestionsPercentage = useMemo(() => {
-    if (mode === "TEST" && !isTestFinished) {
+    if (!customStudy.exams || customStudy.exams.length === 0) {
       return 0;
     }
-    return Math.round(
-      (subcategory.correctQuestions / subcategory.questionsCount) * 100,
-    );
-  }, [
-    isTestFinished,
-    mode,
-    subcategory.questionsCount,
-    subcategory.correctQuestions,
-  ]);
+
+    const correctQuestions = customStudy.exams?.filter(
+      (exam) => exam.examAnswer?.correct,
+    ).length;
+
+    return Math.round((correctQuestions / questionsCount) * 100);
+  }, [customStudy.exams, questionsCount]);
 
   const wrongQuestionsPercentage = useMemo(() => {
-    if (mode === "TEST" && !isTestFinished) {
+    if (!customStudy.exams || customStudy.exams.length === 0) {
       return 0;
     }
-    return Math.round(
-      (subcategory.wrongQuestions / subcategory.questionsCount) * 100,
-    );
-  }, [
-    isTestFinished,
-    mode,
-    subcategory.questionsCount,
-    subcategory.wrongQuestions,
-  ]);
+
+    const wrongQuestions = customStudy.exams?.filter(
+      (exam) => exam.examAnswer && !exam.examAnswer.correct,
+    ).length;
+
+    return Math.round((wrongQuestions / questionsCount) * 100);
+  }, [customStudy.exams, questionsCount]);
 
   const correctQuestionsCount = useMemo(() => {
-    if (mode === "TEST" && !isTestFinished) {
+    if (!customStudy.exams || customStudy.exams.length === 0) {
       return 0;
     }
-    return subcategory.correctQuestions;
-  }, [isTestFinished, mode, subcategory.correctQuestions]);
+
+    const correctQuestions = customStudy.exams?.filter(
+      (exam) => exam.examAnswer?.correct,
+    ).length;
+
+    return correctQuestions;
+  }, [customStudy.exams]);
 
   const wrongQuestionsCount = useMemo(() => {
-    if (mode === "TEST" && !isTestFinished) {
+    if (!customStudy.exams || customStudy.exams.length === 0) {
       return 0;
     }
-    return subcategory.wrongQuestions;
-  }, [isTestFinished, mode, subcategory.wrongQuestions]);
 
-  const resetSubcategoryMutation = useMutation({
+    const wrongQuestions = customStudy.exams?.filter(
+      (exam) => exam.examAnswer && !exam.examAnswer.correct,
+    ).length;
+
+    return wrongQuestions;
+  }, [customStudy.exams]);
+
+  const resetCustomStudyMutation = useMutation({
     mutationFn: async () => {
-      return await examService.resetExamSubcategory(subcategory.id, mode);
+      return await customStudyService.resetCustomStudyProgress(customStudy.id);
     },
     onSuccess: () => {
       if (onReset) {
@@ -92,7 +94,7 @@ const SubcategoryPage = ({
     <div className="flex flex-col gap-4 dark:bg-[#151b2b] bg-[#e5e8ef] p-[24px] rounded-[36px] border dark:border-[#FFFFFF0D] border-[#E9EAEC]">
       <div className="flex flex-col xl:flex-row gap-[24px] xl:items-center">
         <h1 className="font-extrabold text-[24px] dark:text-white text-black">
-          {subcategory.name}
+          {customStudy.name}
         </h1>
         <div className="flex flex-col gap-2">
           <div className="flex gap-4">
@@ -103,7 +105,7 @@ const SubcategoryPage = ({
                 size={16}
               />
               <span className="text-xs dark:text-white text-black">
-                Total de questões: <b>{subcategory.questionsCount}</b>
+                Total de questões: <b>{questionsCount}</b>
               </span>
             </div>
 
@@ -114,10 +116,7 @@ const SubcategoryPage = ({
                 size={16}
               />
               <span className="text-xs dark:text-white text-black">
-                Questões pendentes:{" "}
-                <b>
-                  {subcategory.questionsCount - subcategory.questionsAnswered}
-                </b>
+                Questões pendentes: <b>{questionsCount - questionsAnswered}</b>
               </span>
             </div>
 
@@ -156,7 +155,7 @@ const SubcategoryPage = ({
 
           <div className="flex gap-2 items-center mt-2">
             <Button
-              loading={resetSubcategoryMutation.isPending}
+              loading={resetCustomStudyMutation.isPending}
               onClick={() => {
                 setIsResetModalOpen(true);
               }}
@@ -164,68 +163,34 @@ const SubcategoryPage = ({
             >
               Reiniciar prova
             </Button>
-
-            {mode === "TEST" && (
-              <Button
-                loading={resetSubcategoryMutation.isPending}
-                onClick={() => {
-                  setIsFinishTestModalOpen(true);
-                }}
-              >
-                Finalizar prova
-              </Button>
-            )}
           </div>
         </div>
 
-        <ConfirmSubcategoryReset
+        <ConfirmResetCustomStudy
           isOpen={isResetModalOpen}
           onClose={() => {
             setIsResetModalOpen(false);
           }}
           onConfirm={() => {
-            resetSubcategoryMutation.mutate();
+            resetCustomStudyMutation.mutate();
             setIsResetModalOpen(false);
-
-            if (mode === "TEST") {
-              localStorage.removeItem(`test:${subcategory.id}`);
-            }
-          }}
-        />
-
-        <ConfirmFinishTest
-          isOpen={isFinishTestModalOpen}
-          onClose={() => {
-            setIsFinishTestModalOpen(false);
-          }}
-          onConfirm={() => {
-            localStorage.setItem(`test:${subcategory.id}`, "true");
-            setIsFinishTestModalOpen(false);
           }}
         />
       </div>
 
       <div className="flex gap-4 flex-wrap justify-center sm:justify-start">
-        {subcategory.exams.map((question, index) => (
+        {customStudy.exams.map((question, index) => (
           <QuestionCard
-            mode={mode as "STUDY" | "TEST"}
             key={question.id}
-            subcategoryId={subcategory.id}
+            customStudyId={customStudy.id}
             order={index + 1}
             question={question.question}
             id={question.id}
             examAnswer={question.examAnswer}
-            tags={question.tags}
             onClick={() => {
-              if (mode === "STUDY") {
-                router.push(
-                  `/study-mode/${subcategory.id}/answer?questionId=${question.id}`,
-                );
-              } else {
-                router.push(
-                  `/test-mode/${subcategory.id}/answer?questionId=${question.id}`,
-                );
-              }
+              router.push(
+                `/custom-study/${customStudy.id}/answer?questionId=${question.id}`,
+              );
             }}
           />
         ))}
@@ -234,4 +199,4 @@ const SubcategoryPage = ({
   );
 };
 
-export default SubcategoryPage;
+export default CustomStudyPage;
