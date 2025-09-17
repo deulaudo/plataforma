@@ -200,6 +200,7 @@ const CustomStudyQuestions = ({
 
         <ConfirmDeleteCustomStudy
           isOpen={isDeleteModalOpen}
+          customStudyId={customStudy.id}
           onClose={() => {
             setIsDeleteModalOpen(false);
           }}

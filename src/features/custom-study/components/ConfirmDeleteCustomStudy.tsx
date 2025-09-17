@@ -1,3 +1,5 @@
+import { useMutation } from "@tanstack/react-query";
+
 import {
   AlertDialog,
   AlertDialogAction,
@@ -8,19 +10,30 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { Button } from "@/components/ui/button";
+import { customStudyService } from "@/services/customStudyService";
 
 type ConfirmDeleteCustomStudyProps = {
   isOpen: boolean;
+  customStudyId: string;
   onClose: () => void;
   onConfirm: () => void;
 };
 
 export function ConfirmDeleteCustomStudy({
   isOpen,
+  customStudyId,
   onClose,
   onConfirm,
 }: ConfirmDeleteCustomStudyProps) {
+  const deleteCustomStudyMutation = useMutation({
+    mutationFn: async () => {
+      return await customStudyService.deleteCustomStudy(customStudyId);
+    },
+    onSuccess: () => {
+      onConfirm();
+    },
+  });
+
   return (
     <AlertDialog open={isOpen} onOpenChange={onClose}>
       <AlertDialogContent>
@@ -34,8 +47,14 @@ export function ConfirmDeleteCustomStudy({
           <AlertDialogCancel className="cursor-pointer" onClick={onClose}>
             Cancelar
           </AlertDialogCancel>
-          <AlertDialogAction className="cursor-pointer" onClick={onConfirm}>
-            Excluir
+          <AlertDialogAction
+            className="cursor-pointer"
+            onClick={() => {
+              deleteCustomStudyMutation.mutate();
+            }}
+            disabled={deleteCustomStudyMutation.isPending}
+          >
+            {deleteCustomStudyMutation.isPending ? "Excluindo..." : "Excluir"}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
