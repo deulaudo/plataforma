@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  BookKey,
   CardSim,
   Home,
   ListCheck,
@@ -104,6 +105,13 @@ const Sidebar = () => {
       active: () => pathname.startsWith("/flashcards"),
       enabled: (product: ProductType) => product.modes.flashcards,
     },
+    {
+      name: "Estudo Personalizado",
+      icon: <BookKey />,
+      href: "/custom-study",
+      active: () => pathname === "/custom-study",
+      enabled: () => true,
+    },
   ];
 
   return (
@@ -112,7 +120,7 @@ const Sidebar = () => {
         <Logo />
 
         <div className="flex flex-col gap-[16px] mt-[32px] flex-1">
-          <ProductSelect />
+          <ProductSelect label="Produto Selecionado" />
 
           {links.map((link) => {
             if (user?.role === "ADMIN") {

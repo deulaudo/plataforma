@@ -119,7 +119,7 @@ const ModulePage = ({
               {!isLoadingVideo && videoLoaded ? (
                 <VideoPlayer
                   videoSource={videoLoaded.url}
-                  videoThumbnail={videoLoaded.thumbnailUrl}
+                  videoThumbnail={"/images/PlayVideoThumbnail.jpeg"}
                   onVideoWasWatched={onVideoWatched}
                 />
               ) : (

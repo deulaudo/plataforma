@@ -27,7 +27,7 @@ interface VideoType {
 interface ModuleType {
   id: string;
   title: string;
-  cover: string;
+  cover: string | null;
   description: string;
   knowledgeArea: string;
   totalVideos: number;

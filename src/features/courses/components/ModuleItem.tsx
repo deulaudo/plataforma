@@ -26,7 +26,26 @@ const ModuleItem = ({ module, onModuleClick }: ModuleItemProps) => {
     >
       <div className="flex gap-3 items-center">
         <div className="flex justify-center items-center w-[52px] h-[52px] p-[4px] rounded-[20px] border border-[#E9EAEC] dark:border-[#FFFFFF0D]">
-          <img alt="" className="w-[25px] h-[25px]" src={module.cover} />
+          {/* {module.cover ? (
+            <img alt="Capa" className="w-[25px] h-[25px]" src={module.cover} />
+          ) : theme === "light" ? (
+            <img
+              alt="Capa"
+              className="w-[25px] h-[25px]"
+              src="/icons/lightbulb.svg"
+            />
+          ) : (
+            <img
+              alt="Capa"
+              className="w-[25px] h-[25px]"
+              src="/icons/lightbulb-white.svg"
+            />
+          )} */}
+          <img
+            alt="Capa"
+            className="w-[25px] h-[25px]"
+            src="/icons/lightbulb-white.svg"
+          />
         </div>
         <div className="flex flex-1 flex-col gap-1">
           <span className="font-bold text-[16px] dark:text-white">
