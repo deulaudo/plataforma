@@ -103,13 +103,48 @@ const ModulePage = ({
         </div>
       );
     }
+
+    const tabs = [
+      {
+        id: "comentarios",
+        label: "Comentários",
+        content: videoLoaded && (
+          <CommentsBox referenceType="VIDEO" referenceId={videoLoaded.id} />
+        ),
+      },
+    ];
+
+    if (
+      videoLoaded &&
+      videoLoaded.description &&
+      videoLoaded.description.length > 1
+    ) {
+      tabs.unshift({
+        id: "dicas",
+        label: "Dicas do Duzinho",
+        content: (
+          <div
+            className="p-4 bg-white dark:bg-[#141926] border border-[#EDEEEF] dark:border-[#202531] rounded-lg text-sm text-gray-700 dark:text-gray-300"
+            dangerouslySetInnerHTML={{
+              __html:
+                videoLoaded?.description.replace(/\n/g, "<br /><br/>") || "",
+            }}
+          />
+        ),
+      });
+    } else {
+      if (currentTab === "dicas") {
+        setCurrentTab("comentarios");
+      }
+    }
+
     if (module) {
       return (
         <div className="flex flex-1 flex-col lg:flex-row gap-4 overflow-hidden">
           <div
             className={`flex flex-col items-center gap-4 ${isLoadingVideo || videoLoaded ? "w-full lg:w-2/3" : "hidden"}`}
           >
-            <div className="flex flex-1 relative w-full h-full min-h-[200px] lg:min-h-[400px]">
+            <div className="flex flex-1 relative w-full h-full min-h-[200px] lg:min-h-[400px] max-h-[580px]">
               <button
                 onClick={closeVideo}
                 className="absolute bg-white hover:border-b-blue-800 top-2 right-2 lg:top-4 lg:right-4 z-50 text-gray-800 rounded-full cursor-pointer w-6 h-6 lg:w-8 lg:h-8 flex items-center justify-center shadow-md"
@@ -132,34 +167,7 @@ const ModulePage = ({
               <Tabs
                 activeTabId={currentTab}
                 onTabChange={(tabId: string) => setCurrentTab(tabId)}
-                tabs={[
-                  {
-                    id: "dicas",
-                    label: "Dicas do Duzinho",
-                    content: (
-                      <div
-                        className="p-4 bg-white dark:bg-[#141926] border border-[#EDEEEF] dark:border-[#202531] rounded-lg text-sm text-gray-700 dark:text-gray-300"
-                        dangerouslySetInnerHTML={{
-                          __html:
-                            videoLoaded?.description.replace(
-                              /\n/g,
-                              "<br /><br/>",
-                            ) || "",
-                        }}
-                      />
-                    ),
-                  },
-                  {
-                    id: "comentarios",
-                    label: "Comentários",
-                    content: videoLoaded && (
-                      <CommentsBox
-                        referenceType="VIDEO"
-                        referenceId={videoLoaded.id}
-                      />
-                    ),
-                  },
-                ]}
+                tabs={tabs}
               />
             </div>
           </div>
