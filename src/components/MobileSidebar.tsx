@@ -154,7 +154,7 @@ const MobileSidebar = ({ isOpen, onClose }: MobileSidebarProps) => {
           {/* Navigation Links */}
           <div className="flex-1 p-6">
             <div className="flex flex-col gap-[16px]">
-              <ProductSelect />
+              <ProductSelect label="Produto Selecionado" />
 
               {links.map((link) => {
                 if (user?.role === "ADMIN") {

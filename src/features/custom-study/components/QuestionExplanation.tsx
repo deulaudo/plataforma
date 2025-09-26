@@ -24,7 +24,9 @@ const QuestionExplanation = ({ question }: QuestionExplanationProps) => {
       <p
         className="dark:text-white text-black font-semibold text-[16px]"
         dangerouslySetInnerHTML={{
-          __html: (question.learnMore || "").replace(/\n/g, "<br />"),
+          __html: (question.learnMore || "")
+            .replace(/\n/g, "<br />")
+            .replace(/\\n/g, "<br />"),
         }}
       />
     </div>

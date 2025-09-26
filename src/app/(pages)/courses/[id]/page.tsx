@@ -52,9 +52,9 @@ const CoursePage = ({ params }: { params: Promise<{ id: string }> }) => {
 
     if (modules && modules.length > 0) {
       return (
-        <div className="flex gap-4 justify-between flex-wrap">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 xl:justify-between">
           {modules.map((module) => (
-            <div key={module.id} className="w-full lg:max-w-[486px]">
+            <div key={module.id} className="w-full">
               <ModuleCard
                 isCardExpandedByDefault={false}
                 courseId={id}

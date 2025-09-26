@@ -35,7 +35,7 @@ const VideoItem = ({
           <img
             alt="Thumbnail"
             className="object-contain rounded-[8px]"
-            src={video.thumbnailUrl}
+            src={"/images/VideoItemThumbnail.jpeg"}
           />
           <img alt="Play" className="absolute" src="/icons/play.svg" />
         </div>

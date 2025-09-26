@@ -120,7 +120,7 @@ const Sidebar = () => {
         <Logo />
 
         <div className="flex flex-col gap-[16px] mt-[32px] flex-1">
-          <ProductSelect />
+          <ProductSelect label="Produto Selecionado" />
 
           {links.map((link) => {
             if (user?.role === "ADMIN") {

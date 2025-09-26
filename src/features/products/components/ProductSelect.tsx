@@ -185,7 +185,7 @@ const ProductSelect = ({
             onClick={() => !disabled && setIsOpen(!isOpen)}
             className={twMerge(
               "flex items-center justify-between w-full h-[48px] px-[16px] rounded-[20px]",
-              "border dark:border-[#FFFFFF0D] border-[#0000000D]",
+              "border-2 dark:border-[#FFFFFF0D] border-[#0000000D]",
               "dark:bg-[#182031] bg-[#0000000D]",
               "cursor-pointer transition-all duration-200",
               !disabled && "hover:border-[#2056F2]",
