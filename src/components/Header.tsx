@@ -10,6 +10,7 @@ import GlobalSearch from "@/features/search/components/GlobalSearch";
 import { useAuthStore } from "@/stores/authStore";
 
 import AppThemeToggler from "./AppThemeToggler";
+import DuzinhoIcon from "./DuzinhoIcon";
 
 type HeaderProps = {
   headerTitle?: string | React.ReactElement;
@@ -26,11 +27,7 @@ const Header = ({ headerTitle, headerType, backAction }: HeaderProps) => {
       <div className="flex-1">
         {headerType === "welcome" ? (
           <div className="flex items-center gap-[16px]">
-            <img
-              src="/images/Duzinho.png"
-              alt="Logo"
-              className="h-[64px] w-[64px]"
-            />
+            <DuzinhoIcon mode="happy" className="w-[64px] h-[64px]" />
             <h1 className="text-[24px] font-bold">
               Bem-vindo(a) de volta,{" "}
               <span className="text-[#2056F2]">

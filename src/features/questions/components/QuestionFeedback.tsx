@@ -3,6 +3,8 @@
 /* eslint-disable @next/next/no-img-element */
 import { twMerge } from "tailwind-merge";
 
+import DuzinhoIcon from "@/components/DuzinhoIcon";
+
 type QuestionFeedbackProps = {
   correct: boolean;
 };
@@ -11,10 +13,9 @@ const QuestionFeedback = ({ correct }: QuestionFeedbackProps) => {
   return (
     <div className="flex items-end gap-[16px]">
       <div className="flex items-center justify-center h-[60px] w-[60px] rounded-[24px] bg-[#2056F2]">
-        <img
-          src="/images/Duzinho.png"
-          alt="Duzinho"
-          className="w-[36px] h-[36px]"
+        <DuzinhoIcon
+          mode={correct ? "happy" : "sad"}
+          className="w-[42px] h-[42px]"
         />
       </div>
 
