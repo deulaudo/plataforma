@@ -37,7 +37,6 @@ const VideoItem = ({
             className="object-contain rounded-[8px]"
             src={"/images/VideoItemThumbnail.jpeg"}
           />
-          <img alt="Play" className="absolute" src="/icons/play.svg" />
         </div>
         <div className="flex flex-1 flex-col h-[32px]">
           <p
