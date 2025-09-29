@@ -89,7 +89,7 @@ const Sidebar = () => {
       icon: <NotebookPen />,
       href: "/study-mode",
       active: () => pathname.startsWith("/study-mode"),
-      enabled: () => true,
+      enabled: (product: ProductType) => product.modes.exam,
     },
     {
       name: "Modo Prova",
