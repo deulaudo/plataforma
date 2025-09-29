@@ -233,7 +233,7 @@ const ProductSelect = ({
           {isOpen && !disabled && products && (
             <div
               className={twMerge(
-                "absolute top-full left-0 w-full max-h-[200px] overflow-y-auto mt-1 rounded-[20px] p-[8px]",
+                "absolute top-full left-0 w-full max-h-[400px] overflow-y-auto mt-1 rounded-[20px] p-[8px]",
                 "border dark:border-[#FFFFFF0D] border-[#0000000D]",
                 "dark:bg-[#182031] bg-white",
                 "shadow-lg z-50",

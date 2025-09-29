@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  BookKey,
   CardSim,
   Home,
   ListCheck,
@@ -112,6 +113,13 @@ const MobileSidebar = ({ isOpen, onClose }: MobileSidebarProps) => {
       href: "/flashcards",
       active: () => pathname.startsWith("/flashcards"),
       enabled: (product: ProductType) => product.modes.flashcards,
+    },
+    {
+      name: "Estudo Personalizado",
+      icon: <BookKey />,
+      href: "/custom-study",
+      active: () => pathname === "/custom-study",
+      enabled: (product: ProductType) => product.modes.exam,
     },
   ];
 

@@ -110,7 +110,7 @@ const Sidebar = () => {
       icon: <BookKey />,
       href: "/custom-study",
       active: () => pathname === "/custom-study",
-      enabled: () => true,
+      enabled: (product: ProductType) => product.modes.exam,
     },
   ];
 
