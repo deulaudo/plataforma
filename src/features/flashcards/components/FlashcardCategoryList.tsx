@@ -14,9 +14,11 @@ const FlashcardCategoryList = () => {
     queryKey: ["flashcards-categories", { selectedProduct }],
     queryFn: async () => {
       const { flashcardService } = await import("@/services/flashcardService");
-      return flashcardService.listFlashcardCategories({
+      const categories = await flashcardService.listFlashcardCategories({
         productId: selectedProduct?.id,
       });
+
+      return categories.filter((category) => category.subcategoriesCount > 0);
     },
   });
 
