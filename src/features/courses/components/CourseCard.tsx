@@ -3,6 +3,8 @@
 import { useTheme } from "next-themes";
 import { useMemo } from "react";
 
+import { cn } from "@/lib/utils";
+
 type CourseCardProps = {
   course: CourseType;
   goToCourse: (courseId: string) => void;
@@ -23,9 +25,16 @@ const CourseCard = ({ course, goToCourse }: CourseCardProps) => {
       className={`flex w-full cursor-pointer min-h-[170px] flex-shrink-0 flex-col gap-2 py-[24px] px-[16px] ${courseDone ? "dark:bg-[#101F25] bg-[#ECFBF4]" : "dark:bg-[#10182C] bg-[#EDF1FE]"} rounded-[36px] border border-[#FFFFFF0D] self-start`}
     >
       <div className="flex gap-3 items-center">
-        <div className="flex justify-center items-center w-[52px] h-[52px] p-[4px] rounded-[20px] border border-[#E9EAEC] dark:border-[#FFFFFF0D]">
-          {/* <img alt="" className="w-[25px] h-[25px]" src={course.cover} /> */}
-          {theme === "light" ? (
+        <div
+          className={cn(
+            "flex justify-center items-center w-[52px] h-[52px] p-[4px] rounded-[20px] border border-[#E9EAEC] dark:border-[#FFFFFF0D]",
+            theme === "light" && !courseDone && "bg-[#2056f2]",
+            theme === "light" && courseDone && "bg-[#1ed475]",
+          )}
+        >
+          {course.cover ? (
+            <img alt="" className="w-[25px] h-[25px]" src={course.cover} />
+          ) : theme === "light" ? (
             <img
               alt="Capa"
               className="w-[25px] h-[25px]"

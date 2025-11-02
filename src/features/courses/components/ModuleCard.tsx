@@ -5,6 +5,8 @@ import { useTheme } from "next-themes";
 import { useEffect, useMemo, useState } from "react";
 import { twMerge } from "tailwind-merge";
 
+import { cn } from "@/lib/utils";
+
 import ModuleContent from "./ModuleContent";
 
 type ModuleCardProps = {
@@ -48,33 +50,20 @@ const ModuleCard = ({
       )}
     >
       <div className="flex gap-3 items-center">
-        <div className="flex bg-slate-50 dark:bg-transparent justify-center items-center w-[52px] h-[52px] p-[4px] rounded-[20px] border border-[#E9EAEC] dark:border-[#FFFFFF0D]">
-          {/* {module.cover ? (
+        <div
+          className={cn(
+            "flex justify-center items-center w-[52px] h-[52px] p-[4px] rounded-[20px] border border-[#E9EAEC] dark:border-[#FFFFFF0D]",
+            theme === "light" && !moduleDone && "bg-[#2056f2]",
+            theme === "light" && moduleDone && "bg-[#1ed475]",
+          )}
+        >
+          {module.cover ? (
             <img alt="Capa" className="w-[25px] h-[25px]" src={module.cover} />
-          ) : theme === "light" ? (
-            <img
-              alt="Capa"
-              className="w-[25px] h-[25px]"
-              src="/icons/lightbulb.svg"
-            />
           ) : (
             <img
               alt="Capa"
               className="w-[25px] h-[25px]"
-              src="/icons/lightbulb-white.svg"
-            />
-          )} */}
-          {theme === "light" ? (
-            <img
-              alt="Capa"
-              className="w-[25px] h-[25px]"
               src="/icons/lightbulb.svg"
-            />
-          ) : (
-            <img
-              alt="Capa"
-              className="w-[25px] h-[25px]"
-              src="/icons/lightbulb-white.svg"
             />
           )}
         </div>
