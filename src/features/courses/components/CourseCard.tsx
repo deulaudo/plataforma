@@ -34,12 +34,6 @@ const CourseCard = ({ course, goToCourse }: CourseCardProps) => {
         >
           {course.cover?.length > 1 ? (
             <img alt="" className="w-[25px] h-[25px]" src={course.cover} />
-          ) : theme === "light" ? (
-            <img
-              alt="Capa"
-              className="w-[25px] h-[25px]"
-              src="/icons/lightbulb.svg"
-            />
           ) : (
             <img
               alt="Capa"

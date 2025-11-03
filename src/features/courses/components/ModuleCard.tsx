@@ -63,7 +63,7 @@ const ModuleCard = ({
             <img
               alt="Capa"
               className="w-[25px] h-[25px]"
-              src="/icons/lightbulb.svg"
+              src="/icons/lightbulb-white.svg"
             />
           )}
         </div>
