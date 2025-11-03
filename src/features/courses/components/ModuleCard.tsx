@@ -57,7 +57,7 @@ const ModuleCard = ({
             theme === "light" && moduleDone && "bg-[#1ed475]",
           )}
         >
-          {module.cover ? (
+          {module.cover && module.cover.length > 1 ? (
             <img alt="Capa" className="w-[25px] h-[25px]" src={module.cover} />
           ) : (
             <img
