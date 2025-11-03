@@ -32,7 +32,7 @@ const CourseCard = ({ course, goToCourse }: CourseCardProps) => {
             theme === "light" && courseDone && "bg-[#1ed475]",
           )}
         >
-          {course.cover ? (
+          {course.cover?.length > 1 ? (
             <img alt="" className="w-[25px] h-[25px]" src={course.cover} />
           ) : theme === "light" ? (
             <img
