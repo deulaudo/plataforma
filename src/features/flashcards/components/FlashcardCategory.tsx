@@ -3,6 +3,7 @@ import { ChevronDown, ChevronUp, Loader } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useState } from "react";
 
+import IconButton from "@/components/IconButton";
 import SegmentedProgressCircle from "@/components/SegmentedProgressCircle";
 import { examService } from "@/services/examService";
 import { flashcardService } from "@/services/flashcardService";
@@ -57,13 +58,13 @@ const FlashcardCategory = ({
         </div>
 
         {isCategoryExpanded ? (
-          <ChevronUp
-            className="dark:text-[#4b505d] text-[#7c7d80] cursor-pointer"
+          <IconButton
+            icon={<ChevronUp />}
             onClick={() => setIsCategoryExpanded(false)}
           />
         ) : (
-          <ChevronDown
-            className="dark:text-[#4b505d] text-[#7c7d80] cursor-pointer"
+          <IconButton
+            icon={<ChevronDown />}
             onClick={() => setIsCategoryExpanded(true)}
           />
         )}

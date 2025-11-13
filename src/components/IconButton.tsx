@@ -13,7 +13,7 @@ const IconButton = ({ icon, onClick }: IconButtonProps) => {
     >
       {cloneElement(icon, {
         className: "text-[#767779] dark:text-[#E1E2F3]",
-        size: 16,
+        size: 18,
       })}
     </div>
   );
