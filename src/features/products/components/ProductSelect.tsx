@@ -2,7 +2,7 @@
 
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Check, ChevronDown, ChevronUp, Loader, X } from "lucide-react";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import { twMerge } from "tailwind-merge";
 
@@ -45,10 +45,6 @@ const ProductSelect = ({
     queryFn: productService.listProducts,
   });
 
-  const sortedProducts = products?.sort((a) =>
-    user?.products.some((p) => p.id === a.id) ? -1 : 1,
-  );
-
   const onSelect = useCallback(
     (product: ProductType) => {
       selectProduct(product);
@@ -81,6 +77,11 @@ const ProductSelect = ({
     },
     [user?.products],
   );
+
+  // Filtrar apenas produtos que o usuário possui
+  const ownedProducts = useMemo(() => {
+    return products?.filter((product) => userOwnsProduct(product.id));
+  }, [products, userOwnsProduct]);
 
   const getFirstOwnedProduct = useCallback(() => {
     if (!products || !user?.products) return null;
@@ -239,13 +240,13 @@ const ProductSelect = ({
                 "shadow-lg z-50",
               )}
             >
-              {products.length === 0 ? (
+              {!ownedProducts || ownedProducts.length === 0 ? (
                 <div className="p-[12px] text-center dark:text-[#FFFFFF40] text-[#00000080] text-[12px]">
                   Nenhum produto encontrado
                 </div>
               ) : (
-                (sortedProducts || products).map((product) => {
-                  const isOwned = userOwnsProduct(product.id);
+                ownedProducts.map((product) => {
+                  const isSelected = isProductSelected(product.id);
 
                   return (
                     <div
@@ -254,10 +255,10 @@ const ProductSelect = ({
                       className={twMerge(
                         "flex flex-col gap-1 p-[12px] rounded-[16px] cursor-pointer transition-all duration-200",
                         "hover:dark:bg-[#FFFFFF0D] hover:bg-[#F5F5F5]",
-                        isProductSelected(product.id) &&
-                          "dark:bg-[#FFFFFF0D] bg-[#F5F5F5]",
-                        // Destacar produtos que o usuário possui
-                        isOwned && "ring-1 ring-[#1CD475] dark:ring-[#1CD475]",
+                        isSelected && "dark:bg-[#FFFFFF0D] bg-[#F5F5F5]",
+                        // Destacar produto selecionado com borda azul
+                        isSelected &&
+                          "ring-1 ring-[#2056F2] dark:ring-[#2056F2]",
                       )}
                     >
                       <div className="flex items-center justify-between">
