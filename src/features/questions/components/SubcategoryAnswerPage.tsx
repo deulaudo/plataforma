@@ -34,7 +34,7 @@ const SubcategoryAnswerPage = ({
   const [loadedQuestionFromURL, setLoadedQuestionFromURL] =
     useState<boolean>(false);
   const [currentQuestionStatus, setCurrentQuestionStatus] = useState<
-    "correct" | "incorrect" | null
+    "correct" | "incorrect" | "cancelled" | null
   >(null);
   const isTestFinished =
     localStorage.getItem(`test:${subcategory.id}`) === "true";
@@ -70,8 +70,13 @@ const SubcategoryAnswerPage = ({
     const question = subcategory.exams[currentQuestionIndex];
     if (question) {
       const answer = question.examAnswer?.correct;
+      const cancelled = question.cancelled;
       if (answer !== undefined) {
-        setCurrentQuestionStatus(answer ? "correct" : "incorrect");
+        if (!cancelled) {
+          setCurrentQuestionStatus(answer ? "correct" : "incorrect");
+        } else {
+          setCurrentQuestionStatus("cancelled");
+        }
       } else {
         setCurrentQuestionStatus(null);
       }
@@ -109,6 +114,8 @@ const SubcategoryAnswerPage = ({
           order: index + 1,
           correct: e.examAnswer ? e.examAnswer.correct : null,
           currentIndex: index,
+          cancelled: e.cancelled,
+          answered: e.examAnswer !== null,
           isCurrent: e.id === subcategory.exams[currentQuestionIndex].id,
           onClick: () => {
             setCurrentQuestionIndex(index);
@@ -140,8 +147,13 @@ const SubcategoryAnswerPage = ({
           onQuestionAnswered={({ correct }) => {
             onQuestionAnswered();
 
+            const cancelled = subcategory.exams[currentQuestionIndex].cancelled;
             if (mode === "STUDY") {
-              setCurrentQuestionStatus(correct ? "correct" : "incorrect");
+              if (!cancelled) {
+                setCurrentQuestionStatus(correct ? "correct" : "incorrect");
+              } else {
+                setCurrentQuestionStatus("cancelled");
+              }
             } else {
               setCurrentQuestionIndex((prev) => {
                 if (prev < subcategory.exams.length - 1) {
@@ -155,7 +167,10 @@ const SubcategoryAnswerPage = ({
       </div>
       {showAnswer && currentQuestionStatus && (
         <div className="self-start w-full">
-          <QuestionFeedback correct={currentQuestionStatus === "correct"} />
+          <QuestionFeedback
+            cancelled={subcategory.exams[currentQuestionIndex].cancelled}
+            correct={currentQuestionStatus === "correct"}
+          />
         </div>
       )}
 

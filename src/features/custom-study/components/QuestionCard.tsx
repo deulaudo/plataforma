@@ -17,6 +17,7 @@ type QuestionCardProps = {
     correct: boolean;
   } | null;
   onClick?: () => void;
+  cancelled: boolean;
 };
 
 const QuestionCard = ({
@@ -26,10 +27,15 @@ const QuestionCard = ({
   question,
   examAnswer,
   onClick,
+  cancelled,
 }: QuestionCardProps) => {
   const router = useRouter();
 
   const questionIcon = useMemo(() => {
+    if (examAnswer && cancelled) {
+      return <CircleX size={16} className="text-[#FFA500]" />;
+    }
+
     if (examAnswer === null) {
       return <CircleCheck size={16} className="text-[#4c515e]" />;
     }
@@ -39,17 +45,22 @@ const QuestionCard = ({
     }
 
     return <CircleX size={16} className="text-[#e74a41]" />;
-  }, [examAnswer]);
+  }, [examAnswer, cancelled]);
 
   const questionBackgroundColor = useMemo(() => {
     if (examAnswer === null) {
       return "dark:bg-[#0F1420] bg-[#FFFFFF]";
     }
+
+    if (examAnswer && cancelled) {
+      return "dark:bg-[#FFA50020] bg-[#FFA50030]";
+    }
+
     if (examAnswer.correct) {
       return "dark:bg-[#102328] bg-[#ecfbf5]";
     }
     return "dark:bg-[#201925] bg-[#faeef1]";
-  }, [examAnswer]);
+  }, [examAnswer, cancelled]);
 
   return (
     <div

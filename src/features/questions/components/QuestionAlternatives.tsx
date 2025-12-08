@@ -71,6 +71,10 @@ const QuestionAlternatives = ({
     (alternativeId: string) => {
       if (showAnswer) {
         if (selectedAlternative === alternativeId) {
+          if (question.cancelled) {
+            return "border-2 border-[#FFA500] text-[#FFA500]";
+          }
+
           if (
             question.alternatives.find((alt) => alt.correct)?.id ===
             alternativeId
@@ -81,7 +85,12 @@ const QuestionAlternatives = ({
         }
       }
     },
-    [showAnswer, selectedAlternative, question.alternatives],
+    [
+      showAnswer,
+      selectedAlternative,
+      question.alternatives,
+      question.cancelled,
+    ],
   );
 
   return (

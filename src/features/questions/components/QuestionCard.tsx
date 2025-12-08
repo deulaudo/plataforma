@@ -22,6 +22,7 @@ type QuestionCardProps = {
     id: string;
     tag: string;
   }[];
+  cancelled: boolean;
 };
 
 const QuestionCard = ({
@@ -33,6 +34,7 @@ const QuestionCard = ({
   onClick,
   mode,
   tags,
+  cancelled,
 }: QuestionCardProps) => {
   const router = useRouter();
   const isTestFinished =
@@ -50,6 +52,10 @@ const QuestionCard = ({
       }
     }
 
+    if (examAnswer && cancelled) {
+      return <CircleX size={16} className="text-[#FFA500]" />;
+    }
+
     if (examAnswer === null) {
       return <CircleCheck size={16} className="text-[#4c515e]" />;
     }
@@ -59,7 +65,7 @@ const QuestionCard = ({
     }
 
     return <CircleX size={16} className="text-[#e74a41]" />;
-  }, [examAnswer, isTestFinished, mode]);
+  }, [examAnswer, isTestFinished, mode, cancelled]);
 
   const questionBackgroundColor = useMemo(() => {
     if (mode === "TEST" && !isTestFinished) {
@@ -69,11 +75,16 @@ const QuestionCard = ({
     if (examAnswer === null) {
       return "dark:bg-[#0F1420] bg-[#FFFFFF]";
     }
+
+    if (examAnswer && cancelled) {
+      return "dark:bg-[#FFA50020] bg-[#FFA50030]";
+    }
+
     if (examAnswer.correct) {
       return "dark:bg-[#102328] bg-[#ecfbf5]";
     }
     return "dark:bg-[#201925] bg-[#faeef1]";
-  }, [examAnswer, isTestFinished, mode]);
+  }, [examAnswer, isTestFinished, mode, cancelled]);
 
   return (
     <div

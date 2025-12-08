@@ -39,43 +39,42 @@ const SubcategoryPage = ({
     if (mode === "TEST" && !isTestFinished) {
       return 0;
     }
-    return Math.round(
-      (subcategory.correctQuestions / subcategory.questionsCount) * 100,
-    );
-  }, [
-    isTestFinished,
-    mode,
-    subcategory.questionsCount,
-    subcategory.correctQuestions,
-  ]);
+    const correctQuestions = subcategory.exams.filter(
+      (exam) => exam.examAnswer?.correct && !exam.cancelled,
+    ).length;
+    return Math.round((correctQuestions / subcategory.questionsCount) * 100);
+  }, [isTestFinished, mode, subcategory.questionsCount, subcategory.exams]);
 
   const wrongQuestionsPercentage = useMemo(() => {
     if (mode === "TEST" && !isTestFinished) {
       return 0;
     }
-    return Math.round(
-      (subcategory.wrongQuestions / subcategory.questionsCount) * 100,
-    );
-  }, [
-    isTestFinished,
-    mode,
-    subcategory.questionsCount,
-    subcategory.wrongQuestions,
-  ]);
+    const wrongQuestions = subcategory.exams.filter(
+      (exam) => exam.examAnswer && !exam.examAnswer.correct && !exam.cancelled,
+    ).length;
+
+    return Math.round((wrongQuestions / subcategory.questionsCount) * 100);
+  }, [isTestFinished, mode, subcategory.questionsCount, subcategory.exams]);
 
   const correctQuestionsCount = useMemo(() => {
     if (mode === "TEST" && !isTestFinished) {
       return 0;
     }
-    return subcategory.correctQuestions;
-  }, [isTestFinished, mode, subcategory.correctQuestions]);
+    const correctQuestions = subcategory.exams.filter(
+      (exam) => exam.examAnswer?.correct && !exam.cancelled,
+    ).length;
+    return correctQuestions;
+  }, [isTestFinished, mode, subcategory.exams]);
 
   const wrongQuestionsCount = useMemo(() => {
     if (mode === "TEST" && !isTestFinished) {
       return 0;
     }
-    return subcategory.wrongQuestions;
-  }, [isTestFinished, mode, subcategory.wrongQuestions]);
+    const wrongQuestions = subcategory.exams.filter(
+      (exam) => exam.examAnswer && !exam.examAnswer.correct && !exam.cancelled,
+    ).length;
+    return wrongQuestions;
+  }, [isTestFinished, mode, subcategory.exams]);
 
   const resetSubcategoryMutation = useMutation({
     mutationFn: async () => {
@@ -208,6 +207,7 @@ const SubcategoryPage = ({
       <div className="flex gap-4 flex-wrap justify-center sm:justify-start">
         {subcategory.exams.map((question, index) => (
           <QuestionCard
+            cancelled={question.cancelled}
             mode={mode as "STUDY" | "TEST"}
             key={question.id}
             subcategoryId={subcategory.id}

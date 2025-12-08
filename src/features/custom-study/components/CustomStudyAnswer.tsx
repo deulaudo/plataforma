@@ -100,6 +100,8 @@ const CustomStudyAnswer = ({
           order: index + 1,
           correct: e.examAnswer ? e.examAnswer.correct : null,
           currentIndex: index,
+          cancelled: e.cancelled,
+          answered: e.examAnswer !== null,
           isCurrent: e.id === customStudy.exams[currentQuestionIndex].id,
           onClick: () => {
             setCurrentQuestionIndex(index);
@@ -136,7 +138,10 @@ const CustomStudyAnswer = ({
       </div>
       {showAnswer && currentQuestionStatus && (
         <div className="self-start w-full">
-          <QuestionFeedback correct={currentQuestionStatus === "correct"} />
+          <QuestionFeedback
+            cancelled={customStudy.exams[currentQuestionIndex].cancelled}
+            correct={currentQuestionStatus === "correct"}
+          />
         </div>
       )}
 

@@ -8,6 +8,8 @@ type Question = {
   id: string;
   order: number;
   correct: boolean | null;
+  cancelled: boolean;
+  answered: boolean;
   isCurrent: boolean;
   onClick: () => void;
 };
@@ -55,15 +57,21 @@ const QuestionsCarousel = ({
                 question.isCurrent && "border-2 border-[#2056F2]",
               )}
             >
-              {question.correct !== false ? (
-                <CircleCheck
-                  size={16}
-                  className={
-                    question.correct ? "text-[#46d475]" : "text-[#4b505e]"
-                  }
-                />
+              {question.answered && question.cancelled ? (
+                <XCircle size={16} className="text-[#FFA500]" />
+              ) : question.answered ? (
+                question.correct !== false ? (
+                  <CircleCheck
+                    size={16}
+                    className={
+                      question.correct ? "text-[#46d475]" : "text-[#4b505e]"
+                    }
+                  />
+                ) : (
+                  <XCircle size={16} className="text-[#e74a41]" />
+                )
               ) : (
-                <XCircle size={16} className="text-[#e74a41]" />
+                <CircleCheck size={16} className="text-[#4c515e]" />
               )}
               <span className="text-[14px] font-bold dark:text-white">
                 Questão {question.order}

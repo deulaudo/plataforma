@@ -44,7 +44,7 @@ const CustomStudyQuestions = ({
     }
 
     const correctQuestions = customStudy.exams?.filter(
-      (exam) => exam.examAnswer?.correct,
+      (exam) => exam.examAnswer?.correct && !exam.cancelled,
     ).length;
 
     return Math.round((correctQuestions / questionsCount) * 100);
@@ -56,7 +56,7 @@ const CustomStudyQuestions = ({
     }
 
     const wrongQuestions = customStudy.exams?.filter(
-      (exam) => exam.examAnswer && !exam.examAnswer.correct,
+      (exam) => exam.examAnswer && !exam.examAnswer.correct && !exam.cancelled,
     ).length;
 
     return Math.round((wrongQuestions / questionsCount) * 100);
@@ -68,7 +68,7 @@ const CustomStudyQuestions = ({
     }
 
     const correctQuestions = customStudy.exams?.filter(
-      (exam) => exam.examAnswer?.correct,
+      (exam) => exam.examAnswer?.correct && !exam.cancelled,
     ).length;
 
     return correctQuestions;
@@ -80,7 +80,7 @@ const CustomStudyQuestions = ({
     }
 
     const wrongQuestions = customStudy.exams?.filter(
-      (exam) => exam.examAnswer && !exam.examAnswer.correct,
+      (exam) => exam.examAnswer && !exam.examAnswer.correct && !exam.cancelled,
     ).length;
 
     return wrongQuestions;
@@ -215,6 +215,7 @@ const CustomStudyQuestions = ({
       <div className="flex gap-4 flex-wrap justify-center sm:justify-start">
         {customStudy.exams.map((question, index) => (
           <QuestionCard
+            cancelled={question.cancelled}
             key={question.id}
             customStudyId={customStudy.id}
             order={index + 1}
