@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { twMerge } from "tailwind-merge";
 
 import localFont from "next/font/local";
@@ -22,7 +22,12 @@ export const metadata: Metadata = {
   title: "Deu Laudo",
   description:
     "Uma radiologia acessível, interativa e, acima de tudo, mais humana na palma da sua mão, em um portal constantemente atualizado e cheio de novidades.",
-  viewport: "width=device-width, initial-scale=1, maximum-scale=1",
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
 };
 
 export default function RootLayout({
