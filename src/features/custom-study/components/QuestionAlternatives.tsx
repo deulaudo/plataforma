@@ -64,16 +64,20 @@ const QuestionAlternatives = ({
   const getAlternativeStyle = useCallback(
     (alternativeId: string) => {
       if (showAnswer) {
-        if (selectedAlternative === alternativeId) {
+        const isCorrect =
+          question.alternatives.find((alt) => alt.correct)?.id ===
+          alternativeId;
+        const isSelected = selectedAlternative === alternativeId;
+
+        // Sempre destaca a alternativa correta quando showAnswer é verdadeiro
+        if (isCorrect) {
+          return "border-2 border-[#1CD475] text-[#1CD475]";
+        }
+
+        // Se a alternativa foi selecionada e é incorreta, mostra em vermelho
+        if (isSelected && !isCorrect) {
           if (question.cancelled) {
             return "border-2 border-[#FFA500] text-[#FFA500]";
-          }
-
-          if (
-            question.alternatives.find((alt) => alt.correct)?.id ===
-            alternativeId
-          ) {
-            return "border-2 border-[#1CD475] text-[#1CD475]";
           }
           return "border-2 border-[#E8493F] text-[#E8493F]";
         }
