@@ -8,6 +8,7 @@ import React, { use, useCallback, useEffect, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
 import PageLayout from "@/components/PageLayout";
+import Rating from "@/components/Rating";
 import Tabs from "@/components/Tabs";
 import VideoPlayer from "@/components/VideoPlayer";
 import CommentsBox from "@/features/comments/CommentsBox";
@@ -59,6 +60,22 @@ const ModulePage = ({
   const closeVideo = useCallback(() => {
     setVideoLoaded(undefined);
   }, []);
+
+  const onVideoRated = useCallback(
+    async (rating: number) => {
+      try {
+        if (!videoLoaded) return;
+        await coursesService.rateVideo(videoLoaded.id, rating);
+        queryClient.invalidateQueries({
+          queryKey: ["videos"],
+        });
+      } catch (error) {
+        // eslint-disable-next-line no-console
+        console.error(error);
+      }
+    },
+    [videoLoaded, queryClient],
+  );
 
   const onVideoWatched = useCallback(async () => {
     try {
@@ -163,6 +180,18 @@ const ModulePage = ({
                 </div>
               )}
             </div>
+
+            <div className="flex self-start flex-col gap-2">
+              <span className="font-semibold text-[14px] text-[#000000] dark:text-white">
+                Avaliação do vídeo
+              </span>
+              <Rating
+                onVideoRated={onVideoRated}
+                value={videoLoaded?.rating ?? null}
+                size={20}
+              />
+            </div>
+
             <div className="w-full gap-2">
               <Tabs
                 activeTabId={currentTab}
@@ -189,6 +218,7 @@ const ModulePage = ({
     isPendingModule,
     module,
     onChangeVideo,
+    onVideoRated,
     onVideoWatched,
     videoLoaded,
   ]);

@@ -22,6 +22,7 @@ interface VideoType {
   wasWatched: boolean;
   createdAt: string; // Assuming this is a date-time string
   updatedAt: string; // Assuming this is a date-time string
+  rating: number | null;
 }
 
 interface ModuleType {

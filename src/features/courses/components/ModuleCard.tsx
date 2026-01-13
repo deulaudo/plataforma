@@ -5,6 +5,7 @@ import { useTheme } from "next-themes";
 import { useEffect, useMemo, useState } from "react";
 import { twMerge } from "tailwind-merge";
 
+import IconButton from "@/components/IconButton";
 import { cn } from "@/lib/utils";
 
 import ModuleContent from "./ModuleContent";
@@ -81,13 +82,13 @@ const ModuleCard = ({
         </div>
 
         {isCardExpanded ? (
-          <ChevronUp
-            className="dark:text-[#4b505d] text-[#7c7d80] cursor-pointer"
+          <IconButton
+            icon={<ChevronUp />}
             onClick={() => setIsCardExpanded(false)}
           />
         ) : (
-          <ChevronDown
-            className="dark:text-[#4b505d] text-[#7c7d80] cursor-pointer"
+          <IconButton
+            icon={<ChevronDown />}
             onClick={() => setIsCardExpanded(true)}
           />
         )}

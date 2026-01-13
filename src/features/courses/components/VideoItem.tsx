@@ -1,8 +1,11 @@
 "use client";
 
 import { CheckCircle2 } from "lucide-react";
+import { Star } from "lucide-react";
 import { useTheme } from "next-themes";
-import React, { use, useMemo } from "react";
+import React, { useMemo } from "react";
+
+import { cn } from "@/lib/utils";
 
 type VideoItemProps = {
   order: number;
@@ -38,9 +41,9 @@ const VideoItem = ({
             src={"/images/VideoItemThumbnail.jpeg"}
           />
         </div>
-        <div className="flex flex-1 flex-col h-[32px]">
+        <div className="flex flex-1 flex-col justify-center h-[48px]">
           <p
-            className={`font-normal text-[10px] text-justify  ${watching ? "dark:text-[#2056F2] text-[#2056F2]" : "text-[#00000080] dark:text-[#FFFFFF40]"}`}
+            className={`font-semibold text-[10px] text-justify  ${watching ? "dark:text-[#2056F2] text-[#2056F2]" : "text-[#00000080] dark:text-[#FFFFFF40]"}`}
           >
             Aula {order}
           </p>
@@ -49,6 +52,20 @@ const VideoItem = ({
           >
             {video.title}
           </span>
+          {video.rating !== null && video.rating > 0 && (
+            <div className="flex items-center gap-1">
+              {Array.from({ length: 5 }).map((_, index) => (
+                <Star
+                  key={index}
+                  size={14}
+                  className={cn(
+                    "fill-yellow-500",
+                    index < video.rating! ? "fill-yellow-500" : "fill-gray-500",
+                  )}
+                />
+              ))}
+            </div>
+          )}
         </div>
       </div>
 

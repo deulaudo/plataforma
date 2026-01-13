@@ -81,6 +81,12 @@ async function createVideoComentario(
   return response.data;
 }
 
+async function rateVideo(videoId: string, rating: number): Promise<void> {
+  await api.post(`web-platform/videos/${videoId}/rating`, {
+    rating: rating,
+  });
+}
+
 export const coursesService = {
   getCourse,
   listCourses,
@@ -91,4 +97,5 @@ export const coursesService = {
   updateVideo,
   getVideoComentarios,
   createVideoComentario,
+  rateVideo,
 };
