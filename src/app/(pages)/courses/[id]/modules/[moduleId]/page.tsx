@@ -183,7 +183,7 @@ const ModulePage = ({
 
             <div className="flex self-start flex-col gap-2">
               <span className="font-semibold text-[14px] text-[#000000] dark:text-white">
-                Avaliação do vídeo
+                Avaliação da aula
               </span>
               <Rating
                 onVideoRated={onVideoRated}
