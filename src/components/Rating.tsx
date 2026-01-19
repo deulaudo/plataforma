@@ -54,9 +54,13 @@ const Rating: React.FC<RatingProps> = ({
       }
       return "fill-gray-400 text-gray-400";
     }
-    
+
     // Quando não está em hover, mostra a avaliação selecionada (todas até selectedRating ficam amarelas)
-    if (selectedRating !== null && selectedRating > 0 && index < selectedRating) {
+    if (
+      selectedRating !== null &&
+      selectedRating > 0 &&
+      index < selectedRating
+    ) {
       return "fill-yellow-500 text-yellow-500";
     }
     return "fill-gray-400 text-gray-400";
@@ -70,7 +74,7 @@ const Rating: React.FC<RatingProps> = ({
           size={size}
           className={cn(
             "cursor-pointer transition-colors",
-            getStarClass(index)
+            getStarClass(index),
           )}
           onClick={() => handleClick(index)}
           onMouseEnter={() => handleMouseEnter(index)}
@@ -82,4 +86,3 @@ const Rating: React.FC<RatingProps> = ({
 };
 
 export default Rating;
-
