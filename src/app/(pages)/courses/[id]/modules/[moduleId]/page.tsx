@@ -201,6 +201,7 @@ const ModulePage = ({
             </div>
           </div>
           <ModuleCard
+            showTagSelector
             courseId={id}
             module={module}
             contentClassName={`${isLoadingVideo || videoLoaded ? "w-full lg:w-1/3" : "w-full"} ${isLoadingVideo || videoLoaded ? "mt-4 lg:mt-0" : ""}`}

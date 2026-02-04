@@ -1,18 +1,22 @@
 "use client";
 
+import { useQuery } from "@tanstack/react-query";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useEffect, useMemo, useState } from "react";
 import { twMerge } from "tailwind-merge";
 
 import IconButton from "@/components/IconButton";
+import TagSelector from "@/components/TagSelector";
 import { cn } from "@/lib/utils";
+import { coursesService } from "@/services/coursesService";
 
 import ModuleContent from "./ModuleContent";
 
 type ModuleCardProps = {
   module: ModuleType;
   courseId: string;
+  showTagSelector?: boolean;
   currentVideo?: VideoType;
   contentClassName?: string;
   handleVideoSelect?: (videoId: string) => void;
@@ -25,12 +29,25 @@ const ModuleCard = ({
   currentVideo,
   contentClassName,
   handleVideoSelect,
+  showTagSelector = false,
   isCardExpandedByDefault = true,
 }: ModuleCardProps) => {
   const { theme } = useTheme();
   const [isCardExpanded, setIsCardExpanded] = useState<boolean>(
     isCardExpandedByDefault,
   );
+  const [localSelectedTagIds, setLocalSelectedTagIds] = useState<string[]>([]);
+
+  const { data: videos, isPending: isPendingVideos } = useQuery({
+    queryKey: ["videos", module.id, isCardExpanded],
+    queryFn: async () => {
+      if (isCardExpanded) {
+        return await coursesService.listVideos(module.id);
+      }
+
+      return Promise.resolve([]);
+    },
+  });
 
   const moduleDone = useMemo(
     () => module.totalWatched === module.totalVideos,
@@ -42,6 +59,13 @@ const ModuleCard = ({
       setIsCardExpanded(true);
     }
   }, [currentVideo]);
+
+  const filteredVideos = useMemo(() => {
+    if (!localSelectedTagIds.length) return videos ?? [];
+    return (videos ?? []).filter((video) =>
+      video.tags?.some((tag) => localSelectedTagIds.includes(tag.id)),
+    );
+  }, [videos, localSelectedTagIds]);
 
   return (
     <div
@@ -93,16 +117,25 @@ const ModuleCard = ({
           />
         )}
       </div>
-
       <div className="flex w-full p-[4px]">
         <p className="font-normal text-[12px] text-justify text-[#000000] dark:text-white">
           {module.description.length > 1 ? module.description : ""}
         </p>
       </div>
 
+      {showTagSelector && (
+        <TagSelector
+          courseMode
+          value={localSelectedTagIds}
+          onTagChange={setLocalSelectedTagIds}
+        />
+      )}
+
       <ModuleContent
         courseId={courseId}
         moduleId={module.id}
+        videos={filteredVideos ?? []}
+        isPendingVideos={isPendingVideos}
         currentVideoId={currentVideo?.id}
         isExpanded={isCardExpanded}
         handleVideoSelect={handleVideoSelect}

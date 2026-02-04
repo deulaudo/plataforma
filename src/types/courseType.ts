@@ -23,6 +23,11 @@ interface VideoType {
   createdAt: string; // Assuming this is a date-time string
   updatedAt: string; // Assuming this is a date-time string
   rating: number | null;
+  tags: {
+    id: string;
+    tag: string;
+    courseMode: boolean;
+  }[];
 }
 
 interface ModuleType {
