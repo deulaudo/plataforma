@@ -33,7 +33,7 @@ const TagSelector = ({
   const { selectedProduct } = useSelectedProduct();
 
   const { data: tags, isPending } = useQuery({
-    queryKey: ["tags", selectedProduct?.id, courseMode],
+    queryKey: ["tags", selectedProduct?.id, courseMode, moduleId],
     queryFn: () =>
       tagService.listTags({
         productId: selectedProduct?.id || "",
