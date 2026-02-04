@@ -126,6 +126,7 @@ const ModuleCard = ({
       {showTagSelector && (
         <TagSelector
           courseMode
+          moduleId={module.id}
           value={localSelectedTagIds}
           onTagChange={setLocalSelectedTagIds}
         />

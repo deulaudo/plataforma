@@ -11,6 +11,7 @@ import { TagType } from "@/types/tagType";
 
 type TagSelectorProps = {
   courseMode: boolean;
+  moduleId?: string;
   value: string[];
   onTagChange: (tagIds: string[]) => void;
   label?: string;
@@ -20,6 +21,7 @@ type TagSelectorProps = {
 
 const TagSelector = ({
   courseMode,
+  moduleId,
   value,
   onTagChange,
   label = "Filtrar por tags",
@@ -36,6 +38,7 @@ const TagSelector = ({
       tagService.listTags({
         productId: selectedProduct?.id || "",
         courseMode: courseMode || false,
+        moduleId: moduleId || undefined,
       }),
     enabled: !!selectedProduct?.id,
   });
