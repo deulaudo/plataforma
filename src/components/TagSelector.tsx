@@ -57,6 +57,8 @@ const TagSelector = ({
   }, []);
 
   const selectedLabels = useMemo(() => {
+    console.log("tags", tags);
+    console.log("value", value);
     if (!tags || value.length === 0) return null;
     return value
       .map((id) => tags.find((t: TagType) => t.id === id)?.tag)
@@ -70,9 +72,11 @@ const TagSelector = ({
   }, [selectedLabels, placeholder]);
 
   const toggleTag = (tagId: string) => {
+    console.log("tagId", tagId);
     const next = value.includes(tagId)
       ? value.filter((id) => id !== tagId)
       : [...value, tagId];
+    console.log("next", next);
     onTagChange(next);
   };
 

@@ -3,11 +3,12 @@
 import { useQuery } from "@tanstack/react-query";
 import _ from "lodash";
 import { CircleOff, Loader } from "lucide-react";
-import React, { use, useCallback, useMemo } from "react";
+import React, { use, useCallback, useMemo, useState } from "react";
 
 import { useRouter } from "next/navigation";
 
 import PageLayout from "@/components/PageLayout";
+import TagSelector from "@/components/TagSelector";
 import ModuleCard from "@/features/courses/components/ModuleCard";
 import withAuth from "@/hocs/withAuth";
 import { coursesService } from "@/services/coursesService";
@@ -15,6 +16,7 @@ import { coursesService } from "@/services/coursesService";
 const CoursePage = ({ params }: { params: Promise<{ id: string }> }) => {
   const { id } = use(params);
   const { back } = useRouter();
+  const [selectedTagIds, setSelectedTagIds] = useState<string[]>([]);
 
   const { data: course, isPending: isPendingCourse } = useQuery({
     queryKey: ["course"],
@@ -52,17 +54,28 @@ const CoursePage = ({ params }: { params: Promise<{ id: string }> }) => {
 
     if (modules && modules.length > 0) {
       return (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 xl:justify-between">
-          {modules.map((module) => (
-            <div key={module.id} className="w-full">
-              <ModuleCard
-                isCardExpandedByDefault={false}
-                courseId={id}
-                module={module}
-                key={module.id}
-              />
-            </div>
-          ))}
+        <div className="flex flex-col gap-4">
+          <pre>{JSON.stringify(selectedTagIds, null, 2)}</pre>
+          <TagSelector
+            courseMode={true}
+            label="Filtro avançado"
+            value={selectedTagIds}
+            onTagChange={(tagIds) => {
+              setSelectedTagIds(tagIds);
+            }}
+          />
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 xl:justify-between">
+            {modules.map((module) => (
+              <div key={module.id} className="w-full">
+                <ModuleCard
+                  isCardExpandedByDefault={false}
+                  courseId={id}
+                  module={module}
+                  key={module.id}
+                />
+              </div>
+            ))}
+          </div>
         </div>
       );
     }
